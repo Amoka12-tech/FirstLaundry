@@ -1,12 +1,12 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
+import store from './store';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View } from 'react-native';
 import LandingPage from './src/Components/Landing';
 import LoginPage from './src/Components/Auth/Login';
-
 import { 
   useFonts,
   Poppins_100Thin,
@@ -28,6 +28,9 @@ import {
   Poppins_900Black,
   Poppins_900Black_Italic,
  } from '@expo-google-fonts/poppins';
+import HomePage from './src/Components/Dashboard/HomePage';
+import { Provider } from 'react-redux';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
  const MainStack = createStackNavigator();
 
@@ -55,6 +58,26 @@ export default function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const checkStore = () => {
+    const reduxState = store.getState();
+    const loggedIn = reduxState.auth.isLoggedIn;
+    const nLoading = reduxState.auth.isLoading;
+    setIsLoggedIn(loggedIn);
+    setIsLoading(nLoading);
+  };
+
+  store.subscribe(checkStore);
+
+  const authScreen = {
+    Landing: LandingPage,
+    Login: LoginPage
+  };
+
+  const privateScreen = {
+    Home: HomePage
+  };
+
   if(!fontLoaded){
     return(
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -63,12 +86,19 @@ export default function App() {
     );
   }else{
     return (
-      <NavigationContainer>
-        <MainStack.Navigator screenOptions={{ headerShown: false }}>
-          <MainStack.Screen name="Landing" component={LandingPage} />
-          <MainStack.Screen name="Login" component={LoginPage} />
-        </MainStack.Navigator>
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <SafeAreaProvider>
+            <MainStack.Navigator screenOptions={{ headerShown: false }}>
+              {Object.entries({
+                      ...(isLoggedIn? privateScreen : authScreen),
+                    }).map(([name, component], index) => (
+                      <MainStack.Screen key={index} name={name} component={component} />
+                    ))}
+            </MainStack.Navigator>
+          </SafeAreaProvider>
+        </NavigationContainer>
+      </Provider>
     );
   }
 };
