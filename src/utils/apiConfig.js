@@ -1,9 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 let apiRoute;
 
-apiRoute = axios.create({ baseURL: 'https://localhost/firstlaundry' });
+apiRoute = axios.create({ baseURL: 'http://192.168.8.100:80/laundry_api' });
 
 // apiRoute.interceptors.request.use(async (req) => {
 //     const userData = await AsyncStorage.getItem('@user')

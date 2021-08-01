@@ -1,80 +1,124 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { View, Text } from 'react-native';
-import { Input, Image } from 'react-native-elements';
-import style from '../../style';
-import { black, grey, secondaryColor } from '../../Theme/color';
+import { Input, Image, Icon } from 'react-native-elements';
+import { authStyle } from '../../Theme/styles';
+import { black, grey, primaryColor, secondaryColor, white } from '../../Theme/color';
+import { ScrollView } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../actions/auth';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-export default function LoginPage() {
+export default function LoginPage({ navigation }) {
+    const dispatch = useDispatch();
+    const isLoading = useSelector(state => state.auth.isLoading);
+
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [phoneNumberErr, setPhoneNumberErr] = useState("");
+    const [password, setPassword] = useState("");
+    const [passwordErr, setPasswordErr] = useState("");
+    const [isPassVisible, setIsPassVisible] = useState(true);
+
+    const togglePassVisible = () => setIsPassVisible(!isPassVisible);
+
+    const onSubmit = () => {
+        if(phoneNumber === ""){
+            setPhoneNumberErr("*Phone number is required");
+        }else if(password === ""){
+            setPasswordErr("*Password is required");
+        }else{
+            const body = {
+                phone: phoneNumber,
+                passWord: password
+            };
+            dispatch(login(body, navigation));
+        }
+    };
   return (
-    <View style={style.loginContainer}>
-      <View style={style.topLoginContainer}>
-      </View>
-      <View style={style.loginFormHolder}>
-          <Text style={style.loginTitle}>Authentification</Text>
-          <View style={{ height: 4, width: 160, marginTop: 10, backgroundColor: secondaryColor }} />
+    <ScrollView 
+        contentContainerStyle={authStyle.loginContainer}
+        showsHorizontalScrollIndicator={false}
+        >
+        <Spinner 
+            visible={isLoading}
+            textContent={'Authenticating...'}
+            textStyle={authStyle.loadingText}
+            color={primaryColor}
+        />
+        <View style={authStyle.brandHolder}>
+          <Image style={authStyle.brandLogo} resizeMode={'contain'} source={require('../../Theme/image/logo.png')} />
+          <Text style={authStyle.brandTitle}>
+              First Laundry
+          </Text>
+        </View>
 
+        <View style={authStyle.loginFormHolder}>
             <Input 
-                containerStyle={{ marginTop: 20, marginBottom: -10 }}
-                inputContainerStyle={style.loginInput}
-                inputStyle={{ color: secondaryColor }}
-                label='Email'
-                labelStyle={{ color: secondaryColor }}
-                placeholder='Enter your email'
-                placeholderTextColor={secondaryColor}
+                value={phoneNumber}
+                keyboardType="phone-pad"
+                onChangeText={(value) => setPhoneNumber(value)}
+                inputStyle={authStyle.loginInput}
+                inputContainerStyle={authStyle.noBorder}
+                placeholder="Phone number"
+                errorMessage={phoneNumberErr}
+                onFocus={() => setPhoneNumberErr("")}
             />
 
             <Input 
-                containerStyle={{ marginTop: 10, marginBottom: -10, }}
-                inputContainerStyle={style.loginInput}
-                inputStyle={{ color: secondaryColor }}
-                label='Password'
-                labelStyle={{ color: secondaryColor }}
-                placeholder='Enter password'
-                placeholderTextColor={secondaryColor}
+                value={password}
+                onChangeText={(value) => setPassword(value)}
+                inputStyle={authStyle.loginInput}
+                inputContainerStyle={authStyle.noBorder}
+                placeholder="Password"
+                secureTextEntry={isPassVisible}
+                rightIcon={
+                    <Icon 
+                        type="ionicon"
+                        name={isPassVisible ? "eye-off" : "eye"}
+                        color={black}
+                        size={20}
+                        onPress={togglePassVisible}
+                    />
+                }
+                errorMessage={passwordErr}
+                onFocus={() => setPasswordErr("")}
             />
-            <View style={style.floatLeft}>
-                <TouchableOpacity>
-                    <Text style={{ color: secondaryColor }}>Forgot Password</Text>
-                </TouchableOpacity>
-            </View>
 
-            <View style={style.bottomAuthBtnHolder}>
-                <TouchableOpacity style={style.authBtn_primary}>
-                    <Text style={style.authBtnText_secondary}>
-                        SIGNUP
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={style.authBtn_secondary}>
-                    <Text style={style.authBtnText_primary}>
-                        LOGIN
-                    </Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity 
+                onPress={() => navigation.navigate('Recovery')}
+                style={authStyle.authLeftSideItem}>
+                <Text style={authStyle.authLeftSideText}>
+                    Forgot password?
+                </Text>
+            </TouchableOpacity>
 
-            <View style={style.authBottomHolder}>
-                <Text style={{ fontSize: 14 }}>
-                    - or login with -
+            <TouchableOpacity 
+                onPress={onSubmit}
+                style={authStyle.authButton}>
+                <Text style={authStyle.authButtonText}>Login</Text>
+                <Icon 
+                    type="antdesign"
+                    name="arrowright"
+                    size={20}
+                    color={white}
+                />
+            </TouchableOpacity>
+
+            <View style={authStyle.rowViewTextWithMargin}>
+                <Text style={authStyle.smallBlackText}>
+                    Don't have an account? 
                 </Text>
 
-                <View style={style.authSocialHolder}>
-                    <TouchableOpacity style={{ marginRight: 40, width: 30, height: 30 }}>
-                        <Image style={{ width: 30, height: 30 }} source={require('../../Theme/icons/search.png')} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{ width: 30, height: 30 }}>
-                        <Image style={{ width: 30, height: 30 }} source={require('../../Theme/icons/facebook.png')} />
-                    </TouchableOpacity>
-                </View>
-
-                <View style={style.otherAuthOption}>
-                    <Text style={{ color: grey, fontSize: 11 }} >Don't have an account?</Text>
-                    <TouchableOpacity>
-                        <Text style={{ color: black, fontFamily: 'Poppins_400Regular', fontWeight: '400' }}> SIGN UP</Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity 
+                    disabled={isLoading}
+                    onPress={() => navigation.navigate('Register')}
+                    style={{ marginLeft: 10 }}>
+                    <Text style={authStyle.smallColorText}>
+                        Sign up now
+                    </Text>
+                </TouchableOpacity>
             </View>
-      </View>
-     </View>
+        </View>
+     </ScrollView>
   );
 }

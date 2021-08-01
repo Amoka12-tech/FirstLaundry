@@ -35,7 +35,7 @@ const LandingPage = ({ navigation }) => {
         <View style={authStyle.landingContainer}>
             <StatusBar translucent={true} backgroundColor={"transparent"}  barStyle='dark-content' />
 
-            <View style={authStyle.brandHolder}>
+            <View style={authStyle.brandHolderLanding}>
                 <Image style={authStyle.brandLogo} source={require('../Theme/image/logo.png')} />
                 <Text style={authStyle.brandTitle}>First Laundry</Text>
             </View>

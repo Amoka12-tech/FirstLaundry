@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers";
-import { black, grey, primaryColor, secondaryColor, white } from "../color";
-import { bold, h2, h3, h5, p, regular, thin } from '../fonts';
+import { black, grey, inputBg, lightSecondary, primaryColor, red, secondaryColor, white } from "../color";
+import { bold, h2, h3, h4, h5, p, regular, thin } from '../fonts';
 
 export default StyleSheet.create({
     landingContainer: {
@@ -22,7 +22,17 @@ export default StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 102,
+        marginBottom: 40,
+    },
+
+    brandHolderLanding: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 40,
+        marginTop: 80,
     },
 
     brandLogo: {
@@ -146,109 +156,213 @@ export default StyleSheet.create({
 
     loginContainer: {
         flex: 1,
-        width: '100%',
-        height: ScreenHeight
-    },
-
-    topLoginContainer: {
-        display: 'flex',
-        width: '100%',
-        backgroundColor: primaryColor,
-        height: ScreenHeight/1.5,
-        transform : [ { scaleX : 2 } ],
-        borderBottomStartRadius : 200,
-        borderBottomEndRadius : 200,
-        overflow : 'hidden',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
     loginFormHolder: {
-        position: 'absolute',
-        padding: 20,
-        top: ScreenHeight/6,
+        display: 'flex',
+        flexDirection: 'column',
         width: '100%',
-    },
-
-    loginTitle: {
-        fontFamily: regular,
-        fontSize: 24,
-        fontWeight: 'bold',
-        fontStyle: 'normal',
-        color: secondaryColor,
+        paddingLeft: 40,
+        paddingRight: 40,
     },
 
     loginInput: {
-        borderColor: secondaryColor, 
         width: '100%',
-        tintColor: secondaryColor,
+        fontFamily: regular,
+        fontSize: h4,
+        fontWeight: '400',
+        backgroundColor: inputBg,
+        borderRadius: 8,
+        color: black,
+        padding: 10,
+        paddingLeft: 20,
     },
 
-    floatLeft: {
-        width: '100%',
+    noBorder: {
+        borderBottomWidth: 0,
+        borderColor: inputBg,
+        backgroundColor: inputBg,
+        borderRadius: 8,
+    },
+
+    big40MarginTop: {
+        marginTop: 40,
+    },
+
+    authLeftSideItem: {
         display: 'flex',
-        alignItems: 'flex-end',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginTop: -10,
+        marginBottom: 10,
     },
 
-    bottomAuthBtnHolder: {
-        width: '100%',
+    authLeftSideText: {
+        fontFamily: regular,
+        fontSize: h5,
+        fontWeight: '400',
+        color: primaryColor,
+    },
+
+    authButton: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: '25%',
-    },
-
-    authBtn_secondary: {
-        display: 'flex',
-        width: 120,
-        padding: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: black,
-        borderRadius: 25,
-    },
-
-    authBtn_primary: {
-        display: 'flex',
-        width: 120,
-        padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: secondaryColor,
-        marginRight: 40,
-        borderRadius: 25,
+        padding: 10,
+        width: '100%',
+        borderRadius: 8,
     },
 
-    authBtnText_secondary: {
-        color: black
+    authButtonText: {
+        fontFamily: regular,
+        fontSize: h4,
+        fontWeight: '400',
+        color: white,
     },
 
-    authBtnText_primary: {
-        color: secondaryColor
-    },
-
-    authBottomHolder: {
+    rowViewTextWithMargin: {
         display: 'flex',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '10%',
+        marginTop: 120,
     },
 
-    authSocialHolder: {
+    rowViewText: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    smallBlackText: {
+        fontFamily: regular,
+        fontSize: h5,
+        fontWeight: '400',
+        color: black,
+    },
+
+    smallColorText: {
+        fontFamily: regular,
+        fontSize: h5,
+        fontWeight: '400',
+        color: primaryColor,
+    },
+
+    normalContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        padding: 20,
+    },
+
+    topHeader: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        position: 'absolute',
+        top: 47,
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
+
+    topHeaderText: {
+        fontFamily: regular,
+        fontSize: h3,
+        fontStyle: 'normal',
+        fontWeight: '500',
+    },
+
+    nextFormHolder: {
+        flex: 1,
+        flexDirection: 'column',
+        padding: 20,
+        marginTop: 167,
+    },
+
+    bigColorText: {
+        fontFamily: regular,
+        fontSize: h4,
+        fontStyle: 'normal',
+        fontWeight: '500',
+        color: primaryColor,
+    },
+
+    spanText: {
+        fontFamily: regular,
+        fontSize: p,
+        fontStyle: 'normal',
+        fontWeight: '400',
+        color: black,
+    },
+
+    singleInput: {
+        width: 40,
+        fontFamily: regular,
+        fontSize: h4,
+        fontWeight: '400',
+        backgroundColor: inputBg,
+        borderRadius: 8,
+        color: black,
+        padding: 10,
+        paddingLeft: 20,
+    },
+
+    noBorderSingle: {
+        width: 40,
+        borderBottomWidth: 0,
+        borderColor: inputBg,
+        backgroundColor: inputBg,
+        borderRadius: 8,
+    },
+
+    singleInputCont: {
+        width: 40,
+    },
+
+    nextCenterFormHolder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 34,
+    },
+
+    singleInputHolder: {
         display: 'flex',
         width: '100%',
         flexDirection: 'row',
-        marginTop: '10%',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
     },
 
-    otherAuthOption: {
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: '20%',
+    errorText: {
+        fontFamily: regular,
+        fontSize: p,
+        fontStyle: 'normal',
+        fontWeight: '400',
+        color: red,
+    },
+
+    loadingText: {
+        fontFamily: regular,
+        fontSize: h3,
+        fontStyle: 'normal',
+        fontWeight: '400',
+        color: primaryColor,
+    },
+
+    loadingIcon: {
+        color: primaryColor
     },
 
 });

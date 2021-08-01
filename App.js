@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import store from './store';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -31,6 +31,11 @@ import {
 import HomePage from './src/Components/Dashboard/HomePage';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import VerifyPage from './src/Components/Auth/VerifyPage';
+import RegisterPage from './src/Components/Auth/Register';
+import RecoverPage from './src/Components/Auth/RecoverPage';
+import ChangePasswordPage from './src/Components/Auth/ChangePassword';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
  const MainStack = createStackNavigator();
 
@@ -71,12 +76,30 @@ export default function App() {
 
   const authScreen = {
     Landing: LandingPage,
-    Login: LoginPage
+    Login: LoginPage,
+    Verify: VerifyPage,
+    Register: RegisterPage,
+    Recovery: RecoverPage,
+    NewPassword: ChangePasswordPage
   };
 
   const privateScreen = {
     Home: HomePage
   };
+
+  const [firstCall, setFirstCall] = useState(0);
+
+  useEffect(() => {
+    async () => {
+      if(firstCall === 0){
+        const userData = await AsyncStorage.getItem("@user");
+        if(!!userData){
+          setIsLoggedIn(true);
+        }
+      }
+      setFirstCall(firstCall + 1);
+    }
+  }, []);
 
   if(!fontLoaded){
     return(
