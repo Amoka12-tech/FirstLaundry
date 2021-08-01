@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { recover } from '../../actions/auth';
-import { black } from '../../Theme/color';
+import { black, primaryColor } from '../../Theme/color';
 import { authStyle } from '../../Theme/styles';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function RecoverPage({ navigation }) {
   const dispatch = useDispatch();
+  const isLoading = useSelector(state => state.auth.isLoading);
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [phoneNumberErr, setPhoneNumberErr] = useState("");
@@ -27,6 +29,12 @@ export default function RecoverPage({ navigation }) {
       contentContainerStyle={authStyle.normalContainer} 
       showsVerticalScrollIndicator={false}
       >
+      <Spinner 
+        visible={isLoading}
+        textContent={'Please wait...'}
+        textStyle={authStyle.loadingText}
+        color={primaryColor}
+      />
       <View style={authStyle.topHeader}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon 

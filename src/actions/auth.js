@@ -79,8 +79,9 @@ export const verify = (body, page, navigation) => async dispatch => {
         if(success === 1){
             if(page === "NewPass"){
                 dispatch({type: END_PROCESS});
-                alert('Password changed');
-                navigation.navigate('Login');
+                navigation.navigate('NewPassword', {
+                    id: message.id
+                });
             }else{
                 await AsyncStorage.setItem('@user', JSON.stringify(message));
                 dispatch({type: SIGN_IN, payload: message});
@@ -118,12 +119,49 @@ export const resendOtp = (body) => async dispatch => {
 
 //Search if phone numebr exist 'success' 'status' 'message': userData navigate to Otp
 export const recover = (body, navigation) => async dispatch => {
-    console.log(body);
+    const bodyData = JSON.stringify(body);
+    try {
+        dispatch({type: START_PROCESS});
+        const { data } = await api.recover(bodyData, headers);
+        const status = data?.status;
+        const success = data?.success;
+        const message = data?.message;
+        if(success === 1){
+            dispatch({type: SIGN_UP, payload: message});
+            dispatch({type: END_PROCESS});
+            navigation.navigate('Verify', {
+                userId: message.id,
+                page: 'NewPass'
+            });
+        }else{
+            throw(message);
+        }
+    } catch (error) {
+        dispatch({type: END_PROCESS});
+        alert(error);
+    }
 };
 
 //Change Password action to return 'success' 'status' 'message' the show alert
 export const changePassword = (body, navigation) => async dispatch => {
-    console.log(body);
+    const bodyData = JSON.stringify(body);
+    try {
+        dispatch({type: START_PROCESS});
+        const { data } = await api.changePassword(bodyData, headers);
+        const status = data?.status;
+        const success = data?.success;
+        const message = data?.message;
+        if(success === 1){
+            dispatch({type: END_PROCESS});
+            alert(message);
+            navigation.navigate('Login');
+        }else{
+            throw(message);
+        }
+    } catch (error) {
+        dispatch({type: END_PROCESS});
+        alert(error);
+    }
 };
 
 export const logout = () => async dispatch => {

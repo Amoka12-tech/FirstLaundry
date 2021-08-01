@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changePassword } from '../../actions/auth';
-import { black } from '../../Theme/color';
+import { black, primaryColor } from '../../Theme/color';
 import { authStyle } from '../../Theme/styles';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function ChangePasswordPage({ navigation, route }) {
   const dispatch = useDispatch();
-  const userId = route.params?.userId;
+  const isLoading = useSelector(state => state.auth.isLoading);
+  const { id } = route.params;
 
   const [password, setPassword] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
@@ -27,7 +29,7 @@ export default function ChangePasswordPage({ navigation, route }) {
       setConfirmPasswordErr("*Password did not match");
     }else{
       const body = {
-        userId: userId,
+        userId: id,
         password: password,
       };
       dispatch(changePassword(body, navigation));
@@ -38,6 +40,12 @@ export default function ChangePasswordPage({ navigation, route }) {
       contentContainerStyle={authStyle.normalContainer} 
       showsVerticalScrollIndicator={false}
       >
+      <Spinner 
+        visible={isLoading}
+        textContent={'Please wait...'}
+        textStyle={authStyle.loadingText}
+        color={primaryColor}
+      />
       <View style={authStyle.topHeader}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon 
@@ -75,6 +83,7 @@ export default function ChangePasswordPage({ navigation, route }) {
           inputStyle={authStyle.loginInput}
           inputContainerStyle={authStyle.noBorder}
           errorMessage={passwordErr}
+          onFocus={() => setPasswordErr("")}
           rightIcon={
             <Icon 
               type="ionicon"
@@ -94,6 +103,7 @@ export default function ChangePasswordPage({ navigation, route }) {
           inputStyle={authStyle.loginInput}
           inputContainerStyle={authStyle.noBorder}
           errorMessage={confirmPasswordErr}
+          onFocus={() => setConfirmPasswordErr("")}
         />
 
         <TouchableOpacity 

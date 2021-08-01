@@ -36,6 +36,9 @@ import RegisterPage from './src/Components/Auth/Register';
 import RecoverPage from './src/Components/Auth/RecoverPage';
 import ChangePasswordPage from './src/Components/Auth/ChangePassword';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUser } from './src/actions/user';
+import { ImageBackground } from 'react-native';
+import BottomTabs from './src/Components/navigation/tabs';
 
  const MainStack = createStackNavigator();
 
@@ -84,27 +87,21 @@ export default function App() {
   };
 
   const privateScreen = {
-    Home: HomePage
+    Home: BottomTabs
   };
 
   const [firstCall, setFirstCall] = useState(0);
 
   useEffect(() => {
-    async () => {
-      if(firstCall === 0){
-        const userData = await AsyncStorage.getItem("@user");
-        if(!!userData){
-          setIsLoggedIn(true);
-        }
-      }
-      setFirstCall(firstCall + 1);
+    if(isLoggedIn === false){
+      store.dispatch(getUser());
     }
   }, []);
 
   if(!fontLoaded){
     return(
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Loading...</Text>
+      <View style={{ flex: 1,}}>
+        <ImageBackground source={require('./src/Theme/image/firstLaundry.png')} resizeMode="cover" style={{ flex: 1, justifyContent: 'center' }} />
       </View>
     );
   }else{

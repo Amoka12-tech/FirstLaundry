@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StatusBar, Image, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { white } from '../Theme/color';
+import { primaryColor, white } from '../Theme/color';
 import { authStyle } from '../Theme/styles';
 import GestureRecognizer from 'react-native-swipe-gestures';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../actions/user';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const LandingPage = ({ navigation }) => {
+
     const [page, setPage] = useState(1);
-    const getStarted = () => {
-        navigation.navigate('Login');
-    };
 
     //for next
     const swipeLeft = () => {
