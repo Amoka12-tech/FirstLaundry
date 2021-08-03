@@ -1,4 +1,4 @@
-import { SIGN_IN, SIGN_OUT, SIGN_UP } from "./types";
+import { END_PROCESS, SIGN_IN, SIGN_OUT, SIGN_UP, START_PROCESS, UPDATE_USER } from "./types";
 
 const initialState = {
     user: null,
@@ -27,6 +27,24 @@ export default function(auth = initialState, action){
                 ...auth,
                 user: null,
                 isLoggedIn: false
+            };
+
+        case UPDATE_USER:
+            return {
+                ...auth,
+                user: payload
+            };
+
+        case START_PROCESS:
+            return {
+                ...auth,
+                isLoading: true
+            };
+
+        case END_PROCESS:
+            return {
+                ...auth,
+                isLoading: false
             };
     
         default:

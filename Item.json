@@ -1,0 +1,192 @@
+{
+    "T-Shirt": {
+        "id": "001",
+        "name": "T-Shirt",
+        "price": "",
+        "Male" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        },
+        "Female" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        }
+    },
+    "Shirt": {
+        "id": "002",
+        "name": "Shirt",
+        "price": "",
+        "Male" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        },
+        "Female" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        }
+    },
+    "Sleveless": {
+        "id": "003",
+        "name": "Sleveless",
+        "price": "",
+        "Male" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        },
+        "Female" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        }
+    },
+    "Trouser": {
+        "id": "004",
+        "name": "Trouser",
+        "price": "",
+        "Male" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        },
+        "Female" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        }
+    },
+    "upDown": {
+        "id": "005",
+        "name": "Up & Down",
+        "price": "",
+        "Male" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        },
+        "Female" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        }
+    },
+    "Suit": {
+        "id": "006",
+        "name": "Suit",
+        "price": "",
+        "Male" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        },
+        "Female" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        }
+    },
+    "Jean": {
+        "id": "007",
+        "name": "Jean",
+        "price": "",
+        "Male" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        },
+        "Female" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        }
+    },
+    "BedSheet": {
+        "id": "008",
+        "name": "Bed Sheet",
+        "price": "",
+        "Male" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        },
+        "Female" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        }
+    },
+    "Duvet": {
+        "id": "009",
+        "name": "Duvet",
+        "price": "",
+        "Male" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        },
+        "Female" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        }
+    },
+    "Gown": {
+        "id": "010",
+        "name": "Gown",
+        "price": "",
+        "Male" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        },
+        "Female" : {
+            "wash": "",
+            "fold": "",
+            "iron": "",
+            "Dry": "",
+            "wash_iron": ""
+        }
+    }
+}

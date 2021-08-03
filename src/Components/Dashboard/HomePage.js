@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'react-native';
 import { View, Text } from 'react-native';
-import { Avatar, Icon, Image, Input } from 'react-native-elements';
+import { Avatar, Button, Icon, Image, Input } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../actions/auth';
 import { black, blue, green, orange, primaryColor, white } from '../../Theme/color';
@@ -17,19 +17,24 @@ import dry from '../../Theme/icons/dry.png';
 import banner from '../../Theme/icons/Banner.png';
 import toFro from '../../Theme/icons/line.png';
 import noPics from '../../Theme/image/noPics.png';
+import { updateUser } from '../../actions/user';
 
 export default function HomePage() {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.auth.user);
 
+  const isLoading = useSelector(state => state.auth.isLoading);
+
   const [isModal, setIsModal] = useState(false);
   const toggleEditModal = () => setIsModal(!isModal);
 
   //Person details state
-  const [personPicture, setPersonPicture] = useState('');
-  const [personName, setPersonName] = useState('');
+  const [personPicture, setPersonPicture] = useState(userData?.picture);
+  const [personName, setPersonName] = useState(userData?.name);
   const [personNameErr, setPersonNameErr] = useState('');
   const [personPhoneNumber, setPersonPhoneNumber] = useState(userData?.phone);
+
+  const [imageBase64, setImageBase64] = useState("");
 
   const orderData = [
     {
@@ -59,7 +64,7 @@ export default function HomePage() {
             style={userStyle.mainPersonDetailHolder}>
             <Avatar 
               rounded
-              source={require('../../Theme/image/noPics.png')}
+              source={!!personPicture ? {uri: personPicture} : noPics}
               avatarStyle={{ resizeMode: 'cover' }}
               size={38}
             />
@@ -182,8 +187,9 @@ export default function HomePage() {
             userId: userData.id,
             picture: personPicture,
             name: personName,
+            base64: imageBase64,
           };
-          console.log(body); //Send to api
+          dispatch(updateUser(body, toggleEditModal)); //Send to api
         }
       }else{
         alert('Your name or picture is required');
@@ -202,8 +208,12 @@ export default function HomePage() {
         allowsEditing: true,
         aspect: [1, 1],
         quality: 1,
+        base64: true,
       });
-      if(!result.cancelled){ setPersonPicture(result.uri) }
+      if(!result.cancelled){ 
+        setPersonPicture(result.uri);
+        setImageBase64(`data:image/jpg;base64,${result.base64}`);
+       }
     }
   };
 
@@ -270,12 +280,16 @@ export default function HomePage() {
               inputContainerStyle={userStyle.noInputBorder}
             />
 
-            <TouchableOpacity 
+            {!isLoading && <TouchableOpacity 
               onPress={updateUserData}
               style={userStyle.standardButton}
             >
               <Text style={userStyle.standardButtonText}>Save</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>}
+            {isLoading && <Button 
+              loading={true} type="solid" 
+              loadingProps={{ color: primaryColor }} 
+              buttonStyle={{ backgroundColor: 'transparent' }} />}
 
           </View>
           {/* Profile form holder end here */}
