@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers";
-import { black, grey, offWhite, primaryColor, red, white } from "../color";
+import { black, grey, inputBg, offWhite, primaryColor, red, white } from "../color";
 import { bold, h3, h4, h5, p, regular } from "../fonts";
 
 export default StyleSheet.create({
@@ -263,6 +263,63 @@ export default StyleSheet.create({
 
     mainModalCloseIcon: {
         fontSize: h3,
+        color: white,
+    },
+
+    profilePicEditHolder: {
+        display: 'flex',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    profilePicEdit: {
+        resizeMode: 'contain',
+    },
+
+    profileUpdateFormHolder: {
+        display: 'flex',
+        width: '100%',
+        padding: 5,
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: 40,
+    },
+
+    standardInput: {
+        width: '100%',
+        fontFamily: regular,
+        fontSize: h4,
+        fontWeight: '400',
+        backgroundColor: inputBg,
+        borderRadius: 8,
+        color: black,
+        padding: 10,
+        paddingLeft: 20,
+    },
+
+    noInputBorder: {
+        borderBottomWidth: 0,
+        borderColor: inputBg,
+        backgroundColor: inputBg,
+        borderRadius: 8,
+    },
+
+    standardButton: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: primaryColor,
+        padding: 10,
+        width: '100%',
+        borderRadius: 8,
+    },
+
+    standardButtonText: {
+        fontFamily: regular,
+        fontSize: h4,
+        fontWeight: '400',
         color: white,
     },
 

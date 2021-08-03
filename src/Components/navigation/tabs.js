@@ -53,6 +53,7 @@ export default function BottomTabs() {
   return (
     <Tab.Navigator 
         tabBarOptions={{ 
+            keyboardHidesTabBar: true,
             showLabel: false,
             tabStyle: { 
                 backgroundColor: white,

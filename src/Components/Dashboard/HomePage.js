@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'react-native';
 import { View, Text } from 'react-native';
-import { Avatar, Icon, Image } from 'react-native-elements';
+import { Avatar, Icon, Image, Input } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../actions/auth';
-import { black, blue, green, orange, primaryColor } from '../../Theme/color';
+import { black, blue, green, orange, primaryColor, white } from '../../Theme/color';
 import { userStyle } from '../../Theme/styles';
+import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-image-picker';
 
 import wash from '../../Theme/icons/wash.png';
 import fold from '../../Theme/icons/fold.png';
@@ -14,6 +16,7 @@ import iron from '../../Theme/icons/iron.png';
 import dry from '../../Theme/icons/dry.png';
 import banner from '../../Theme/icons/Banner.png';
 import toFro from '../../Theme/icons/line.png';
+import noPics from '../../Theme/image/noPics.png';
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -21,6 +24,12 @@ export default function HomePage() {
 
   const [isModal, setIsModal] = useState(false);
   const toggleEditModal = () => setIsModal(!isModal);
+
+  //Person details state
+  const [personPicture, setPersonPicture] = useState('');
+  const [personName, setPersonName] = useState('');
+  const [personNameErr, setPersonNameErr] = useState('');
+  const [personPhoneNumber, setPersonPhoneNumber] = useState(userData?.phone);
 
   const orderData = [
     {
@@ -163,6 +172,41 @@ export default function HomePage() {
     );
   };
 
+  //Update user Data
+  const updateUserData = () => {
+      if(personName !== '' || personPicture !== ''){
+        if(personName !== '' && personName.length < 3){
+          setPersonNameErr("Name can not be less than three(3) characters");
+        }else{
+          const body = {
+            userId: userData.id,
+            picture: personPicture,
+            name: personName,
+          };
+          console.log(body); //Send to api
+        }
+      }else{
+        alert('Your name or picture is required');
+      }
+  };
+
+  //Get Image file from 
+  const getImage = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if(status !== 'granted'){
+      alert('Sorry, we need camera roll permissions to make this work!');
+    }else{
+      //now getting image
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+      if(!result.cancelled){ setPersonPicture(result.uri) }
+    }
+  };
+
   return (
     <View style={userStyle.mainContainer}>
       <StatusBar 
@@ -188,9 +232,56 @@ export default function HomePage() {
             </TouchableOpacity>
           </View>
 
-          <Text>Edit User form coming here...</Text>
+          <View style={userStyle.profilePicEditHolder}>
+            <Avatar 
+              source={personPicture !== '' ? { uri: personPicture } : noPics}
+              avatarStyle={userStyle.profilePicEdit}
+              size={80}
+              rounded
+              onPress={getImage}
+            >
+              <Avatar.Accessory 
+                type="feather" 
+                name="camera" 
+                size={20} 
+                color={white} 
+                style={{ backgroundColor: primaryColor, width: 22, height: 22 }}
+                onPress={getImage}
+                />
+            </Avatar>
+          </View>
 
-        </View>
+          <View style={userStyle.profileUpdateFormHolder}>
+            <Input 
+              value={personName}
+              placeholder={'Fullname'}
+              onChangeText={(value) => setPersonName(value)}
+              errorMessage={personNameErr}
+              onFocus={() => setPersonNameErr('')}
+              inputStyle={userStyle.standardInput}
+              inputContainerStyle={userStyle.noInputBorder}
+            />
+
+            <Input 
+              value={personPhoneNumber}
+              placeholder={'Phone Number'}
+              disabled
+              inputStyle={userStyle.standardInput}
+              inputContainerStyle={userStyle.noInputBorder}
+            />
+
+            <TouchableOpacity 
+              onPress={updateUserData}
+              style={userStyle.standardButton}
+            >
+              <Text style={userStyle.standardButtonText}>Save</Text>
+            </TouchableOpacity>
+
+          </View>
+          {/* Profile form holder end here */}
+
+        </View> 
+        {/* Model white box end here */}
       </View>}
 
      </View>
