@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers";
 import { black, grey, inputBg, offWhite, primaryColor, red, white } from "../color";
-import { bold, h3, h4, h5, p, regular } from "../fonts";
+import { bold, h3, h4, h5, medium, p, regular } from "../fonts";
 
 export default StyleSheet.create({
     mainContainer: {
@@ -321,6 +321,95 @@ export default StyleSheet.create({
         fontSize: h4,
         fontWeight: '400',
         color: white,
+    },
+
+    //Top nav style
+    topNavHolder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+
+    topNavText: {
+        fontFamily: medium,
+        fontSize: h3,
+        fontStyle: 'normal',
+        fontWeight: '600',
+        color: black
+    },
+
+    //Top Item Holder
+
+    itemMainContainer: {
+        flex: 1,
+        padding: 20,
+    },
+
+    itemHolder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 10,
+        marginTop: 10,
+        borderRadius: 5,
+        backgroundColor: white,
+    },
+
+    itemRight: {
+        display: 'flex',
+        width: '20%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between', 
+    },
+
+    itemLeft: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    itemLeftDetails: {
+        display: 'flex',
+        flexDirection: 'column',
+        marginLeft: 10,
+    },
+
+    itemLeftDetailsAction: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    itemTextPrice: {
+        fontFamily: regular,
+        fontSize: p,
+        color: red,
+        fontStyle: 'normal',
+        fontWeight: '400',
+        marginRight: 10,
+    },
+
+    itemTextHolder: {
+        fontFamily: regular,
+        fontSize: h4,
+        color: black,
+        fontStyle: 'normal',
+        fontWeight: '400',
+    },
+    
+    itemImage: {
+        width: 38,
+        height: 38,
+        resizeMode: 'contain',
+    },
+
+    pickerStyle: {
+        width: 120,
     },
 
 });

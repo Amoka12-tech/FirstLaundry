@@ -1,192 +1,132 @@
+[{
+    "id": "001",
+    "name": "T-Shirt",
+    "img": "Tshirt.png",
+    "price": 800,
+    "type": "wash_iron",
+        "wash": 400,
+        "fold": 300,
+        "iron": 300,
+        "Dry": 150,
+        "wash_iron": 800
+},
 {
-    "T-Shirt": {
-        "id": "001",
-        "name": "T-Shirt",
-        "price": "",
-        "Male" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        },
-        "Female" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        }
-    },
-    "Shirt": {
-        "id": "002",
-        "name": "Shirt",
-        "price": "",
-        "Male" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        },
-        "Female" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        }
-    },
-    "Sleveless": {
-        "id": "003",
-        "name": "Sleveless",
-        "price": "",
-        "Male" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        },
-        "Female" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        }
-    },
-    "Trouser": {
-        "id": "004",
-        "name": "Trouser",
-        "price": "",
-        "Male" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        },
-        "Female" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        }
-    },
-    "upDown": {
-        "id": "005",
-        "name": "Up & Down",
-        "price": "",
-        "Male" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        },
-        "Female" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        }
-    },
-    "Suit": {
-        "id": "006",
-        "name": "Suit",
-        "price": "",
-        "Male" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        },
-        "Female" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        }
-    },
-    "Jean": {
-        "id": "007",
-        "name": "Jean",
-        "price": "",
-        "Male" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        },
-        "Female" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        }
-    },
-    "BedSheet": {
-        "id": "008",
-        "name": "Bed Sheet",
-        "price": "",
-        "Male" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        },
-        "Female" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        }
-    },
-    "Duvet": {
-        "id": "009",
-        "name": "Duvet",
-        "price": "",
-        "Male" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        },
-        "Female" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        }
-    },
-    "Gown": {
-        "id": "010",
-        "name": "Gown",
-        "price": "",
-        "Male" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        },
-        "Female" : {
-            "wash": "",
-            "fold": "",
-            "iron": "",
-            "Dry": "",
-            "wash_iron": ""
-        }
-    }
-}
+    "id": "002",
+    "name": "Shirt",
+    "img": "Shirt.png",
+    "price": 800,
+    "type": "wash_iron",
+        "wash": 400,
+        "fold": 300,
+        "iron": 300,
+        "Dry": 150,
+        "wash_iron": 800
+},
+{
+    "id": "003",
+    "name": "Sleveless",
+    "img": "Sleveless.png",
+    "price": 600,
+    "type": "wash_iron",
+        "wash": 300,
+        "fold": 200,
+        "iron": 200,
+        "Dry": 200,
+        "wash_iron": 600
+},
+{
+    "id": "004",
+    "name": "Trouser",
+    "img": "Trouser.png",
+    "price": 700,
+    "type": "wash_iron",
+        "wash": 500,
+        "fold": 300,
+        "iron": 200,
+        "Dry": 200,
+        "wash_iron": 700
+},
+{
+    "id": "005",
+    "name": "Up & Down",
+    "img": "upDown.png",
+    "price": 600,
+    "type": "wash_iron",
+        "wash": 600,
+        "fold": 500,
+        "iron": 300,
+        "Dry": 400,
+        "wash_iron": 600
+},
+{
+    "id": "006",
+    "name": "Suit",
+    "img": "Suit.png",
+    "price": 1500,
+    "type": "wash_iron",
+        "wash": 1000,
+        "fold": 500,
+        "iron": 300,
+        "Dry": 400,
+        "wash_iron": 1500
+},
+{
+    "id": "007",
+    "name": "Jean",
+    "img": "Jean.png",
+    "price": 1200,
+    "type": "wash_iron",
+        "wash": 1000,
+        "fold": 500,
+        "iron": 200,
+        "Dry": 300,
+        "wash_iron": 1200
+},
+{
+    "id": "008",
+    "name": "Bed Sheet",
+    "img": "BedSheet.png",
+    "price": 1000,
+    "type": "wash_iron",
+        "wash": 500,
+        "fold": 300,
+        "iron": 250,
+        "Dry": 200,
+        "wash_iron": 1000
+},
+{
+    "id": "009",
+    "name": "Duvet",
+    "img": "Duvet.png",
+    "price": 1000,
+    "type": "wash_iron",
+        "wash": 1000,
+        "fold": 500,
+        "iron": 250,
+        "Dry": 250,
+        "wash_iron": 1000
+},
+{
+    "id": "010",
+    "name": "Gown",
+    "img": "MGown.png",
+    "price": 600,
+    "type": "wash_iron",
+        "wash": 500,
+        "fold": 400,
+        "iron": 200,
+        "Dry": 300,
+        "wash_iron": 600
+},
+{
+    "id": "011",
+    "name": "Others",
+    "img": "noImage.png",
+    "price": 800,
+    "type": "wash_iron",
+        "wash": 500,
+        "fold": 400,
+        "iron": 300,
+        "Dry": 300,
+        "wash_iron": 800
+}]
