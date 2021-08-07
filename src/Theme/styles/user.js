@@ -347,6 +347,13 @@ export default StyleSheet.create({
         padding: 20,
     },
 
+    itemMainHolder: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        alignItems: 'center',
+    },
+
     itemHolder: {
         display: 'flex',
         width: '100%',
@@ -362,6 +369,13 @@ export default StyleSheet.create({
     itemRight: {
         display: 'flex',
         width: '20%',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+
+    itemRightDetails: {
+        display: 'flex',
+        width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between', 
@@ -410,6 +424,22 @@ export default StyleSheet.create({
 
     pickerStyle: {
         width: 120,
+    },
+
+    itemDetails: {
+        display: 'flex',
+        width: '90%',
+        flexDirection: 'column',
+        padding: 5,
+        backgroundColor: white,
+    },
+
+    itemOrderDetails: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
 
     //Custom bottom sheet style
@@ -475,6 +505,13 @@ export default StyleSheet.create({
         backgroundColor: lightSecondary,
         padding: 2,
         opacity: 0.5,
+    },
+
+    //Order page styles end here
+
+    confirmPageMain: {
+        flex: 1,
+        padding: 20,
     },
 
 });

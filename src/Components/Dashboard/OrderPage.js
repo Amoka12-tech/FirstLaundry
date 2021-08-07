@@ -1,28 +1,25 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, StatusBar, FlatList, Animated  } from 'react-native';
+import { View, Text, TouchableOpacity, StatusBar, FlatList } from 'react-native';
 import styles from '../../Theme/styles/user';
 import { Icon, Image } from 'react-native-elements';
 import { black, primaryColor, white } from '../../Theme/color';
-import { TShirt } from '../../Theme/icons/items';
 import { Picker } from '@react-native-picker/picker';
-import GestureRecognizer from 'react-native-swipe-gestures';
 import customList from '../../../Item.json';
-import { ScreenHeight, ScreenWidth } from 'react-native-elements/dist/helpers';
 import { linkApi } from '../../../config';
 
-export default function OrderPage({ navigation }) {
+import { createStackNavigator } from '@react-navigation/stack';
+import ConfirmOrderPage from './ConfirmOrderPage';
 
-  const swipeAnim = useRef(new Animated.Value(0)).current;
+
+const Stack = createStackNavigator();
+
+const Main = ({ navigation }) => {
   
   const [itemList, setItemList] = useState(customList);
   const [selectedItems, setSelectedItems] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   let effectCount = 0;
-
-  const unitCalculate = (accumulator, curr) => accumulator + curr;
-
-  const [bottomSheetHeight, setBottomSheetHeight] = useState(120);
 
   //Add Item to selectedItems
   const addItem = (item, index) => {
@@ -134,8 +131,17 @@ export default function OrderPage({ navigation }) {
     }
   };
 
+  //Confirm Order to Schedule pickup
   const orderNow = () => {
-    console.log(selectedItems);
+    if(selectedItems.length > 0){
+      navigation.navigate('ConfirmOrder', {
+        selectedItems: selectedItems,
+        totalCount: totalCount,
+        totalPrice: totalPrice
+      });
+    }else{
+      alert('Please select an item and confirm order! ');
+    }
   };
 
   //Top header
@@ -161,112 +167,101 @@ export default function OrderPage({ navigation }) {
   //List Holder
   const listHolder = ({item, index}) => {
     let count = 0;
+    let orderList = [];
     const selectIndex = selectedItems.findIndex(value => value.id === item.id);
        if(selectIndex !== -1) {
           count = selectedItems[selectIndex].count;
+           orderList = selectedItems[selectIndex].order;
        }
     return(
-      <View key={index} style={styles.itemHolder}>
-        <View style={styles.itemLeft}>
-          <Image 
-            style={styles.itemImage}
-            source={{ uri: `${linkApi}/items/${item.img}` }} />
-          
-          <View style={styles.itemLeftDetails}>
-            <Text style={styles.itemTextHolder}>
-              {item.name}</Text>
+      <View style={styles.itemMainHolder}>
 
-            <View style={styles.itemLeftDetailsAction}>
-              <Text style={styles.itemTextPrice}>
-                {`₦${item.price}`}</Text>
-              <Picker 
-                itemStyle={{ width: 120 }}
-                style={styles.pickerStyle} 
-                selectedValue={''} onValueChange={(value, itemIndex) => {
-                  itemList[index].price = value;
-                  itemList[index].type = itemIndex === 4 ? "dry" : 
-                    itemIndex === 3 ? "iron" : 
-                    itemIndex === 2 ?  "fold" : itemIndex === 1 ? "wash" : "wash_iron";
-                  setItemList([...itemList]);
-                }}>
-                <Picker.Item value={item.wash_iron} label={'Laundry'} />
-                <Picker.Item value={item.wash} label={'Wash'} />
-                <Picker.Item value={item.fold} label={'Fold'} />
-                <Picker.Item value={item.iron} label={'Iron'} />
-                <Picker.Item value={item.dry} label={'Dry'} />
-              </Picker>
+        <View key={index} style={styles.itemHolder}>
+          <View style={styles.itemLeft}>
+            <Image 
+              style={styles.itemImage}
+              source={{ uri: `${linkApi}/items/${item.img}` }} />
+            
+            <View style={styles.itemLeftDetails}>
+              <Text style={styles.itemTextHolder}>
+                {item.name}</Text>
+
+              <View style={styles.itemLeftDetailsAction}>
+                <Text style={styles.itemTextPrice}>
+                  {`₦${item.price}`}</Text>
+                <Picker 
+                  itemStyle={{ width: 120 }}
+                  style={styles.pickerStyle} 
+                  selectedValue={''} onValueChange={(value, itemIndex) => {
+                    itemList[index].price = value;
+                    itemList[index].type = itemIndex === 4 ? "dry" : 
+                      itemIndex === 3 ? "iron" : 
+                      itemIndex === 2 ?  "fold" : itemIndex === 1 ? "wash" : "wash_iron";
+                    setItemList([...itemList]);
+                  }}>
+                  <Picker.Item value={item.wash_iron} label={'Laundry'} />
+                  <Picker.Item value={item.wash} label={'Wash'} />
+                  <Picker.Item value={item.fold} label={'Fold'} />
+                  <Picker.Item value={item.iron} label={'Iron'} />
+                  <Picker.Item value={item.dry} label={'Dry'} />
+                </Picker>
+              </View>
             </View>
+
           </View>
 
+          <View style={styles.itemRight}>
+            <View style={styles.itemRightDetails}>
+              <Icon 
+                type="antdesign"
+                name="pluscircle"
+                color={black}
+                size={20}
+                onPress={() => addItem(item, index)}
+              />
+              <Text>{count}</Text>
+              <Icon 
+                type="antdesign"
+                name="minuscircle"
+                color={black}
+                size={20}
+                onPress={() => removeItem(item, index)}
+              />
+            </View>
+            {/* End of item detais action icon */}
+
+            {count > 0 && <Icon 
+              type="antdesign"
+              name={itemList[index]?.show ? "up" : "down"}
+              size={20}
+              color={black}
+              onPress={() => { 
+                if(itemList[index].show){ itemList[index].show = false; setItemList([...itemList]) }else{
+                  itemList[index].show = true; setItemList([...itemList]);
+                }
+               }}
+            />}
+          </View>
         </View>
 
-        <View style={styles.itemRight}>
-          <Icon 
-            type="antdesign"
-            name="pluscircle"
-            color={black}
-            size={20}
-            onPress={() => addItem(item, index)}
-          />
-          <Text>{count}</Text>
-          <Icon 
-            type="antdesign"
-            name="minuscircle"
-            color={black}
-            size={20}
-            onPress={() => removeItem(item, index)}
-          />
-        </View>
+        {/* Hidden item details */}
+        {itemList[index]?.show === true && count >0 && <View style={styles.itemDetails}>
+          <View>{orderList.map((value, index) => 
+            <View style={styles.itemOrderDetails} key={index} >
+              <Text>{value.type === "wash_iron" ? "Laundry" : value.type}</Text>
+              <Text>{`₦${value.price}`}</Text>
+            </View>)}
+          </View>
+        </View>}
+        {/* End of hiddden item details */}
+
       </View>
     );
   }
 
-  //Bottom Sheet control function
-  const onSwipeUp = () => {
-    if(bottomSheetHeight === 120){
-      setBottomSheetHeight(ScreenHeight);
-
-      // Animated.timing(swipeAnim, {
-      //   toValue: ScreenHeight,
-      //   duration: 3000
-      // }).start();
-
-    }
-  };
-
-  const onSwipeDown = () => {
-    if(bottomSheetHeight > 120){
-      setBottomSheetHeight(120);
-
-      // Animated.timing(swipeAnim, {
-      //   toValue: 120,
-      //   duration: 3000
-      // }).start();
-
-    }
-  };
-
   const Footer = () => {
     return(
-      <GestureRecognizer 
-        onSwipeUp={onSwipeUp}
-        onSwipeDown={onSwipeDown}
-        style={{ 
-          display: 'flex',
-          flexDirection: 'column',
-          padding: 10,
-          position: 'absolute',
-          bottom: 0,
-          width: ScreenWidth,
-          height: bottomSheetHeight,
-          backgroundColor: white,
-          borderTopLeftRadius: 15,
-          borderTopRightRadius: 15,
-          elevation: 1,
-          borderTopColor: 'rgba(255,255,255, 0.5)',
-          borderTopWidth: 5,
-         }}
-      >
+      <View style={styles.bottomSheet}>
         <View style={styles.confirmOrderHolder}>
           <View style={{ 
             display: 'flex', 
@@ -319,7 +314,7 @@ export default function OrderPage({ navigation }) {
               </Text>
           </TouchableOpacity>
         </View>
-      </GestureRecognizer>
+      </View>
     );
   }
 
@@ -331,7 +326,7 @@ export default function OrderPage({ navigation }) {
       />
 
       <FlatList
-        style={{ marginBottom: 81 }}
+        style={{ marginBottom: 100 }}
         data={itemList}
         renderItem={listHolder}
         keyExtractor={(item, index) => index.toString()}
@@ -341,5 +336,13 @@ export default function OrderPage({ navigation }) {
 
       <Footer />
      </View>
+  );};
+
+export default function OrderPage({ navigation }) {
+  return(
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MainOrder" component={Main} />
+      <Stack.Screen name="ConfirmOrder" component={ConfirmOrderPage} />
+    </Stack.Navigator>
   );
-}
+};
