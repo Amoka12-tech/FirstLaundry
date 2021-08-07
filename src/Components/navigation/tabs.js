@@ -14,9 +14,10 @@ import { TouchableOpacity } from 'react-native';
 const Tab = createBottomTabNavigator();
 
 const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
+    const isSelected = accessibilityState.selected;
     return(
         <View style={{ flex: 1, alignItems: 'center' }}>
-            <View style={{ flexDirection: 'row', position: 'absolute', top: 0 }}>
+            <View style={{ flexDirection: 'row', position: isSelected ? 'relative' : 'absolute', top: 0 }}>
                 <View style={{ flex: 1, backgroundColor: white }} />
                 <Svg
                     width="75"
@@ -33,7 +34,7 @@ const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
 
             <TouchableOpacity 
             style={{
-                top: -22.5,
+                top: isSelected ? 0 : -22.5,
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: 50,
@@ -100,7 +101,7 @@ export default function BottomTabs() {
             component={OrderPage}
             options={{
                 tabBarIcon: ({focused}) => (
-                    <Icon 
+                    !focused && <Icon 
                         type="antdesign"
                         name="pluscircle"
                         size={40}
@@ -111,7 +112,8 @@ export default function BottomTabs() {
                     <TabBarCustomButton 
                         {...props}
                     />
-                )
+                ),
+                tabBarVisible: false,
             }}
         />
 

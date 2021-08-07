@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers";
-import { black, grey, inputBg, offWhite, primaryColor, red, white } from "../color";
+import { black, grey, inputBg, lightSecondary, offWhite, primaryColor, red, white } from "../color";
 import { bold, h3, h4, h5, medium, p, regular } from "../fonts";
 
 export default StyleSheet.create({
@@ -410,6 +410,71 @@ export default StyleSheet.create({
 
     pickerStyle: {
         width: 120,
+    },
+
+    //Custom bottom sheet style
+    bottomSheet: {
+        display: 'flex',
+        flexDirection: 'column',
+        padding: 10,
+        position: 'absolute',
+        bottom: 0,
+        width: ScreenWidth,
+        height: 120,
+        backgroundColor: white,
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        elevation: 1,
+        borderTopColor: 'rgba(255,255,255, 0.5)',
+        borderTopWidth: 5,
+    },
+
+    confirmOrderHolder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 10,
+        left: 10,
+        zIndex: 1,
+    },
+
+    confirmOrderTextHolder: {
+        display: 'flex',
+        flexDirection: 'column',
+        marginLeft: 10,
+    },
+
+    confirmOrderTextHeader: {
+        fontFamily: regular,
+        fontSize: p,
+        fontStyle: 'normal',
+        fontWeight: '400',
+        color: grey,
+    },
+
+    confirmOrderTextCount: {
+        fontFamily: medium,
+        fontSize: h4,
+        fontStyle: 'normal',
+        fontWeight: '500',
+        color: black,
+    },
+
+    confirmOrderTextPrice: {
+        fontFamily: medium,
+        fontSize: h4,
+        fontStyle: 'normal',
+        fontWeight: '500',
+        color: red,
+    },
+
+    confirmOrderIconCont: {
+        borderRadius: 25,
+        backgroundColor: lightSecondary,
+        padding: 2,
+        opacity: 0.5,
     },
 
 });
