@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers";
-import { black, grey, inputBg, lightSecondary, offWhite, primaryColor, red, white } from "../color";
-import { bold, h3, h4, h5, medium, p, regular } from "../fonts";
+import { black, grey, inputBg, lightSecondary, offWhite, primaryColor, red, secondaryColor, white } from "../color";
+import { bold, h2, h3, h4, h5, medium, p, regular } from "../fonts";
 
 export default StyleSheet.create({
     mainContainer: {
@@ -450,7 +450,6 @@ export default StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         width: ScreenWidth,
-        height: 120,
         backgroundColor: white,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
@@ -464,10 +463,6 @@ export default StyleSheet.create({
         width: '100%',
         flexDirection: 'column',
         justifyContent: 'center',
-        position: 'absolute',
-        bottom: 10,
-        left: 10,
-        zIndex: 1,
     },
 
     confirmOrderTextHolder: {
@@ -511,7 +506,202 @@ export default StyleSheet.create({
 
     confirmPageMain: {
         flex: 1,
+    },
+
+    confirmPageHolder: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
         padding: 20,
+    },
+
+    confirmPageComponent: {
+        display: 'flex',
+        width: '100%',
+        padding: 5,
+        flexDirection: 'column',
+        borderRadius: 5,
+        backgroundColor: white,
+        marginBottom: 10,
+    },
+
+    confirmPageHeaderText: {
+        fontFamily: medium,
+        fontSize: h4,
+        fontWeight: 'bold',
+        fontStyle: 'normal',
+        color: secondaryColor,
+    },
+
+    confirmPagePriceRow: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+
+    confirmPagePriceRowBorder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 10,
+        borderTopWidth: 1,
+        borderTopColor: grey,
+    },
+
+    confirmPriceHeader: {
+        fontFamily: regular,
+        fontSize: h5,
+        fontWeight: '400',
+        fontStyle: 'normal',
+        color: secondaryColor,
+    },
+
+    confirmPriceText: {
+        fontFamily: medium,
+        fontSize: h4,
+        fontWeight: 'bold',
+        fontStyle: 'normal',
+        color: secondaryColor,
+    },
+
+    confirmPriceText_T: {
+        fontFamily: medium,
+        fontSize: h3,
+        fontWeight: 'bold',
+        fontStyle: 'normal',
+        color: primaryColor,
+    },
+
+    scheduleHolder: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        borderWidth: 1,
+        borderColor: grey,
+        borderRadius: 5,
+        marginTop: 10,
+    },
+
+    pickupDateHolder: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '50%',
+        borderRightWidth: 0.5,
+        borderRightColor: grey,
+        padding: 10,
+        alignItems: 'center',
+    },
+
+    deliveryDateHolder: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '50%',
+        borderLeftWidth: 0.5,
+        borderLeftColor: grey,
+        padding: 10,
+        alignItems: 'center',
+    },
+
+    scheduleTitleHolder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        position: 'absolute',
+        top: -10,
+    },
+
+    scheduleTitle: {
+        display: 'flex',
+        width: '50%',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    scheduleTitleText: {
+        fontFamily: regular,
+        fontSize: h5,
+        fontWeight: '400',
+        fontStyle: 'normal',
+        color: grey,
+        backgroundColor: white,
+    },
+
+    scheduleDateTimeHolder: {
+        display: 'flex',
+        flexDirection: 'column',
+        marginLeft: 10,
+    },
+
+    paymentScheduleHolder: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        borderWidth: 1,
+        borderColor: grey,
+        borderRadius: 5,
+        marginTop: 10,
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+
+    schedulePaymentHolder: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    schedulePaymentText: {
+        fontFamily: medium,
+        fontSize: h4,
+        fontStyle: 'normal',
+        fontWeight: '600',
+        color: secondaryColor,
+        marginLeft: -10,
+    },
+
+    //Address Style
+
+    addressBox: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        borderWidth: 1,
+        borderColor: grey,
+        borderRadius: 5,
+        marginTop: 10,
+        padding: 10,
+        alignItems: 'center',
+    },
+
+    addressDetails: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: 88,
+        width: '85%',
+        marginLeft: 10
+    },
+
+    addressDivider: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        height: 1,
+        backgroundColor: grey,
+        marginTop: 5,
+        marginBottom: 5,
+    },
+
+    addressIcon: {
+        resizeMode: 'contain',
+        width: 24,
+        height: 88,
     },
 
 });
