@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers";
 import { black, grey, inputBg, lightSecondary, offWhite, primaryColor, red, secondaryColor, white } from "../color";
 import { bold, h2, h3, h4, h5, medium, p, regular } from "../fonts";
@@ -702,6 +702,77 @@ export default StyleSheet.create({
         resizeMode: 'contain',
         width: 24,
         height: 88,
+    },
+
+    calenderClose: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        marginBottom: 10,
+    },
+
+    //Location Modal
+
+    locationModal: {
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: white,
+    },
+
+    locationTopNav: {
+        display: 'flex',
+        width: '100%',
+        marginTop: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+
+    locationInputHolder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10,
+        padding: 10,
+    },
+
+    locationInputIcon: {
+        width: 24,
+        height: 67,
+    },
+
+    locationInputFormHolder: {
+        display: 'flex',
+        width: '90%',
+        flexDirection: 'column',
+    },
+
+    locationInputContainer: {
+        flex: 0.5,
+        marginBottom: 30,
+        backgroundColor: red,
+    },
+
+    locationInput: {
+        fontSize: h4,
+    },
+
+    loadingText: {
+        fontFamily: regular,
+        fontSize: h3,
+        fontStyle: 'normal',
+        fontWeight: '400',
+        color: primaryColor,
+    },
+
+    mapViewStyle: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
     },
 
 });

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StatusBar, TouchableOpacity } from 'react-native';
-import { CheckBox, Icon, Image } from 'react-native-elements';
-import { APPCURRENCY } from '../../../config';
+import { CheckBox, Icon, Image, Input } from 'react-native-elements';
+import { APPCURRENCY, GOOGLE_MAP_API_KEY } from '../../../config';
 import { black, grey, primaryColor, secondaryColor } from '../../Theme/color';
 import styles from '../../Theme/styles/user';
 import 'intl'
@@ -9,10 +9,20 @@ import 'intl/locale-data/jsonp/en'; // or any other locale you need
 import creditCard from '../../Theme/icons/credit-card.png';
 import bankIcon from '../../Theme/icons/bank.png';
 import locationIcon from '../../Theme/icons/addressIcon.png';
+import pickupIcon from '../../Theme/icons/pickupIcon.png';
+import deliveryIcon from '../../Theme/icons/deliveryIcon.png';
 import { ScrollView } from 'react-native';
-import DatePicker from 'react-native-modern-datepicker';
+import DatePicker, { getFormatedDate } from 'react-native-modern-datepicker';
+import Spinner from 'react-native-loading-spinner-overlay';
+import MapView, { Marker } from 'react-native-maps';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { Dimensions } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDeliveryLocation, setPickuptLocation } from '../../actions/location';
 
 export default function ConfirmOrderPage({ navigation, route }) {
+    const dispatch = useDispatch();
+    const locationData = useSelector(state => state.location);
     const {
         selectedItems,
         totalCount,
@@ -30,10 +40,11 @@ export default function ConfirmOrderPage({ navigation, route }) {
     const currentPickupHour = currentDate.getHours();
     const currentPickupMinutes = currentDate.getMinutes();
 
-    const currentPickupFullDate = `${currentPickupYear}/${currentPickupMonth}/${currentPickupDate} ${currentPickupHour}:${currentPickupMinutes}`;
+    const currentPickupFullDate = getFormatedDate(currentDate, "YYYY/MM/DD hh:mm");
     const [pickupDateTime, setPickupDateTime] = useState(currentPickupFullDate);
     const [deliveryDateTime, setDeliveryDateTime] = useState('');
     const pickupDateSplit = pickupDateTime.split(' ');
+    const deliveryDateSplit = deliveryDateTime?.split(' ');
 
     const [showPickupDate, setShowPickupDate] = useState(false);
     const toggleShowPickup = () => setShowPickupDate(!showPickupDate);
@@ -41,6 +52,10 @@ export default function ConfirmOrderPage({ navigation, route }) {
     const formatter = new Intl.NumberFormat('en-US', {
         minimumFractionDigits: 2
     });
+
+    const [viewMap, setViewMap] = useState(false);
+    const toggleViewMap = () => setViewMap(!viewMap);
+
   return (
     <View style={styles.confirmPageMain}>
         <StatusBar backgroundColor={'transparent'} barStyle="dark-content" />
@@ -116,8 +131,8 @@ export default function ConfirmOrderPage({ navigation, route }) {
                     <View style={styles.deliveryDateHolder}>
                         <Icon type="font-awesome" name="calendar-check-o" size={20} color={grey} />
                         <View style={styles.scheduleDateTimeHolder}>
-                            <Text>Thu, 1 Apr</Text>
-                            <Text>10:00AM</Text>
+                            <Text>{deliveryDateTime ? deliveryDateSplit[0] : ''}</Text>
+                            <Text>{deliveryDateTime ? `${deliveryDateSplit[1]}` : ''}</Text>
                         </View>
                     </View>
 
@@ -190,7 +205,9 @@ export default function ConfirmOrderPage({ navigation, route }) {
                 <View style={styles.addressBox}>
                     <Image source={locationIcon} style={styles.addressIcon} />
 
-                    <View style={styles.addressDetails}>
+                    <TouchableOpacity 
+                        onPress={() => navigation.navigate('MapView')}
+                        style={styles.addressDetails}>
                         <Text>Pickup Address</Text>
                         <Text>CT7B The Sparks, KDT Duong Noi, Str. Ha Dong, Ha Noi</Text>
                         
@@ -198,27 +215,41 @@ export default function ConfirmOrderPage({ navigation, route }) {
                         
                         <Text>Delivery Address</Text>
                         <Text>CT7B The Sparks, KDT Duong Noi, Str. Ha Dong, Ha Noi</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
             {/* End of pickup location component  */}
         </ScrollView>
 
-        <View style={styles.bottomSheet}>
-            {showPickupDate && <DatePicker 
-                onSelectedChange={data => {
-                    setPickupDateTime(data);
-                    toggleShowPickup();
-                }}
-            />}
+        {viewMap === false && <View style={styles.bottomSheet}>
+                {showPickupDate &&
+                    <TouchableOpacity 
+                    style={styles.calenderClose}
+                    onPress={toggleShowPickup}
+                    >
+                    <Icon 
+                        type="antdesign"
+                        name="down"
+                        size={20}
+                        color={black}
+                    />
+                </TouchableOpacity>}
+                {showPickupDate && 
+                <DatePicker 
+                    minimumDate={pickupDateTime}
+                    current={pickupDateTime}
+                    onSelectedChange={data => {
+                        setPickupDateTime(data);
+                        toggleShowPickup();
+                    }}
+                />}
 
-            <TouchableOpacity style={styles.standardButton}>
-                <Text style={styles.standardButtonText}>
-                    Place Order
-                </Text>
-            </TouchableOpacity>
-        </View>
-
+                <TouchableOpacity style={styles.standardButton}>
+                    <Text style={styles.standardButtonText}>
+                        Place Order
+                    </Text>
+                </TouchableOpacity>
+            </View>}
      </View>
   );
 }

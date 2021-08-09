@@ -9,6 +9,8 @@ import { linkApi } from '../../../config';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import ConfirmOrderPage from './ConfirmOrderPage';
+import MapViewPage from './MapView';
+import LocationPage from './LocationPage';
 
 
 const Stack = createStackNavigator();
@@ -343,6 +345,7 @@ export default function OrderPage({ navigation }) {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MainOrder" component={Main} />
       <Stack.Screen name="ConfirmOrder" component={ConfirmOrderPage} />
+      <Stack.Screen name="MapView" component={LocationPage} />
     </Stack.Navigator>
   );
 };
