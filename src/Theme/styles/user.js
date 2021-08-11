@@ -511,8 +511,8 @@ export default StyleSheet.create({
     confirmPageHolder: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-evenly',
         padding: 20,
+        paddingBottom: 80,
     },
 
     confirmPageComponent: {
@@ -773,6 +773,24 @@ export default StyleSheet.create({
     mapViewStyle: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
+    },
+
+    currentLocation: {
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+    },
+
+    sameAsPickupIcon: {
+        display: 'flex',
+        alignSelf: 'flex-end',
+    },
+
+    //Payment Page Styles
+    payment_main: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: white,
     },
 
 });

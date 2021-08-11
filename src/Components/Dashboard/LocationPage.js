@@ -5,14 +5,14 @@ import MapView, { Marker } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { reverseLocationLatLng, setDeliveryLocation, setDraggedDeliveryLocation, setDraggedPickupLocation, setPickuptLocation } from '../../actions/location';
+import { reverseLocationLatLng, setDeliveryLocation, setDraggedDeliveryLocation, setDraggedPickupLocation, setPickuptLocation, setPickupToCurrentLocation, setSameAsPickup } from '../../actions/location';
 import pickupIcon from '../../Theme/icons/pickupIcon.png';
 import deliveryIcon from '../../Theme/icons/deliveryIcon.png';
 import locationIcon from '../../Theme/icons/addressIcon.png';
 import styles from '../../Theme/styles/user';
 import { APPCURRENCY, GOOGLE_MAP_API_KEY } from '../../../config';
 import { black, primaryColor } from '../../Theme/color';
-import { Icon, Image } from 'react-native-elements';
+import { CheckBox, Icon, Image } from 'react-native-elements';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
 
@@ -38,12 +38,12 @@ export default function LocationPage({ navigation, route }) {
         longitude: locationData.deliveryLng,
     };
 
-    const [pickupAddress, setPickupAddress] = useState(locationData?.pickupAddress);
-    const [deliveryAddress, setDeliveryAddress] = useState(locationData?.deliveryAddress);
+    const pickupAddress = locationData?.pickupAddressName;
+    const deliveryAddress = locationData?.deliveryAddressName;
 
     //UseEffect to get current location
     useEffect(() => {
-        (async () => {
+        if(pickupAddress === null){(async () => {
             setIsLoading(true);
           let { status } = await Location.requestForegroundPermissionsAsync();
           if (status !== 'granted') {
@@ -52,22 +52,37 @@ export default function LocationPage({ navigation, route }) {
           }
     
           try {
-            let location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.BestForNavigation });
-          
+            let location = await Location.getLastKnownPositionAsync({ maxAge: 5000, requiredAccuracy: 10 });
+            if(location === null){
+                location = await Location.getCurrentPositionAsync({ accuracy: LocationAccuracy.BestForNavigation });
+            }
             const cordinates = {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude
             };//construt cordinate data for current position marker
-            const addressName = await reverseLocationLatLng(cordinates);
-            dispatch(setDraggedPickupLocation(cordinates));
-            const pickupAddressName = `${addressName.name} ${addressName.district} ${addressName.city}`;
-            setPickupAddress(pickupAddressName);
+            dispatch(setDraggedPickupLocation(cordinates, setIsLoading));
             setIsLoading(false);
           } catch (error) {
               setIsLoading(false);
           }
-        })();
+        })();}
       }, []);
+
+      const [sameLocation, setSameLocation] = useState(false);
+
+      const margeLocation = (checked) => {
+          if(checked){
+            const payload = {
+                latitude: locationData.pickupLat,
+                longitude: locationData.pickupLng,
+                deliveryAddressName: locationData?.pickupAddressName,
+            };
+            dispatch(setSameAsPickup(payload));
+            setSameLocation(checked);
+          }else{
+            setSameLocation(checked);
+          }
+      };
 
     const navigationData = {
         pickupLatLng : pickupLatLng,
@@ -89,7 +104,7 @@ export default function LocationPage({ navigation, route }) {
                         image={pickupIcon}
                         title={'pickup'}
                         description={'drag to pickup point'}
-                        onDragEnd={(e) => dispatch(setDraggedPickupLocation(e.nativeEvent.coordinate))}
+                        onDragEnd={(e) => dispatch(setDraggedPickupLocation(e.nativeEvent.coordinate, setIsLoading))}
                     />}
                     
                     {deliveryLatLng.latitude !== null && <Marker 
@@ -99,14 +114,13 @@ export default function LocationPage({ navigation, route }) {
                         image={deliveryIcon}
                         title={'delivery'}
                         description={'drag to delivery point'}
-                        onDragEnd={(e) => dispatch(setDraggedDeliveryLocation(e.nativeEvent.coordinate))}
+                        onDragEnd={(e) => dispatch(setDraggedDeliveryLocation(e.nativeEvent.coordinate, setIsLoading))}
                     />
                     }
 
-                    
                 </MapView>
         );
-    };
+    }; //MapView Holder Component
 
   return (
     <View style={styles.locationModal}>
@@ -176,10 +190,25 @@ export default function LocationPage({ navigation, route }) {
                             nearbyPlacesAPI='GooglePlacesSearch'
                             debounce={400}
                         />
+
+                        <CheckBox 
+                            title="Delivery same as pickup location"
+                            checked={sameLocation}
+                            onPress={() => margeLocation(!sameLocation)}
+                        />
                     </View>
                 </View>
             
                 <MapHolder />
+
+                <Icon 
+                    type="material"
+                    name="my-location"
+                    size={30}
+                    color={primaryColor}
+                    containerStyle={styles.currentLocation}
+                    onPress={() => dispatch(setPickupToCurrentLocation(setIsLoading))}
+                />
             </View>
   );
 }

@@ -1,4 +1,4 @@
-import { DRAG_DELIVERY, DRAG_PICKUP, SET_DELIVERY, SET_PICKUP } from "./types";
+import { DRAG_DELIVERY, DRAG_PICKUP, RESET_LOCATION, SET_DELIVERY, SET_PICKUP } from "./types";
 
 let initialRegion ={
     latitude: 37.78825,
@@ -41,6 +41,7 @@ export default function(location = initialRegion, action){
                 ...location,
                 latitude: payload.latitude,
                 longitude: payload.longitude,
+                pickupAddressName: payload.pickupAddressName,
                 pickupLat: payload.latitude,
                 pickupLng: payload.longitude,
             };
@@ -50,8 +51,14 @@ export default function(location = initialRegion, action){
                 ...location,
                 latitude: payload.latitude,
                 longitude: payload.longitude,
+                deliveryAddressName: payload.deliveryAddressName,
                 deliveryLat: payload.latitude,
                 deliveryLng: payload.longitude,
+            };
+        
+        case RESET_LOCATION:
+            return{
+                ...initialRegion
             };
     
         default:

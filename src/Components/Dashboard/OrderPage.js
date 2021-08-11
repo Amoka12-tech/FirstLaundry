@@ -11,6 +11,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ConfirmOrderPage from './ConfirmOrderPage';
 import MapViewPage from './MapView';
 import LocationPage from './LocationPage';
+import PaymentPage from './PaymentPage';
 
 
 const Stack = createStackNavigator();
@@ -346,6 +347,7 @@ export default function OrderPage({ navigation }) {
       <Stack.Screen name="MainOrder" component={Main} />
       <Stack.Screen name="ConfirmOrder" component={ConfirmOrderPage} />
       <Stack.Screen name="MapView" component={LocationPage} />
+      <Stack.Screen name="Payment" component={PaymentPage} />
     </Stack.Navigator>
   );
 };

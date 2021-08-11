@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StatusBar, TouchableOpacity } from 'react-native';
 import { CheckBox, Icon, Image, Input } from 'react-native-elements';
 import { APPCURRENCY, GOOGLE_MAP_API_KEY } from '../../../config';
@@ -23,26 +23,29 @@ import { setDeliveryLocation, setPickuptLocation } from '../../actions/location'
 export default function ConfirmOrderPage({ navigation, route }) {
     const dispatch = useDispatch();
     const locationData = useSelector(state => state.location);
+    const payment = useSelector(state => state.payment);
     const {
         selectedItems,
         totalCount,
-        totalPrice
+        totalPrice,
     } = route.params;
-    // console.log(totalCount," Items ",totalPrice," Cost");
 
     const [paymentMethod, setPaymentMethod] = useState('card');
 
     const currentDate = new Date();
-    const currentPickupDate = currentDate.getDate();
-    const currentPickupDay = currentDate.getDay()+1;
-    const currentPickupMonth = currentDate.getMonth()+1;
-    const currentPickupYear = currentDate.getFullYear();
-    const currentPickupHour = currentDate.getHours();
-    const currentPickupMinutes = currentDate.getMinutes();
 
     const currentPickupFullDate = getFormatedDate(currentDate, "YYYY/MM/DD hh:mm");
     const [pickupDateTime, setPickupDateTime] = useState(currentPickupFullDate);
+
+    useEffect(() => {
+        const newSetDate = new Date(pickupDateTime);
+        newSetDate.setDate(newSetDate.getDate() + 3);
+        const deliveryFullDate = getFormatedDate(newSetDate, "YYYY/MM/DD hh:mm");
+        setDeliveryDateTime(deliveryFullDate);
+    }, [pickupDateTime]); // to set delivery date to three(3) days after pickup date
+
     const [deliveryDateTime, setDeliveryDateTime] = useState('');
+
     const pickupDateSplit = pickupDateTime.split(' ');
     const deliveryDateSplit = deliveryDateTime?.split(' ');
 
@@ -55,6 +58,44 @@ export default function ConfirmOrderPage({ navigation, route }) {
 
     const [viewMap, setViewMap] = useState(false);
     const toggleViewMap = () => setViewMap(!viewMap);
+
+    const onSubmit = () => {
+        if(selectedItems.length > 0){
+            if(pickupDateSplit.length === 0){
+                alert('Pick a date for item pickup!');
+            }else if(payment?.paymentStatus === false){
+                if(paymentMethod === 'card'){
+                    navigation.navigate('Payment', {
+                        amount: totalPrice,
+                    });
+                }else{
+                    alert('We paying through bank');
+                }
+            }else if(locationData?.pickupAddressName === null && locationData?.deliveryAddressName === null){
+                navigation.navigate('MapView');
+            }else{
+                const orderDate = {
+                    selectedItems: selectedItems,
+                    totalCount: totalCount,
+                    totalPrice: totalPrice,
+                    pickupDateTime: {
+                        Date: pickupDateSplit[0],
+                        Time: pickupDateSplit[1]
+                    },
+                    deliveryDateTime: {
+                        Date: deliveryDateSplit[0],
+                        Time: deliveryDateSplit[1]
+                    },
+                    paymentData: payment,
+                    locationData: locationData,
+                }// JSON Structure data for api
+
+                console.log(orderDate);
+            }
+        }else{
+            alert('Please go back and select an item for this service.');
+        }
+    };//Function that send the order to api
 
   return (
     <View style={styles.confirmPageMain}>
@@ -209,12 +250,12 @@ export default function ConfirmOrderPage({ navigation, route }) {
                         onPress={() => navigation.navigate('MapView')}
                         style={styles.addressDetails}>
                         <Text>Pickup Address</Text>
-                        <Text>CT7B The Sparks, KDT Duong Noi, Str. Ha Dong, Ha Noi</Text>
+                        <Text>{!!locationData?.pickupAddressName ? locationData?.pickupAddressName : 'Enter Pickup location'}</Text>
                         
                         <View style={styles.addressDivider} />
                         
                         <Text>Delivery Address</Text>
-                        <Text>CT7B The Sparks, KDT Duong Noi, Str. Ha Dong, Ha Noi</Text>
+                        <Text>{!!locationData?.deliveryAddressName ? locationData?.deliveryAddressName : 'Enter Delivery location'}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -244,7 +285,9 @@ export default function ConfirmOrderPage({ navigation, route }) {
                     }}
                 />}
 
-                <TouchableOpacity style={styles.standardButton}>
+                <TouchableOpacity 
+                    onPress={onSubmit}
+                    style={styles.standardButton}>
                     <Text style={styles.standardButtonText}>
                         Place Order
                     </Text>
