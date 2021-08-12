@@ -19,6 +19,8 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDeliveryLocation, setPickuptLocation } from '../../actions/location';
+import { optBankPayment } from '../../actions/payment';
+import { placeOrder } from '../../actions/order';
 
 export default function ConfirmOrderPage({ navigation, route }) {
     const dispatch = useDispatch();
@@ -63,18 +65,14 @@ export default function ConfirmOrderPage({ navigation, route }) {
         if(selectedItems.length > 0){
             if(pickupDateSplit.length === 0){
                 alert('Pick a date for item pickup!');
-            }else if(payment?.paymentStatus === false){
-                if(paymentMethod === 'card'){
-                    navigation.navigate('Payment', {
-                        amount: totalPrice,
-                    });
-                }else{
-                    alert('We paying through bank');
-                }
+            }else if(payment?.paymentStatus === false && paymentMethod === 'card'){
+                navigation.navigate('Payment', {
+                    amount: totalPrice,
+                });
             }else if(locationData?.pickupAddressName === null && locationData?.deliveryAddressName === null){
                 navigation.navigate('MapView');
             }else{
-                const orderDate = {
+                const orderData = {
                     selectedItems: selectedItems,
                     totalCount: totalCount,
                     totalPrice: totalPrice,
@@ -86,11 +84,11 @@ export default function ConfirmOrderPage({ navigation, route }) {
                         Date: deliveryDateSplit[0],
                         Time: deliveryDateSplit[1]
                     },
-                    paymentData: payment,
+                    payment,
                     locationData: locationData,
                 }// JSON Structure data for api
 
-                console.log(orderDate);
+                dispatch(placeOrder(orderData, navigation));//place order now to api
             }
         }else{
             alert('Please go back and select an item for this service.');
@@ -221,7 +219,10 @@ export default function ConfirmOrderPage({ navigation, route }) {
                         <CheckBox 
                             checkedIcon='check-circle-o'
                             uncheckedIcon='circle-o'
-                            onPress={() => setPaymentMethod('bank')}
+                            onPress={() => {
+                                setPaymentMethod('bank');
+                                dispatch(optBankPayment());
+                            }}
                             checked={paymentMethod === "bank" ? true : false}
                             size={20}
                             checkedColor={primaryColor}

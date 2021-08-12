@@ -1,4 +1,4 @@
-import { PAYMENT_NOT_SUCCESSFUL, PAYMENT_SUCCESSFUL, RESET_PAYMENT } from "./types";
+import { BANK_PAYMENT, PAYMENT_NOT_SUCCESSFUL, PAYMENT_SUCCESSFUL, RESET_PAYMENT } from "./types";
 
 let initialState = {
     paymentStatus: false,
@@ -20,6 +20,13 @@ export default function(payment = initialState, action){
                 ...payment,
                 paymentStatus: false,
                 paymentData: payload
+            };
+
+        case BANK_PAYMENT:
+            return{
+                ...payment,
+                paymentStatus: false,
+                paymentData: 'Bank'
             };
 
         case RESET_PAYMENT:
