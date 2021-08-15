@@ -38,17 +38,19 @@ export const getAllOrder = (id) => async dispatch => {
         userId: id
     };
     try {
+        dispatch({type: START_PROCESS});
         const { data } = await api.getAllOrder(body, headers);
         const status = data?.status;
         const success = data?.success;
         const message = data?.message;
         if(success === 1){
+            dispatch({type: END_PROCESS});
             dispatch({type: GET_ALL_ORDER, payload: message});
         }else{
             throw(message);
         }
     } catch (error) {
-        console.log(error);
+        alert(error);
     }
 };
 

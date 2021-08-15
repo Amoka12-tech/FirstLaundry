@@ -34,7 +34,7 @@ export default function PaymentPage({ navigation, route }) {
             </TouchableOpacity>
 
             <Text style={styles.topNavText}>
-                Schedule A Pickup
+                Make Payment
             </Text>
 
             <View />

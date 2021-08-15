@@ -10,10 +10,10 @@ export default function(orders = [], action){
         case CANCEL_ORDER:
             const oldOrder = orders.filter(item => item.orderId !== payload.orderId);
             oldOrder.push(payload);
-            return oldOrder;
+            return oldOrder.sort((a, b) => a.orderDate - b.orderDate);
 
         case ADD_ORDER:
-            return [...orders, payload];
+            return [...orders, payload].sort((a, b) => b.orderDate - a.orderDate);
     
         default:
             return orders;

@@ -794,4 +794,162 @@ export default StyleSheet.create({
         backgroundColor: white,
     },
 
+    //Order Details Style
+    mainContainerPadding: {
+        flex: 1,
+        padding: 20,
+        width: '100%',
+        backgroundColor: white,
+    },
+
+    orderDetailsHolder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'column',
+    },
+
+    orderDetailsWelcome: {
+        display: 'flex',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+
+    orderDetailsThanks: {
+        fontFamily: regular,
+        fontSize: h3,
+        fontWeight: '500',
+        color: secondaryColor,
+        fontStyle: 'normal',
+    },
+
+    orderDetailsSlogan: {
+        fontFamily: regular,
+        fontSize: h4,
+        fontWeight: '400',
+        color: black,
+        fontStyle: 'normal',
+    },
+
+    orderDetailsImg: {
+        width: 225,
+        height: 161,
+    },
+
+    orderDetailsTimeHolder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'column'
+    },
+
+    orderIdHolder: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+
+    orderTypeView: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'column',
+        marginTop: 10,
+    },
+
+    orderTypeHeaderHolder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+
+    orderTypeHeader: {
+        fontFamily: medium,
+        fontSize: h3,
+        fontWeight: '600',
+        color: secondaryColor,
+    },
+
+    orderTypeItemHolder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+
+    orderTypeItem: {
+        fontFamily: regular,
+        fontSize: h4,
+        fontWeight: '400',
+        color: black,
+    },
+
+    orderTypePrice: {
+        fontFamily: regular,
+        fontSize: h4,
+        fontWeight: '400',
+        color: primaryColor,
+    },
+
+    orderDetailsBoxHolder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+    },
+
+    orderDetailsBoxLeft: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    orderDetailsBoxRight: {
+        display: 'flex',
+        width: '90%',
+        flexDirection: 'column',
+        marginLeft: 5,
+    },
+
+    orderBoxRightTop: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+
+    orderBoxRightTopTextL: {
+        fontFamily: medium,
+        fontSize: h3,
+        fontWeight: '600',
+        fontStyle: 'normal',
+        color: secondaryColor,
+    },
+
+    orderBoxRightTopTextR: {
+        fontFamily: regular,
+        fontSize: h5,
+        fontWeight: '300',
+        fontStyle: 'normal',
+        color: primaryColor,
+    },
+
+    boldText: {
+        fontFamily: medium,
+        fontSize: h4,
+        fontStyle: 'normal',
+        fontWeight: '600',
+        color: black,
+    },
+
+    regularText: {
+        fontFamily: regular,
+        fontSize: h5,
+        fontStyle: 'normal',
+        fontWeight: '500',
+        color: grey,
+    },
+
 });

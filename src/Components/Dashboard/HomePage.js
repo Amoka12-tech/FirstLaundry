@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import { Animated, Easing, FlatList, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'react-native';
 import { View, Text } from 'react-native';
 import { Avatar, Button, Icon, Image, Input } from 'react-native-elements';
@@ -33,7 +33,6 @@ export default function HomePage({ navigation }) {
 
   useEffect(() => {
     dispatch(getAllOrder(userData?.id));
-    console.log('here');
   }, [orders.length]);
 
   const formatter = new Intl.NumberFormat('en-US');
@@ -49,24 +48,24 @@ export default function HomePage({ navigation }) {
 
   const [imageBase64, setImageBase64] = useState("");
 
-  const orderData = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "First Item",
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Second Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Third Item",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Third Item",
-    },
-  ];
+  const spinValue = new Animated.Value(0);
+
+  if(isLoading){
+    Animated.timing(
+      spinValue,
+      {
+        toValue: 4,
+        duration: 12000,
+        easing: Easing.linear,
+        useNativeDriver: true
+      }
+    ).start();
+  };
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg']
+  });
 
   const Header = () => {
     return(
@@ -132,9 +131,22 @@ export default function HomePage({ navigation }) {
         </View>
 
         {/* Recent Orders here */}
-        <Text style={userStyle.orderTitle}>
-          Recent orders
-        </Text>
+        <View style={{ display: 'flex', width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Text style={userStyle.orderTitle}>
+            Recent orders
+          </Text>
+
+          <Animated.View style={{transform: [{rotate: spin}] }}>
+            <Icon 
+              type="font-awesome"
+              name="refresh"
+              size={20}
+              color={primaryColor}
+              disabled={isLoading}
+              onPress={() => dispatch(getAllOrder(userData.id))}
+            />
+          </Animated.View>
+        </View>
 
       </View>
     );
@@ -155,10 +167,10 @@ export default function HomePage({ navigation }) {
               type="ionicon"
               name="checkmark-circle"
               size={40}
-              color={item.status === 'pending' ? red : 
-                item.status === 'dispatched' ? primaryColor :
+              color={item.status === 'pending' ? primaryColor : 
+                item.status === 'dispatched' ? blue :
                 item.status === 'canceled' ? red : 
-                item.status === 'inProgress' ? orange : blue}
+                item.status === 'inProgress' ? orange : green}
             />
 
             <View style={userStyle.orderListItemDetailsHolder}>
@@ -177,7 +189,7 @@ export default function HomePage({ navigation }) {
               <View style={userStyle.orderScheduleHolder}>
                 {/* Hold pickup date and time */}
                 <View style={userStyle.orderScheduleItem}>
-                  <Text style={userStyle.orderScheduleItemTime}>{moment(item.pickupDateTime).format("hh:MMA")}</Text>
+                  <Text style={userStyle.orderScheduleItemTime}>{moment(item.pickupDateTime).utcOffset(60).format("LT")}</Text>
                   <Text style={userStyle.orderScheduleItemDate}>{moment(item.pickupDateTime).format("ddd, D MMM")}</Text>
                 </View>
 
@@ -186,7 +198,7 @@ export default function HomePage({ navigation }) {
                 
                 {/* Hold delivery date and time */}
                 <View style={userStyle.orderScheduleItem}>
-                  <Text style={userStyle.orderScheduleItemTime}>{moment(item.deliveryDateTime).format("hh:MMA")}</Text>
+                  <Text style={userStyle.orderScheduleItemTime}>{moment(item.deliveryDateTime).utcOffset(60).format("LT")}</Text>
                   <Text style={userStyle.orderScheduleItemDate}>{moment(item.deliveryDateTime).format("ddd, D MMM")}</Text>
                 </View>
               </View>

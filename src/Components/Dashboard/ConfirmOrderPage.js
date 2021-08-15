@@ -269,6 +269,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
                         <Text>{!!locationData?.deliveryAddressName ? locationData?.deliveryAddressName : 'Enter Delivery location'}</Text>
                     </TouchableOpacity>
                 </View>
+            
             </View>
             {/* End of pickup location component  */}
         </ScrollView>
