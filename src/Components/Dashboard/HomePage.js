@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'react-native';
 import { View, Text } from 'react-native';
 import { Avatar, Button, Icon, Image, Input } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../actions/auth';
-import { black, blue, green, orange, primaryColor, white } from '../../Theme/color';
+import { black, blue, green, orange, primaryColor, red, white } from '../../Theme/color';
 import { userStyle } from '../../Theme/styles';
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
@@ -18,12 +18,25 @@ import banner from '../../Theme/icons/Banner.png';
 import toFro from '../../Theme/icons/line.png';
 import noPics from '../../Theme/image/noPics.png';
 import { updateUser } from '../../actions/user';
+import { getAllOrder, getOrder } from '../../actions/order';
+import moment from 'moment';
+import 'intl'
+import 'intl/locale-data/jsonp/en'; // or any other locale you need
+import { APPCURRENCY } from '../../../config';
 
-export default function HomePage() {
+export default function HomePage({ navigation }) {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.auth.user);
 
   const isLoading = useSelector(state => state.auth.isLoading);
+  const orders = useSelector(state => state.orders);
+
+  useEffect(() => {
+    dispatch(getAllOrder(userData?.id));
+    console.log('here');
+  }, [orders.length]);
+
+  const formatter = new Intl.NumberFormat('en-US');
 
   const [isModal, setIsModal] = useState(false);
   const toggleEditModal = () => setIsModal(!isModal);
@@ -129,32 +142,43 @@ export default function HomePage() {
 
   //Order list render view
   const renderList = ({item, index}) => {
+    let pickupTime = item.pickupDateTime.split(" ");
     return(
       <View style={userStyle.orderListHolder}>
-        <TouchableOpacity style={userStyle.orderListItem}>
+        <TouchableOpacity 
+          onPress={() => navigation.navigate('Details', {
+            id: item.orderId,
+          })}
+          style={userStyle.orderListItem}>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
             <Icon 
               type="ionicon"
               name="checkmark-circle"
               size={40}
-              color={index === 0 ? green : 
-                index === 1 ? orange : blue}
+              color={item.status === 'pending' ? red : 
+                item.status === 'dispatched' ? primaryColor :
+                item.status === 'canceled' ? red : 
+                item.status === 'inProgress' ? orange : blue}
             />
 
             <View style={userStyle.orderListItemDetailsHolder}>
-              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                <Text style={userStyle.orderText}>
-                  Order #1234 
-                </Text>
-                <Text style={userStyle.orderSmallText}>(2bags)</Text>
+              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+                <View style={{ display: 'flex', flexDirection: 'row' }}>
+                  <Text style={userStyle.orderText}>
+                    Order #{item.orderId}
+                  </Text>
+                  <Text style={userStyle.orderSmallText}>({item.totalCount}items)</Text>
+                </View>
+
+                <Text style={userStyle.orderPriceText}>{`${APPCURRENCY}${formatter.format(item.amount)}`}</Text>
               </View>
 
               {/* order date details view */}
               <View style={userStyle.orderScheduleHolder}>
                 {/* Hold pickup date and time */}
                 <View style={userStyle.orderScheduleItem}>
-                  <Text style={userStyle.orderScheduleItemTime}>10:00</Text>
-                  <Text style={userStyle.orderScheduleItemDate}>Thur, 1 Apr</Text>
+                  <Text style={userStyle.orderScheduleItemTime}>{moment(item.pickupDateTime).format("hh:MMA")}</Text>
+                  <Text style={userStyle.orderScheduleItemDate}>{moment(item.pickupDateTime).format("ddd, D MMM")}</Text>
                 </View>
 
                 {/* Hold icon to and from */}
@@ -162,8 +186,8 @@ export default function HomePage() {
                 
                 {/* Hold delivery date and time */}
                 <View style={userStyle.orderScheduleItem}>
-                  <Text style={userStyle.orderScheduleItemTime}>10:00</Text>
-                  <Text style={userStyle.orderScheduleItemDate}>Sat, 3 Apr</Text>
+                  <Text style={userStyle.orderScheduleItemTime}>{moment(item.deliveryDateTime).format("hh:MMA")}</Text>
+                  <Text style={userStyle.orderScheduleItemDate}>{moment(item.deliveryDateTime).format("ddd, D MMM")}</Text>
                 </View>
               </View>
               {/* End of order date details view */}
@@ -171,7 +195,7 @@ export default function HomePage() {
             </View>
           </View>
 
-          <Text style={userStyle.orderPriceText}>N5,200</Text>
+          
         </TouchableOpacity>
       </View>
     );
@@ -224,7 +248,7 @@ export default function HomePage() {
         barStyle="dark-content"
       />
       <FlatList
-        data={orderData}
+        data={orders}
         renderItem={renderList}
         keyExtractor={(item, index) => index.toString()}
         ListHeaderComponent={Header}

@@ -39,6 +39,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUser } from './src/actions/user';
 import { ImageBackground } from 'react-native';
 import BottomTabs from './src/Components/navigation/tabs';
+import OrderDetails from './src/Components/Dashboard/OrderDetails';
 
  const MainStack = createStackNavigator();
 
@@ -87,7 +88,8 @@ export default function App() {
   };
 
   const privateScreen = {
-    Home: BottomTabs
+    Home: BottomTabs,
+    Details: OrderDetails,
   };
 
   const [firstCall, setFirstCall] = useState(0);

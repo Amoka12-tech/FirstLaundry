@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StatusBar, FlatList } from 'react-native';
 import styles from '../../Theme/styles/user';
 import { Icon, Image } from 'react-native-elements';
@@ -12,11 +12,14 @@ import ConfirmOrderPage from './ConfirmOrderPage';
 import MapViewPage from './MapView';
 import LocationPage from './LocationPage';
 import PaymentPage from './PaymentPage';
+import { useSelector } from 'react-redux';
 
 
 const Stack = createStackNavigator();
 
 const Main = ({ navigation }) => {
+  const orderData = useSelector(state => state.orders);
+  // console.log('Order: ',orderData);
   
   const [itemList, setItemList] = useState(customList);
   const [selectedItems, setSelectedItems] = useState([]);

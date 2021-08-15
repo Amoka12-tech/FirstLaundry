@@ -153,6 +153,7 @@ export default StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'flex-start',
         marginLeft: 10,
+        width: '84%',
     },
 
     orderText: {
@@ -201,7 +202,7 @@ export default StyleSheet.create({
 
     orderScheduleItemDate: {
         fontFamily: regular,
-        fontSize: h4,
+        fontSize: h5,
         fontWeight: '400',
         fontStyle: 'normal',
         color: grey,

@@ -24,6 +24,8 @@ import { placeOrder } from '../../actions/order';
 
 export default function ConfirmOrderPage({ navigation, route }) {
     const dispatch = useDispatch();
+    const isLoading = useSelector(state => state.auth.isLoading);
+    const userData = useSelector(state => state.auth.user);
     const locationData = useSelector(state => state.location);
     const payment = useSelector(state => state.payment);
     const {
@@ -67,12 +69,13 @@ export default function ConfirmOrderPage({ navigation, route }) {
                 alert('Pick a date for item pickup!');
             }else if(payment?.paymentStatus === false && paymentMethod === 'card'){
                 navigation.navigate('Payment', {
-                    amount: totalPrice,
+                    amount: totalPrice+1000,
                 });
             }else if(locationData?.pickupAddressName === null && locationData?.deliveryAddressName === null){
                 navigation.navigate('MapView');
             }else{
                 const orderData = {
+                    userData: userData,
                     selectedItems: selectedItems,
                     totalCount: totalCount,
                     totalPrice: totalPrice,
@@ -87,8 +90,9 @@ export default function ConfirmOrderPage({ navigation, route }) {
                     payment,
                     locationData: locationData,
                 }// JSON Structure data for api
+                const jsonData = JSON.stringify(orderData);
 
-                dispatch(placeOrder(orderData, navigation));//place order now to api
+                dispatch(placeOrder(jsonData, navigation));//place order now to api
             }
         }else{
             alert('Please go back and select an item for this service.');
@@ -98,6 +102,12 @@ export default function ConfirmOrderPage({ navigation, route }) {
   return (
     <View style={styles.confirmPageMain}>
         <StatusBar backgroundColor={'transparent'} barStyle="dark-content" />
+        <Spinner 
+            visible={isLoading}
+            textContent={'Placing orders...'}
+            textStyle={styles.loadingText}
+            color={primaryColor}
+        />
         
         <View style={styles.topNavHolder}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -290,7 +300,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
                     onPress={onSubmit}
                     style={styles.standardButton}>
                     <Text style={styles.standardButtonText}>
-                        Place Order
+                        {payment.paymentData == null ? 'Make payment' : !!payment.paymentData && locationData.pickupAddressName === null ? 'Pick Locations' : 'Place Order'}
                     </Text>
                 </TouchableOpacity>
             </View>}

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let apiRoute;
 
-apiRoute = axios.create({ baseURL: 'http://192.168.8.101:80/laundry_api' });
+apiRoute = axios.create({ baseURL: 'http://192.168.8.102:80/laundry_api' });
 
 let apiCloudinary;
 

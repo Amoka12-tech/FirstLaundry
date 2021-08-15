@@ -106,6 +106,7 @@ export default function BottomTabs() {
                         name="pluscircle"
                         size={40}
                         color={primaryColor}
+                        iconStyle={{ zIndex: 10 }}
                     />
                 ),
                 tabBarButton: (props) => (

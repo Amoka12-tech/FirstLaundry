@@ -15,6 +15,7 @@ import { black, primaryColor } from '../../Theme/color';
 import { CheckBox, Icon, Image } from 'react-native-elements';
 import * as Location from 'expo-location';
 import { LocationAccuracy } from 'expo-location';
+import { TouchableOpacity } from 'react-native';
 
 export default function LocationPage({ navigation, route }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -209,6 +210,16 @@ export default function LocationPage({ navigation, route }) {
                     containerStyle={styles.currentLocation}
                     onPress={() => dispatch(setPickupToCurrentLocation(setIsLoading))}
                 />
+
+                <View style={styles.bottomSheet}>
+                    <TouchableOpacity 
+                        onPress={() => navigation.goBack()}
+                        style={styles.standardButton}>
+                        <Text style={styles.standardButtonText}>
+                            {'Continue'}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
   );
 }

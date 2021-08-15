@@ -26,7 +26,9 @@ export default function(payment = initialState, action){
             return{
                 ...payment,
                 paymentStatus: false,
-                paymentData: 'Bank'
+                paymentData: {
+                    reference: 'Bank'
+                }
             };
 
         case RESET_PAYMENT:
