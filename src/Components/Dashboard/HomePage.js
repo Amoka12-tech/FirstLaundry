@@ -198,7 +198,7 @@ export default function HomePage({ navigation }) {
                 
                 {/* Hold delivery date and time */}
                 <View style={userStyle.orderScheduleItem}>
-                  <Text style={userStyle.orderScheduleItemTime}>{moment(item.deliveryDateTime).utcOffset(60).format("hh:mm A")}</Text>
+                  <Text style={userStyle.orderScheduleItemTime}>{moment(item.deliveryDateTime).tz("Africa/Lagos").format("hh:mm A")}</Text>
                   <Text style={userStyle.orderScheduleItemDate}>{moment(item.deliveryDateTime).format("ddd, D MMM")}</Text>
                 </View>
               </View>

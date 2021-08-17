@@ -6,7 +6,7 @@ import { cancelOrder, getOrder } from '../../actions/order';
 import { black, grey, primaryColor, white } from '../../Theme/color';
 import styles from '../../Theme/styles/user';
 import welcomeImg from '../../Theme/image/welcome.png';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import 'intl'
 import 'intl/locale-data/jsonp/en'; // or any other locale you need
 import { APPCURRENCY } from '../../../config';
@@ -114,7 +114,7 @@ export default function OrderDetails({ navigation, route }) {
             </View>
 
             <Text style={styles.orderScheduleItemDate}>
-              {moment(order[0].pickupDateTime).format("hh:MM A, ddd, D MMM YYYY")}
+              {moment(order[0].pickupDateTime).format("hh:mm A, ddd, D MMM YYYY")}
             </Text>
           </View>
 
@@ -293,11 +293,11 @@ export default function OrderDetails({ navigation, route }) {
 
                 <Text style={styles.boldText}>{order[0]?.status}</Text>
                 <Text style={styles.regularText}>
-                  {order[0]?.status === "pending" ? moment(order[0]?.orderDate).format("hh:MM A, ddd, D MMM YYYY") : 
-                    order[0]?.status === "dispatched" ? moment(order[0]?.dispatcherDate).format("hh:MM A, ddd, D MMM YYYY") : 
-                    order[0]?.status === "canceled" ? moment(order[0]?.completedDate).format("hh:MM A, ddd, D MMM YYYY") : 
-                    order[0]?.status === "inProgress" ? moment(order[0]?.inProgressDate).format("hh:MM A, ddd, D MMM YYYY") : 
-                    moment(order[0]?.completedDate).format("hh:MM A, ddd, D MMM YYYY")
+                  {order[0]?.status === "pending" ? moment(order[0]?.orderDate).tz("Africa/Lagos").format("hh:mm A, ddd, D MMM YYYY") : 
+                    order[0]?.status === "dispatched" ? moment(order[0]?.dispatcherDate).tz("Africa/Lagos").format("hh:mm A, ddd, D MMM YYYY") : 
+                    order[0]?.status === "canceled" ? moment(order[0]?.completedDate).tz("Africa/Lagos").format("hh:mm A, ddd, D MMM YYYY") : 
+                    order[0]?.status === "inProgress" ? moment(order[0]?.inProgressDate).tz("Africa/Lagos").format("hh:mm A, ddd, D MMM YYYY") : 
+                    moment(order[0]?.completedDate).tz("Africa/Lagos").format("hh:mm A, ddd, D MMM YYYY")
                     }
                   </Text>
               </View>
@@ -323,7 +323,7 @@ export default function OrderDetails({ navigation, route }) {
               <View style={styles.orderScheduleHolder}>
                 {/* Hold pickup date and time */}
                 <View style={styles.orderScheduleItem}>
-                  <Text style={styles.orderScheduleItemTime}>{moment(order[0]?.pickupDateTime).format("hh:MMA")}</Text>
+                  <Text style={styles.orderScheduleItemTime}>{moment(order[0]?.pickupDateTime).tz("Africa/Lagos").format("hh:mmA")}</Text>
                   <Text style={styles.orderScheduleItemDate}>{moment(order[0]?.pickupDateTime).format("ddd, D MMM")}</Text>
                 </View>
 
@@ -332,7 +332,7 @@ export default function OrderDetails({ navigation, route }) {
                 
                 {/* Hold delivery date and time */}
                 <View style={styles.orderScheduleItem}>
-                  <Text style={styles.orderScheduleItemTime}>{moment(order[0]?.deliveryDateTime).format("hh:MMA")}</Text>
+                  <Text style={styles.orderScheduleItemTime}>{moment(order[0]?.deliveryDateTime).tz("Africa/Lagos").format("hh:mmA")}</Text>
                   <Text style={styles.orderScheduleItemDate}>{moment(order[0]?.deliveryDateTime).format("ddd, D MMM")}</Text>
                 </View>
               </View>

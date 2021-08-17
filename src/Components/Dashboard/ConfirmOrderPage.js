@@ -37,7 +37,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
 
     const [paymentMethod, setPaymentMethod] = useState('card');
 
-    const currentDate = moment();
+    const currentDate = moment().tz("Africa/Lagos");
 
     const currentPickupFullDate = getFormatedDate(currentDate, "YYYY/MM/DD hh:mm");
     const [pickupDateTime, setPickupDateTime] = useState(currentDate);
@@ -163,7 +163,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
                         <Icon type="font-awesome" name="calendar-plus-o" size={20} color={grey} />
                         <View style={styles.scheduleDateTimeHolder}>
                             <Text>{moment(pickupDateTime).tz("Africa/Lagos").format("ddd, D MMM")}</Text>
-                            <Text>{moment(pickupDateTime).tz("Africa/Lagos").format("HH:MM A")}</Text>
+                            <Text>{moment(pickupDateTime).tz("Africa/Lagos").format("hh:mm A")}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -172,7 +172,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
                         <Icon type="font-awesome" name="calendar-check-o" size={20} color={grey} />
                         <View style={styles.scheduleDateTimeHolder}>
                             <Text>{moment(deliveryDateTime).tz("Africa/Lagos").format("ddd, D MMM")}</Text>
-                            <Text>{moment(deliveryDateTime).tz("Africa/Lagos").format("HH:MM A")}</Text>
+                            <Text>{moment(deliveryDateTime).tz("Africa/Lagos").format("hh:mm A")}</Text>
                         </View>
                     </View>
 
@@ -281,7 +281,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
                 {showPickupDate && 
                 <DatePicker 
                     minimumDate={moment().format("YYYY-MM-DD")}
-                    current={moment(pickupDateTime).format("YYYY-MM-DD HH:MM")}
+                    current={moment(pickupDateTime).format("YYYY-MM-DD HH:mm")}
                     onSelectedChange={data => {
                         const momentDate = getFormatedDate(data, "YYYY/MM/DD HH:HH");
                         setPickupDateTime(moment(momentDate));
