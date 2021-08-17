@@ -19,7 +19,7 @@ import toFro from '../../Theme/icons/line.png';
 import noPics from '../../Theme/image/noPics.png';
 import { updateUser } from '../../actions/user';
 import { getAllOrder, getOrder } from '../../actions/order';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import 'intl'
 import 'intl/locale-data/jsonp/en'; // or any other locale you need
 import { APPCURRENCY } from '../../../config';
@@ -189,7 +189,7 @@ export default function HomePage({ navigation }) {
               <View style={userStyle.orderScheduleHolder}>
                 {/* Hold pickup date and time */}
                 <View style={userStyle.orderScheduleItem}>
-                  <Text style={userStyle.orderScheduleItemTime}>{moment(item.pickupDateTime).utcOffset(60).format("LT")}</Text>
+                  <Text style={userStyle.orderScheduleItemTime}>{moment(item.pickupDateTime).tz("Africa/Lagos").format("hh:mm A")}</Text>
                   <Text style={userStyle.orderScheduleItemDate}>{moment(item.pickupDateTime).format("ddd, D MMM")}</Text>
                 </View>
 
@@ -198,7 +198,7 @@ export default function HomePage({ navigation }) {
                 
                 {/* Hold delivery date and time */}
                 <View style={userStyle.orderScheduleItem}>
-                  <Text style={userStyle.orderScheduleItemTime}>{moment(item.deliveryDateTime).utcOffset(60).format("LT")}</Text>
+                  <Text style={userStyle.orderScheduleItemTime}>{moment(item.deliveryDateTime).utcOffset(60).format("hh:mm A")}</Text>
                   <Text style={userStyle.orderScheduleItemDate}>{moment(item.deliveryDateTime).format("ddd, D MMM")}</Text>
                 </View>
               </View>

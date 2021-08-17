@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StatusBar, TouchableOpacity, View, Text } from 'react-native';
-import { Icon, Image } from 'react-native-elements';
+import { ScrollView, StatusBar, TouchableOpacity, View, Text, Alert } from 'react-native';
+import { BottomSheet, Icon, Image } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrder } from '../../actions/order';
-import { black, grey } from '../../Theme/color';
+import { cancelOrder, getOrder } from '../../actions/order';
+import { black, grey, primaryColor, white } from '../../Theme/color';
 import styles from '../../Theme/styles/user';
 import welcomeImg from '../../Theme/image/welcome.png';
 import moment from 'moment';
@@ -21,11 +21,14 @@ import orderPaymentPng from '../../Theme/icons/payment.png';
 import orderMapPng from '../../Theme/icons/map.png';
 import toFro from '../../Theme/icons/line.png';
 import locationIcon from '../../Theme/icons/addressIcon.png';
+import Spinner from 'react-native-loading-spinner-overlay';
+import OrderStatus from './parts/OrderStatus';
 
 export default function OrderDetails({ navigation, route }) {
     const dispatch = useDispatch();
     const userData = useSelector(state => state.auth.user);
     const orders = useSelector(state => state.orders);
+    const isLoading = useSelector(state => state.auth.isLoading);
 
     const formatter = new Intl.NumberFormat('en-US');
     
@@ -35,6 +38,10 @@ export default function OrderDetails({ navigation, route }) {
     useEffect(() => {
         dispatch(getOrder(userData.id, id));
     }, []);
+
+    const onCancel = () => {
+      dispatch(cancelOrder(userData?.id, order[0]?.orderId));
+    };
 
     const [laundryShown, setLaundryShown] = useState(true);
     const toggleShowLaundry = () => setLaundryShown(!laundryShown);
@@ -56,9 +63,18 @@ export default function OrderDetails({ navigation, route }) {
     const foundFold = order[0]?.items.findIndex(f => f.itemService === "fold");
     const foundIron = order[0]?.items.findIndex(i => i.itemService === "iron");
     const foundDry = order[0]?.items.findIndex(d => d.itemService === "dry");
+
+    const [isBsVisible, setIsBsVisible] = useState(false);
+    const toggleBottomSheet = () => setIsBsVisible(!isBsVisible);
   return (
     <View style={styles.mainContainerPadding}>
       <StatusBar backgroundColor={'transparent'} barStyle="dark-content" />
+      <Spinner 
+            visible={isLoading}
+            textContent={'Canceling orders...'}
+            textStyle={styles.loadingText}
+            color={primaryColor}
+        />
 
       <View style={styles.topNavHolder}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -77,7 +93,7 @@ export default function OrderDetails({ navigation, route }) {
             <View />
         </View>
      
-     <ScrollView showsVerticalScrollIndicator={false} style={styles.orderDetailsHolder}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.orderDetailsHolder, { marginBottom: order[0]?.status === "pending" ? '15%' : 0,}}>
 
         <View style={styles.orderDetailsWelcome}>
           <Image source={welcomeImg} resizeMode="contain" style={styles.orderDetailsImg} />
@@ -269,7 +285,7 @@ export default function OrderDetails({ navigation, route }) {
                 <View style={styles.orderBoxRightTop}>
                   <Text style={styles.orderBoxRightTopTextL}>
                     Order Status</Text>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={toggleBottomSheet}>
                     <Text style={styles.orderBoxRightTopTextR}>
                       View detail</Text>
                   </TouchableOpacity>
@@ -378,7 +394,41 @@ export default function OrderDetails({ navigation, route }) {
         </View> 
         {/* Address Details */}
 
-     </ScrollView>
+      </ScrollView>
+
+      {!isBsVisible && order[0]?.status === 'pending' 
+      && <View style={styles.bottomSheet}>
+        <TouchableOpacity 
+            onPress={() => 
+              Alert.alert(
+                "Confirm Action",
+                "Confirm you want to cancel this order",
+                [
+                  {
+                    text: "NO",
+                    onPress: () => alert("Order not canceled"),
+                    style: "cancel"
+                  },
+                  {
+                    text: "YES",
+                    onPress: onCancel,
+                  }
+                ]
+              )
+            }
+            style={styles.standardCancelButton}>
+            <Text style={styles.standardButtonText}>
+                {'Cancel'}
+            </Text>
+        </TouchableOpacity>
+      </View>}
+      
+      <BottomSheet 
+        isVisible={isBsVisible}
+        containerStyle={{ backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)' }}
+      >
+        <OrderStatus order={order[0]} toggleBottomSheet={toggleBottomSheet} />
+      </BottomSheet>
     </View>
   );
 }

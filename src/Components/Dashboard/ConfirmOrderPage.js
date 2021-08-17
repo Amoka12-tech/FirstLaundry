@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setDeliveryLocation, setPickuptLocation } from '../../actions/location';
 import { optBankPayment } from '../../actions/payment';
 import { placeOrder } from '../../actions/order';
+import moment from 'moment-timezone';
 
 export default function ConfirmOrderPage({ navigation, route }) {
     const dispatch = useDispatch();
@@ -36,22 +37,18 @@ export default function ConfirmOrderPage({ navigation, route }) {
 
     const [paymentMethod, setPaymentMethod] = useState('card');
 
-    const currentDate = new Date();
+    const currentDate = moment();
 
     const currentPickupFullDate = getFormatedDate(currentDate, "YYYY/MM/DD hh:mm");
-    const [pickupDateTime, setPickupDateTime] = useState(currentPickupFullDate);
+    const [pickupDateTime, setPickupDateTime] = useState(currentDate);
 
     useEffect(() => {
-        const newSetDate = new Date(pickupDateTime);
-        newSetDate.setDate(newSetDate.getDate() + 3);
-        const deliveryFullDate = getFormatedDate(newSetDate, "YYYY/MM/DD hh:mm");
-        setDeliveryDateTime(deliveryFullDate);
+        const newSetDate = moment(pickupDateTime);
+        newSetDate.add(3, 'days');
+        setDeliveryDateTime(newSetDate);
     }, [pickupDateTime]); // to set delivery date to three(3) days after pickup date
 
     const [deliveryDateTime, setDeliveryDateTime] = useState('');
-
-    const pickupDateSplit = pickupDateTime.split(' ');
-    const deliveryDateSplit = deliveryDateTime?.split(' ');
 
     const [showPickupDate, setShowPickupDate] = useState(false);
     const toggleShowPickup = () => setShowPickupDate(!showPickupDate);
@@ -65,7 +62,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
 
     const onSubmit = () => {
         if(selectedItems.length > 0){
-            if(pickupDateSplit.length === 0){
+            if(pickupDateTime === null){
                 alert('Pick a date for item pickup!');
             }else if(payment?.paymentStatus === false && paymentMethod === 'card'){
                 navigation.navigate('Payment', {
@@ -79,14 +76,8 @@ export default function ConfirmOrderPage({ navigation, route }) {
                     selectedItems: selectedItems,
                     totalCount: totalCount,
                     totalPrice: totalPrice,
-                    pickupDateTime: {
-                        Date: pickupDateSplit[0],
-                        Time: pickupDateSplit[1]
-                    },
-                    deliveryDateTime: {
-                        Date: deliveryDateSplit[0],
-                        Time: deliveryDateSplit[1]
-                    },
+                    pickupDateTime: pickupDateTime,
+                    deliveryDateTime: deliveryDateTime,
                     payment,
                     locationData: locationData,
                 }// JSON Structure data for api
@@ -171,8 +162,8 @@ export default function ConfirmOrderPage({ navigation, route }) {
                     <TouchableOpacity onPress={toggleShowPickup} style={styles.pickupDateHolder}>
                         <Icon type="font-awesome" name="calendar-plus-o" size={20} color={grey} />
                         <View style={styles.scheduleDateTimeHolder}>
-                            <Text>{pickupDateSplit[0]}</Text>
-                            <Text>{`${pickupDateSplit[1]}`}</Text>
+                            <Text>{moment(pickupDateTime).tz("Africa/Lagos").format("ddd, D MMM")}</Text>
+                            <Text>{moment(pickupDateTime).tz("Africa/Lagos").format("HH:MM A")}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -180,8 +171,8 @@ export default function ConfirmOrderPage({ navigation, route }) {
                     <View style={styles.deliveryDateHolder}>
                         <Icon type="font-awesome" name="calendar-check-o" size={20} color={grey} />
                         <View style={styles.scheduleDateTimeHolder}>
-                            <Text>{deliveryDateTime ? deliveryDateSplit[0] : ''}</Text>
-                            <Text>{deliveryDateTime ? `${deliveryDateSplit[1]}` : ''}</Text>
+                            <Text>{moment(deliveryDateTime).tz("Africa/Lagos").format("ddd, D MMM")}</Text>
+                            <Text>{moment(deliveryDateTime).tz("Africa/Lagos").format("HH:MM A")}</Text>
                         </View>
                     </View>
 
@@ -289,10 +280,11 @@ export default function ConfirmOrderPage({ navigation, route }) {
                 </TouchableOpacity>}
                 {showPickupDate && 
                 <DatePicker 
-                    minimumDate={pickupDateTime}
-                    current={pickupDateTime}
+                    minimumDate={moment().format("YYYY-MM-DD")}
+                    current={moment(pickupDateTime).format("YYYY-MM-DD HH:MM")}
                     onSelectedChange={data => {
-                        setPickupDateTime(data);
+                        const momentDate = getFormatedDate(data, "YYYY/MM/DD HH:HH");
+                        setPickupDateTime(moment(momentDate));
                         toggleShowPickup();
                     }}
                 />}

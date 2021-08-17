@@ -1,5 +1,5 @@
 import * as api from '../apis/order';
-import { ADD_ORDER, END_PROCESS, GET_ALL_ORDER, GET_ORDER, RESET_LOCATION, RESET_PAYMENT, START_PROCESS } from "../reducers/types";
+import { ADD_ORDER, CANCEL_ORDER, END_PROCESS, GET_ALL_ORDER, GET_ORDER, RESET_LOCATION, RESET_PAYMENT, START_PROCESS } from "../reducers/types";
 
 let headers = {
     headers: {
@@ -74,15 +74,26 @@ export const getOrder = (id, orderId) => async dispatch => {
     }
 };
 
-export const cancelOrder = (id) => async dispatch => {
+export const cancelOrder = (id, orderId) => async dispatch => {
     const body = {
         userId: id,
         orderId: orderId
     };
     try {
+        dispatch({type: START_PROCESS});
         const { data } = await api.cancelOrder(body, headers);
-        console.log(data);
+        const status = data?.status;
+        const success = data?.success;
+        const message = data?.message;
+        if(success === 1){
+            dispatch({type: CANCEL_ORDER, payload: message});
+            dispatch({type: END_PROCESS});
+            alert('This order is now canceled')
+        }else{
+            throw(message);
+        }
     } catch (error) {
-        console.log(error);
+        dispatch({type: END_PROCESS});
+        alert(error);
     }
 }

@@ -317,6 +317,17 @@ export default StyleSheet.create({
         borderRadius: 8,
     },
 
+    standardCancelButton: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: red,
+        padding: 10,
+        width: '100%',
+        borderRadius: 8,
+    },
+
     standardButtonText: {
         fontFamily: regular,
         fontSize: h4,
@@ -806,6 +817,7 @@ export default StyleSheet.create({
         display: 'flex',
         width: '100%',
         flexDirection: 'column',
+        marginBottom: '15%',
     },
 
     orderDetailsWelcome: {
@@ -950,6 +962,55 @@ export default StyleSheet.create({
         fontStyle: 'normal',
         fontWeight: '500',
         color: grey,
+    },
+
+    bsView: { 
+        flex: 1, 
+        flexDirection: 'column', 
+        backgroundColor: white,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+     },
+
+     bsTopHeader: {
+         display: 'flex',
+         width: '100%',
+         flexDirection: 'row',
+         justifyContent: 'space-between',
+         padding: 10,
+         borderBottomWidth: 1,
+         borderBottomColor: grey,
+     },
+
+     bsTopHeaderText: {
+         fontFamily: medium,
+         fontSize: h3,
+         fontStyle: 'normal',
+         fontWeight: '800',
+         color: primaryColor,
+     },
+
+     bsItemHolder: {
+         display: 'flex',
+         width: '100%',
+         padding: 20,
+         flexDirection: 'row',
+     },
+
+     liteTime: {
+         fontFamily: regular,
+         fontSize: h4,
+         fontStyle: 'normal',
+         fontWeight: '400',
+         color: primaryColor,
+     },
+
+     bsItemStatusHolder: { 
+        display: 'flex', 
+        flexDirection: 'row', 
+        width: '100%', 
+        justifyContent: 'space-between',
+        marginBottom: 5 
     },
 
 });
