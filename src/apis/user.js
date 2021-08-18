@@ -7,3 +7,5 @@ const CLOUDINARY_API = apiCloudinary;
 export const uploadImage = (data, headers) => CLOUDINARY_API.post('/image/upload', data, headers);
 
 export const updateUser = (data, headers) => API.post('/user/update_user.php', data, headers);
+
+export const updateUserToken = (data, headers) => API.post('/user/sub_notifications.php', data, headers);

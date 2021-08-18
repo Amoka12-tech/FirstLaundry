@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { Constants } from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import React, { useEffect, useState, useRef } from 'react';
 import { Animated, Easing, FlatList, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'react-native';
 import { View, Text } from 'react-native';
 import { Avatar, Button, Icon, Image, Input } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../actions/auth';
+import { logout, registerForPushNotificationsAsync } from '../../actions/auth';
 import { black, blue, green, orange, primaryColor, red, white } from '../../Theme/color';
 import { userStyle } from '../../Theme/styles';
 import * as DocumentPicker from 'expo-document-picker';
@@ -23,6 +25,14 @@ import moment from 'moment-timezone';
 import 'intl'
 import 'intl/locale-data/jsonp/en'; // or any other locale you need
 import { APPCURRENCY } from '../../../config';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+  }),
+});
 
 export default function HomePage({ navigation }) {
   const dispatch = useDispatch();
@@ -252,6 +262,34 @@ export default function HomePage({ navigation }) {
        }
     }
   };
+
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync(userData?.id).then(token => setExpoPushToken(token));
+
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      const { screen, name, id } = response.notification.request.content.data;
+      if(screen === true){
+        navigation.navigate(name, {
+          id: id,
+        })
+      }
+    });
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
   return (
     <View style={userStyle.mainContainer}>

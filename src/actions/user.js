@@ -75,3 +75,11 @@ export const updateUser = (body, toggle) => async dispatch => {
         dispatch({type: END_PROCESS});
     }
 };
+
+export const updateUserToken = async (userId, token) => {
+    const body = {
+        userId: userId,
+        token: token
+    };
+        await userApi.updateUserToken(body, headers);
+};

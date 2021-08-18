@@ -1,7 +1,11 @@
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import * as api from '../apis/auth';
 import { END_PROCESS, SIGN_IN, SIGN_OUT, SIGN_UP, START_PROCESS } from '../reducers/types';
+import { Platform } from 'react-native';
+import { updateUserToken } from './user';
 
 //This function take you to home page
 let headers = {
@@ -171,4 +175,34 @@ export const logout = () => async dispatch => {
     } catch (error) {
         alert(error);
     }
+};
+
+export const registerForPushNotificationsAsync = async (userId) => {
+    let token;
+    if (Constants.isDevice) {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if(existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        if(finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+        updateUserToken(userId, token);
+    } else {
+        alert('Must use physical device for Push Notification');
+    }
+
+    if (Platform.OS === "android") {
+        Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+        });
+    }
+    return token;
 };
