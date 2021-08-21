@@ -20,7 +20,7 @@ import { Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDeliveryLocation, setPickuptLocation } from '../../actions/location';
 import { optBankPayment } from '../../actions/payment';
-import { placeOrder } from '../../actions/order';
+import { getDiscount, placeOrder } from '../../actions/order';
 import moment from 'moment-timezone';
 
 export default function ConfirmOrderPage({ navigation, route }) {
@@ -60,13 +60,20 @@ export default function ConfirmOrderPage({ navigation, route }) {
     const [viewMap, setViewMap] = useState(false);
     const toggleViewMap = () => setViewMap(!viewMap);
 
+    const [discount, setDiscount] = useState(0);
+    useEffect(() => {
+      getDiscount(userData?.id).then(value => setDiscount(value));
+    }, []);
+
+    const price = discount > 0 ? totalPrice*(discount/100) : totalPrice;
+
     const onSubmit = () => {
         if(selectedItems.length > 0){
             if(pickupDateTime === null){
                 alert('Pick a date for item pickup!');
             }else if(payment?.paymentStatus === false && paymentMethod === 'card'){
                 navigation.navigate('Payment', {
-                    amount: totalPrice+1000,
+                    amount: price+1000,
                 });
             }else if(locationData?.pickupAddressName === null && locationData?.deliveryAddressName === null){
                 navigation.navigate('MapView');
@@ -75,7 +82,8 @@ export default function ConfirmOrderPage({ navigation, route }) {
                     userData: userData,
                     selectedItems: selectedItems,
                     totalCount: totalCount,
-                    totalPrice: totalPrice,
+                    totalPrice: price,
+                    discount: discount,
                     pickupDateTime: pickupDateTime,
                     deliveryDateTime: deliveryDateTime,
                     payment,
@@ -128,7 +136,16 @@ export default function ConfirmOrderPage({ navigation, route }) {
                         Subtotal
                     </Text>
                     <Text style={styles.confirmPriceText}>
-                        {`${APPCURRENCY}${formatter.format(totalPrice)}`}
+                        {`${APPCURRENCY}${formatter.format(price)}`}
+                    </Text>
+                </View>
+                {/* Discount Price */}
+                <View style={styles.confirmPagePriceRow}>
+                    <Text style={styles.confirmPriceHeader}>
+                        Discount
+                    </Text>
+                    <Text style={styles.confirmPriceText}>
+                        {`${discount}%`}
                     </Text>
                 </View>
                 {/* End of sub total */}
@@ -146,7 +163,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
                         Total
                     </Text>
                     <Text style={styles.confirmPriceText_T}>
-                        {`${APPCURRENCY}${formatter.format(totalPrice+1000)}`}
+                        {`${APPCURRENCY}${formatter.format(price+1000)}`}
                     </Text>
                 </View>
                 {/* End of total price */}

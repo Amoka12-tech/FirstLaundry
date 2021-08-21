@@ -13,6 +13,7 @@ import MapViewPage from './MapView';
 import LocationPage from './LocationPage';
 import PaymentPage from './PaymentPage';
 import { useSelector } from 'react-redux';
+import { getItems } from '../../actions/order';
 
 
 const Stack = createStackNavigator();
@@ -21,11 +22,17 @@ const Main = ({ navigation }) => {
   const orderData = useSelector(state => state.orders);
   // console.log('Order: ',orderData);
   
-  const [itemList, setItemList] = useState(customList);
+  const [itemList, setItemList] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   let effectCount = 0;
+
+  useEffect(() => {
+    if(effectCount === 0){
+      getItems().then(list => setItemList(list));
+    }
+  }, []);
 
   //Add Item to selectedItems
   const addItem = (item, index) => {

@@ -96,4 +96,29 @@ export const cancelOrder = (id, orderId) => async dispatch => {
         dispatch({type: END_PROCESS});
         alert(error);
     }
-}
+};
+
+export const getDiscount = async (userId) => {
+    try {
+        const body = {
+            userId: userId
+        };
+        const { data } = await api.getDiscount(body, headers);
+        const status = data?.status;
+        const success = data?.success;
+        const message = data?.message;
+        return message;
+    } catch (error) {
+        return 0;
+    }
+};
+
+export const getItems = async () => {
+    try {
+        const { data } = await api.getItemList();
+        return data;
+    } catch (error) {
+        alert(error?.message);
+        return null;
+    }
+};

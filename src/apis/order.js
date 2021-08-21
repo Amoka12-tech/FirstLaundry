@@ -9,3 +9,7 @@ export const getAllOrder = (data, headers) => API.post('/home/get_all_order.php'
 export const getOrder = (data, headers) => API.post('/home/get_order.php', data, headers);
 
 export const cancelOrder = (data, headers) => API.post('/home/cancel_order.php', data, headers);
+
+export const getDiscount = (data, headers) => API.post('/home/get_discount.php', data, headers);
+
+export const getItemList = () => API.get('/items/Item.json');

@@ -34,6 +34,9 @@ export default function OrderDetails({ navigation, route }) {
     
     const { id } = route.params;
     let order = orders.filter((item) => item.orderId === id);
+    const discount = parseInt(order[0]?.discount);
+    const totalPrice = parseInt(order[0]?.amount);
+    const price = totalPrice;
 
     useEffect(() => {
         dispatch(getOrder(userData.id, id));
@@ -71,7 +74,7 @@ export default function OrderDetails({ navigation, route }) {
       <StatusBar backgroundColor={'transparent'} barStyle="dark-content" />
       <Spinner 
             visible={isLoading}
-            textContent={'Canceling orders...'}
+            textContent={'Processing orders...'}
             textStyle={styles.loadingText}
             color={primaryColor}
         />
@@ -114,7 +117,7 @@ export default function OrderDetails({ navigation, route }) {
             </View>
 
             <Text style={styles.orderScheduleItemDate}>
-              {moment(order[0].pickupDateTime).format("hh:mm A, ddd, D MMM YYYY")}
+              {moment(order[0].orderDate).format("hh:mm A, ddd, D MMM YYYY")}
             </Text>
           </View>
 
@@ -243,7 +246,16 @@ export default function OrderDetails({ navigation, route }) {
                         Subtotal
                     </Text>
                     <Text style={styles.confirmPriceText}>
-                        {`${APPCURRENCY}${formatter.format(order[0]?.amount-1000)}`}
+                        {`${APPCURRENCY}${formatter.format(price)}`}
+                    </Text>
+                </View>
+                {/* Discount Price */}
+                <View style={styles.confirmPagePriceRow}>
+                    <Text style={styles.confirmPriceHeader}>
+                        Discount
+                    </Text>
+                    <Text style={styles.confirmPriceText}>
+                        {`${discount}%`}
                     </Text>
                 </View>
                 {/* End of sub total */}
@@ -261,7 +273,7 @@ export default function OrderDetails({ navigation, route }) {
                         Total
                     </Text>
                     <Text style={styles.confirmPriceText_T}>
-                        {`${APPCURRENCY}${formatter.format(order[0]?.amount)}`}
+                        {`${APPCURRENCY}${formatter.format(price+1000)}`}
                     </Text>
                 </View>
                 {/* End of total price */}

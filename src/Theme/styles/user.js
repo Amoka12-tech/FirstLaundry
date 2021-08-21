@@ -789,7 +789,7 @@ export default StyleSheet.create({
 
     currentLocation: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 80,
         right: 20,
     },
 
@@ -1012,5 +1012,15 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 5 
     },
+
+    // notification view style 
+    singleNotHolder: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottomWidth: 0.5,
+        borderBottomColor: grey,
+    }
 
 });

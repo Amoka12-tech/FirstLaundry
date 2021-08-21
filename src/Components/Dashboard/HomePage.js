@@ -12,12 +12,7 @@ import { userStyle } from '../../Theme/styles';
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 
-import wash from '../../Theme/icons/wash.png';
-import fold from '../../Theme/icons/fold.png';
-import iron from '../../Theme/icons/iron.png';
-import dry from '../../Theme/icons/dry.png';
-import banner from '../../Theme/icons/Banner.png';
-import toFro from '../../Theme/icons/line.png';
+import { wash, fold, iron, dry, banner, toFro, confirmIcon, dispatchIcon, inProgressIcon, deliveredIcon } from '../../Theme/icons';
 import noPics from '../../Theme/image/noPics.png';
 import { updateUser } from '../../actions/user';
 import { getAllOrder, getOrder } from '../../actions/order';
@@ -25,6 +20,7 @@ import moment from 'moment-timezone';
 import 'intl'
 import 'intl/locale-data/jsonp/en'; // or any other locale you need
 import { APPCURRENCY } from '../../../config';
+import { getNotificationsList } from '../../actions/notifications';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -173,15 +169,17 @@ export default function HomePage({ navigation }) {
           })}
           style={userStyle.orderListItem}>
           <View style={{ display: 'flex', flexDirection: 'row' }}>
-            <Icon 
+            {item.status === 'canceled' || item.status === 'pending' ? <Icon 
               type="ionicon"
               name="checkmark-circle"
               size={40}
-              color={item.status === 'pending' ? primaryColor : 
-                item.status === 'dispatched' ? blue :
-                item.status === 'canceled' ? red : 
-                item.status === 'inProgress' ? orange : green}
+              color={item.status === 'pending' ? primaryColor :  red}
             />
+            :
+            <Image source={
+              item.status === 'dispatched' ? dispatchIcon : 
+              item.status === 'confirmed' ? confirmIcon : item.status === 'inProgress' ? inProgressIcon : deliveredIcon
+            } resizeMode="contain" style={{ width: 40, height: 40 }} />}
 
             <View style={userStyle.orderListItemDetailsHolder}>
               <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
@@ -278,6 +276,7 @@ export default function HomePage({ navigation }) {
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      dispatch(getNotificationsList(userData?.id));
       const { screen, name, id } = response.notification.request.content.data;
       if(screen === true){
         navigation.navigate(name, {

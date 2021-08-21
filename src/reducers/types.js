@@ -21,3 +21,5 @@ export const GET_ALL_ORDER = 'GET_ALL_ORDER';
 export const GET_ORDER = 'GET_ORDER';
 export const ADD_ORDER = 'ADD_ORDER';
 export const CANCEL_ORDER = 'CANCEL_ORDER';
+
+export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS';

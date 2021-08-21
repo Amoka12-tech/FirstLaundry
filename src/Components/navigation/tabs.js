@@ -134,13 +134,13 @@ export default function BottomTabs() {
         />
 
         <Tab.Screen 
-            name="Settings"
+            name="Info"
             component={SettingsPage}
             options={{
                 tabBarIcon: ({focused}) => (
                     <Icon 
-                        type="antdesign"
-                        name="setting"
+                        type="entypo"
+                        name="info-with-circle"
                         size={30}
                         color={focused ? primaryColor : black}
                     />
