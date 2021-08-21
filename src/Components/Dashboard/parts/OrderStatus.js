@@ -33,7 +33,7 @@ export default function OrderStatus({ order, toggleBottomSheet }) {
             <View style={{ display: 'flex', flexDirection: 'column', width: 28, alignItems: 'center' }}>
                 <Image source={orderStatus === 'pending' ? orderPendingPng : orderStatus === 'canceled' ? orderCancelPng : order?.confirmationDate !== null && orderConfirmedPng} resizeMode="contain" style={{ width: 28, height: 62.6 }} />
 
-                {orderStatus === 'dispatched' && order?.dispatcherDate !== null && <Image source={orderPickedPng} resizeMode="contain" style={{ width: 28, height: 62.6 }} />}
+                {orderStatus === 'dispatched' || orderStatus === 'confirmed' && order?.dispatcherDate !== null || order?.confirmationDate !== null && <Image source={orderPickedPng} resizeMode="contain" style={{ width: 28, height: 62.6 }} />}
 
                 {orderStatus === 'inProgress' && order?.inProgressDate !== null &&<Image source={orderProcessingPng} resizeMode="contain" style={{ width: 28, height: 62.6 }} />}
 
@@ -59,7 +59,7 @@ export default function OrderStatus({ order, toggleBottomSheet }) {
 
                 {orderStatus === 'dispatched' && order?.dispatcherDate !== null && <View style={styles.addressDivider} />}
 
-                {orderStatus === 'dispatched' && order?.dispatcherDate !== null && <View style={styles.bsItemStatusHolder}>
+                {orderStatus === 'dispatched' && order?.dispatcherDate !== null ? <View style={styles.bsItemStatusHolder}>
                     <View>
                         <Text style={styles.boldText}>Picked up</Text>
                         <Text style={styles.regularText}>
@@ -70,7 +70,20 @@ export default function OrderStatus({ order, toggleBottomSheet }) {
                     <Text style={styles.liteTime}>
                         {moment(order?.dispatcherDate).tz("Africa/Lagos").format("hh:mm A")}
                     </Text>
-                </View>}
+                </View> : 
+                orderStatus === 'confirmed' && order?.confirmationDate !== null && <View style={styles.bsItemStatusHolder}>
+                    <View>
+                        <Text style={styles.boldText}>Confirmed</Text>
+                        <Text style={styles.regularText}>
+                            {moment(order?.confirmationDate).tz("Africa/Lagos").format("ddd, D MMM YYYY")}
+                        </Text>
+                    </View>
+
+                    <Text style={styles.liteTime}>
+                        {moment(order?.confirmationDate).tz("Africa/Lagos").format("hh:mm A")}
+                    </Text>
+                </View>   
+                }
 
                 {orderStatus === 'inProgress' && order?.inProgressDate !== null && <View style={styles.addressDivider} />}
 

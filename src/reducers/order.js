@@ -8,9 +8,10 @@ export default function(orders = [], action){
 
         case GET_ORDER:
         case CANCEL_ORDER:
-            const oldOrder = orders.filter(item => item.orderId !== payload.orderId);
-            oldOrder.unshift(payload);
-            return oldOrder.sort((a, b) => a.orderDate - b.orderDate);
+            const orderIndex = orders.findIndex(item => item.orderId === payload.orderId);
+            const newOrder = orders.filter(item => item.orderId !== payload.orderId);
+            newOrder.splice(orderIndex, 0, payload);
+            return newOrder;
 
         case ADD_ORDER:
             return [...orders, payload].sort((a, b) => b.orderDate - a.orderDate);

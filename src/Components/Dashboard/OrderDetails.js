@@ -275,7 +275,7 @@ export default function OrderDetails({ navigation, route }) {
                 <Image source={orderBoxPng} resizeMode="contain" style={{ width: 20, height: 20 }} />
                 <Image source={
                   order[0]?.status === 'pending'? primaryPng : 
-                  order[0]?.status === 'dispatched'? bluePng : 
+                  order[0]?.status === 'dispatched' || order[0]?.status === 'confirmed'? bluePng : 
                   order[0]?.status === 'canceled'? redPng : 
                   order[0]?.status === 'inProgress'? orangePng : greenPng
                   } resizeMode="contain" style={{ width: 12, height: 43, marginTop: 5 }} />
@@ -297,6 +297,7 @@ export default function OrderDetails({ navigation, route }) {
                     order[0]?.status === "dispatched" ? moment(order[0]?.dispatcherDate).tz("Africa/Lagos").format("hh:mm A, ddd, D MMM YYYY") : 
                     order[0]?.status === "canceled" ? moment(order[0]?.completedDate).tz("Africa/Lagos").format("hh:mm A, ddd, D MMM YYYY") : 
                     order[0]?.status === "inProgress" ? moment(order[0]?.inProgressDate).tz("Africa/Lagos").format("hh:mm A, ddd, D MMM YYYY") : 
+                    order[0]?.status === "confirmed" ? moment(order[0]?.confirmationDate).tz("Africa/Lagos").format("hh:mm A, ddd, D MMM YYYY") : 
                     moment(order[0]?.completedDate).tz("Africa/Lagos").format("hh:mm A, ddd, D MMM YYYY")
                     }
                   </Text>
