@@ -6,31 +6,35 @@ import { black, primaryColor, white } from '../../Theme/color';
 import { Picker } from '@react-native-picker/picker';
 import customList from '../../../Item.json';
 import { linkApi } from '../../../config';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import ConfirmOrderPage from './ConfirmOrderPage';
 import MapViewPage from './MapView';
 import LocationPage from './LocationPage';
 import PaymentPage from './PaymentPage';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getItems } from '../../actions/order';
 
 
 const Stack = createStackNavigator();
 
 const Main = ({ navigation }) => {
+  const dispatch = useDispatch();
   const orderData = useSelector(state => state.orders);
+  const isLoading = useSelector(state => state.auth.isLoading);
   // console.log('Order: ',orderData);
+  const eItemList = useSelector(state => state.itemList);
   
-  const [itemList, setItemList] = useState(null);
+  const [itemList, setItemList] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   let effectCount = 0;
 
   useEffect(() => {
-    if(effectCount === 0){
-      getItems().then(list => setItemList(list));
+    if(itemList?.length === 0){
+      dispatch(getItems(setItemList));
     }
   }, []);
 
@@ -337,6 +341,13 @@ const Main = ({ navigation }) => {
         backgroundColor={'transparent'}
         barStyle="dark-content"
       />
+
+      <Spinner 
+            visible={isLoading}
+            textContent={'Loading...'}
+            textStyle={styles.loadingText}
+            color={primaryColor}
+        />
 
       <FlatList
         style={{ marginBottom: 100 }}

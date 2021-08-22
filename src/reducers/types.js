@@ -23,3 +23,7 @@ export const ADD_ORDER = 'ADD_ORDER';
 export const CANCEL_ORDER = 'CANCEL_ORDER';
 
 export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS';
+
+export const GET_APP_INFO = 'GET_APP_INFO';
+
+export const GET_ITEM_LIST = 'GET_ITEM_LIST';

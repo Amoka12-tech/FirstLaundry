@@ -1,5 +1,5 @@
 import * as api from '../apis/order';
-import { ADD_ORDER, CANCEL_ORDER, END_PROCESS, GET_ALL_ORDER, GET_ORDER, RESET_LOCATION, RESET_PAYMENT, START_PROCESS } from "../reducers/types";
+import { ADD_ORDER, CANCEL_ORDER, END_PROCESS, GET_ALL_ORDER, GET_ITEM_LIST, GET_ORDER, RESET_LOCATION, RESET_PAYMENT, START_PROCESS } from "../reducers/types";
 
 let headers = {
     headers: {
@@ -113,12 +113,14 @@ export const getDiscount = async (userId) => {
     }
 };
 
-export const getItems = async () => {
+export const getItems = (setItemList) => async dispatch => {
     try {
+        dispatch({type: START_PROCESS});
         const { data } = await api.getItemList();
-        return data;
+        setItemList(data);
+        dispatch({type: GET_ITEM_LIST, payload: data});
+        dispatch({type: END_PROCESS});
     } catch (error) {
-        alert(error?.message);
-        return null;
+        dispatch({type: END_PROCESS});
     }
 };

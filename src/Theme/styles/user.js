@@ -1021,6 +1021,33 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         borderBottomWidth: 0.5,
         borderBottomColor: grey,
-    }
+        marginTop: 20,
+    },
+
+    singleNotBigText: {
+        fontFamily: regular,
+        fontSize: h4,
+        fontWeight: '600',
+        fontStyle: 'normal',
+        color: black,
+        marginBottom: 5,
+    },
+
+    singleNotSmallText: {
+        fontFamily: regular,
+        fontSize: h4,
+        fontWeight: '400',
+        fontStyle: 'normal',
+        color: black,
+    },
+
+    singleNotDays: {
+        fontFamily: regular,
+        fontSize: h5,
+        fontWeight: '400',
+        fontStyle: 'normal',
+        color: grey,
+        maxWidth: 50,
+    },
 
 });

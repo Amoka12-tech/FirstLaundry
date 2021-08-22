@@ -21,6 +21,7 @@ import 'intl'
 import 'intl/locale-data/jsonp/en'; // or any other locale you need
 import { APPCURRENCY } from '../../../config';
 import { getNotificationsList } from '../../actions/notifications';
+import { getAppInfo } from '../../actions/info';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -36,8 +37,10 @@ export default function HomePage({ navigation }) {
 
   const isLoading = useSelector(state => state.auth.isLoading);
   const orders = useSelector(state => state.orders);
+  const appInfo = useSelector(state => state.info);
 
   useEffect(() => {
+    dispatch(getAppInfo());
     dispatch(getAllOrder(userData?.id));
   }, [orders.length]);
 
@@ -162,7 +165,7 @@ export default function HomePage({ navigation }) {
   const renderList = ({item, index}) => {
     let pickupTime = item.pickupDateTime.split(" ");
     return(
-      <View style={userStyle.orderListHolder}>
+      <View key={index} style={userStyle.orderListHolder}>
         <TouchableOpacity 
           onPress={() => navigation.navigate('Details', {
             id: item.orderId,

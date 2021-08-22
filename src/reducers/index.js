@@ -4,6 +4,8 @@ import location from './location';
 import payment from './payment';
 import orders from './order';
 import notifications from './notifications';
+import info from './info';
+import itemList from './itemList';
 
 export default combineReducers({
     auth,
@@ -11,4 +13,6 @@ export default combineReducers({
     payment,
     orders,
     notifications,
+    info,
+    itemList
 });
