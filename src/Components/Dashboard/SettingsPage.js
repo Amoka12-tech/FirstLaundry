@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StatusBar } from 'react-native';
+import { View, Text, StatusBar, TouchableOpacity, Linking } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAppInfo } from '../../actions/info';
 import { getItems } from '../../actions/order';
 import { primaryColor } from '../../Theme/color';
 import styles from '../../Theme/styles/user';
 import Spinner from 'react-native-loading-spinner-overlay';
+import logo from '../../Theme/image/logo.png';
+import { Image } from 'react-native-elements';
+import { phoneCall, whatsapp } from '../../Theme/icons';
 
 export default function SettingsPage() {
   const dispatch = useDispatch();
@@ -30,12 +33,26 @@ export default function SettingsPage() {
             color={primaryColor}
         />
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>{appInfo?.appName}</Text>
+        <Image source={logo} resizeMode="contain" containerStyle={{ width: 120, height: 120 }} />
+        <Text style={styles.topNavText}>{appInfo?.appName}</Text>
         <Text>{appInfo?.office}</Text>
         <Text>{appInfo?.email}</Text>
-        <Text>{appInfo?.phone}</Text>
-        <Text>{appInfo?.whatsapp}</Text>
-        <Text>{appInfo?.website}</Text>
+        <TouchableOpacity 
+          onPress={() => Linking.openURL(`tel:${appInfo?.phone}`)}
+          style={{ display: 'flex', flexDirection: 'row', marginBottom: 10, marginTop: 10 }}>
+          <Image source={phoneCall} resizeMode="contain" containerStyle={{ width: 20, height: 20, marginRight: 5, }} />
+          <Text>{appInfo?.phone}</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          onPress={() => Linking.openURL(`whatsapp://send?text=hello&phone=${appInfo?.phone}`)}
+          style={{ display: 'flex', flexDirection: 'row', marginBottom: 10, marginTop: 10 }}>
+          <Image source={whatsapp} resizeMode="contain" containerStyle={{ width: 20, height: 20, marginRight: 5, }} />
+          <Text>{appInfo?.whatsapp}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => Linking.openURL(appInfo?.website)}>
+          <Text>{appInfo?.website}</Text>
+        </TouchableOpacity>
       </View>
      </View>
   );

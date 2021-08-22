@@ -22,10 +22,35 @@ export default function SearchPage({ navigation }) {
 
   const formatter = new Intl.NumberFormat('en-US');
 
+  const searchOrder = (param) => {
+    const orderId = param.startsWith("#") ? param.substring(1) : param;
+    if(orderId.length > 5){
+      const newOrder = ordersList.filter((item, index) => item.orderId === orderId);
+      if(newOrder.length > 0){
+        setOrdersList(newOrder);
+      }
+    }
+  };
+
+  const cancelSearch = () => setOrdersList(orders);
+
   const headerView = () => {
+    const [query, setQuery] = useState('');
     return(
       <View style={userStyle.topNavHolder}>
-        <Input placeholder="Search Order with ID" placeholderTextColor={grey} />
+        <Input 
+          value={query}
+          onChangeText={(value) => {searchOrder(value); setQuery(value)}}
+          placeholder="Search Order with ID" 
+          placeholderTextColor={grey} 
+          rightIcon={{
+            type:"antdesign",
+            name:"close",
+            size: 20,
+            color: primaryColor,
+            onPress: cancelSearch,
+          }}
+          />
       </View>
     )
   };

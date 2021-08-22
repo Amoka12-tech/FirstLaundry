@@ -8,5 +8,7 @@ import iron from './iron.png';
 import dry from './dry.png';
 import banner from './Banner.png';
 import toFro from './line.png';
+import whatsapp from './whatsapp.png';
+import phoneCall from './phone-call.png';
 
-export { wash, fold, iron, dry, banner, toFro, confirmIcon, dispatchIcon, inProgressIcon, deliveredIcon };
+export { wash, fold, iron, dry, banner, toFro, confirmIcon, dispatchIcon, inProgressIcon, deliveredIcon, whatsapp, phoneCall };
