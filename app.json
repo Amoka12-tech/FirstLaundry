@@ -23,6 +23,11 @@
     },
     "android": {
       "package": "ng.com.firstlink.smartlaundry",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyC3uWFVOf2GYoZwwiaHMr9FQKn9yAoqLdo"
+        }
+      },
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",

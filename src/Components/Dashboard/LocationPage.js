@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -97,6 +97,7 @@ export default function LocationPage({ navigation, route }) {
             <MapView style={styles.mapViewStyle}
                     mapType="mutedStandard"
                     initialRegion={initialRegion}
+                    provider={PROVIDER_GOOGLE}
                 >
                     {pickupLatLng.latitude !== null && <Marker 
                         draggable={true}
