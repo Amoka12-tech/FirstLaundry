@@ -38,7 +38,7 @@ const LandingPage = ({ navigation }) => {
 
             <View style={authStyle.brandHolderLanding}>
                 <Image style={authStyle.brandLogo} source={require('../Theme/image/logo.png')} />
-                <Text style={authStyle.brandTitle}>First Laundry</Text>
+                <Text style={authStyle.brandTitle}>Smart Laundry</Text>
             </View>
             
             <GestureRecognizer 

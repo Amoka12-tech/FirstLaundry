@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "FirstLaundry",
-    "slug": "FirstLaundry",
+    "name": "Smart Laundry",
+    "slug": "Smart Laundry",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

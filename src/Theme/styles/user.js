@@ -748,14 +748,14 @@ export default StyleSheet.create({
         display: 'flex',
         width: '100%',
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         marginTop: 10,
         padding: 10,
     },
 
     locationInputIcon: {
         width: 24,
-        height: 67,
+        height: 87,
     },
 
     locationInputFormHolder: {

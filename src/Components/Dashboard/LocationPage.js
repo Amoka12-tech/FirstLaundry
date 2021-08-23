@@ -151,10 +151,14 @@ export default function LocationPage({ navigation, route }) {
                         <GooglePlacesAutocomplete
                             styles={{ container: {
                                 flex: 0,
+                                padding: 0,
+                                margin: 0,
                             },
-                            textInput: { fontSize: 18, }
+                            textInput: { fontSize: 18, },
+                            textInputContainer: { margin: 0, }
                         }}
-                            placeholder={!!pickupAddress ? pickupAddress : 'Pickup from Where'}
+                            placeholder={'Pickup from Where'}
+                            textInputProps={{ value: pickupAddress }}
                             minLength={2}
                             autoFocus={true}
                             fetchDetails={true}
@@ -175,9 +179,11 @@ export default function LocationPage({ navigation, route }) {
                             styles={{ container: {
                                 flex: 0,
                             },
-                            textInput: { fontSize: 18, }
+                            textInput: { fontSize: 18, },
+                            textInputContainer: { margin: 0, padding: 0, }
                         }}
-                            placeholder={!!deliveryAddress ? deliveryAddress : 'Delivery to Where'}
+                            placeholder={'Delivery to Where'}
+                            textInputProps={{ value: deliveryAddress }}
                             minLength={2}
                             autoFocus={true}
                             fetchDetails={true}

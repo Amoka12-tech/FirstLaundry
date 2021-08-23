@@ -98,6 +98,12 @@ export default function ConfirmOrderPage({ navigation, route }) {
         }
     };//Function that send the order to api
 
+    useEffect(() => {
+        if(payment?.paymentStatus === true && locationData?.pickupAddressName !== null && locationData?.deliveryAddressName !== null){
+            onSubmit();
+        }
+    },[payment?.paymentStatus]);
+
   return (
     <View style={styles.confirmPageMain}>
         <StatusBar backgroundColor={'transparent'} barStyle="dark-content" />
@@ -238,8 +244,12 @@ export default function ConfirmOrderPage({ navigation, route }) {
                             checkedIcon='check-circle-o'
                             uncheckedIcon='circle-o'
                             onPress={() => {
-                                setPaymentMethod('bank');
-                                dispatch(optBankPayment());
+                                if(payment?.paymentStatus !== true){
+                                    setPaymentMethod('bank');
+                                    dispatch(optBankPayment());
+                                }else{
+                                    alert('Payment already processed for this order using card');
+                                }
                             }}
                             checked={paymentMethod === "bank" ? true : false}
                             size={20}

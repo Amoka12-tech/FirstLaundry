@@ -38,45 +38,52 @@ const Main = ({ navigation }) => {
     }
   }, []);
 
+  const payment = useSelector(state => state.payment);
+
   //Add Item to selectedItems
   const addItem = (item, index) => {
-    if(selectedItems.length === 0){
-      item.count = 1;
-      item.order = [{ type: item.type, price: item.price }];
-      setSelectedItems([...selectedItems, item]);
-      setTotalCount(totalCount+ 1);
-      setTotalPrice(totalPrice + item.price);
-    }else{
-      //Check is selected item includes the item id
-      const newBody = { type: item.type, price: item.price }
-      const checkItem = selectedItems.find((value) => value.id === item.id);
-      if(!!checkItem){
-        for(const [key, value] of Object.entries(selectedItems)){
-          if(value.id === item.id){
-            selectedItems[key].count += 1;
-            selectedItems[key].order = [...selectedItems[key].order, newBody];
-            setSelectedItems([...selectedItems]);
-            setTotalCount(totalCount+ 1);
-            setTotalPrice(totalPrice + item.price);
-            // console.log('increase');
-          }
-        }
-      }else{
+    if(payment?.paymentStatus !== true){
+      if(selectedItems.length === 0){
         item.count = 1;
         item.order = [{ type: item.type, price: item.price }];
-        // selectedItems.push(item);
         setSelectedItems([...selectedItems, item]);
         setTotalCount(totalCount+ 1);
         setTotalPrice(totalPrice + item.price);
-        // console.log([...selectedItems]);
+      }else{
+        //Check is selected item includes the item id
+        const newBody = { type: item.type, price: item.price }
+        const checkItem = selectedItems.find((value) => value.id === item.id);
+        if(!!checkItem){
+          for(const [key, value] of Object.entries(selectedItems)){
+            if(value.id === item.id){
+              selectedItems[key].count += 1;
+              selectedItems[key].order = [...selectedItems[key].order, newBody];
+              setSelectedItems([...selectedItems]);
+              setTotalCount(totalCount+ 1);
+              setTotalPrice(totalPrice + item.price);
+              // console.log('increase');
+            }
+          }
+        }else{
+          item.count = 1;
+          item.order = [{ type: item.type, price: item.price }];
+          // selectedItems.push(item);
+          setSelectedItems([...selectedItems, item]);
+          setTotalCount(totalCount+ 1);
+          setTotalPrice(totalPrice + item.price);
+          // console.log([...selectedItems]);
+        }
+        //End of else for selected item not null
       }
-      //End of else for selected item not null
+    }else{
+      alert("Payment proccessed for incomplete order, please click Confirm and Place order");
     }
   };
 
   //Remove Item from selectedItems
   const removeItem = (item, index) => {
-    const newBody = { type: item.type, price: item.price }
+    if(payment?.paymentStatus !== true){
+      const newBody = { type: item.type, price: item.price }
     if(selectedItems.length > 0){
       const checkItem = selectedItems.find((value) => value.id === item.id);
       if(!!checkItem)//yes item found
@@ -145,6 +152,9 @@ const Main = ({ navigation }) => {
             }//we get the specific item with the id
         }
       } //End of item found
+    }
+    }else{
+      alert("Payment proccessed for incomplete order, please click Confirm and Place order");
     }
   };
 

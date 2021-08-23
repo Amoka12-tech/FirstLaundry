@@ -48,7 +48,7 @@ export default function LoginPage({ navigation }) {
         <View style={authStyle.brandHolder}>
           <Image style={authStyle.brandLogo} resizeMode={'contain'} source={require('../../Theme/image/logo.png')} />
           <Text style={authStyle.brandTitle}>
-              First Laundry
+              Smart Laundry
           </Text>
         </View>
 
