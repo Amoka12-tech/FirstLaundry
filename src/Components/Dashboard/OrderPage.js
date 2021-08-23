@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StatusBar, FlatList } from 'react-native'
 import styles from '../../Theme/styles/user';
 import { Icon, Image } from 'react-native-elements';
 import { black, primaryColor, white } from '../../Theme/color';
-import { Picker } from '@react-native-picker/picker';
+import { Picker, PickerIOS } from '@react-native-picker/picker';
 import customList from '../../../Item.json';
 import { linkApi } from '../../../config';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -15,6 +15,7 @@ import LocationPage from './LocationPage';
 import PaymentPage from './PaymentPage';
 import { useDispatch, useSelector } from 'react-redux';
 import { getItems } from '../../actions/order';
+import { Platform } from 'react-native';
 
 
 const Stack = createStackNavigator();
@@ -195,6 +196,7 @@ const Main = ({ navigation }) => {
   const listHolder = ({item, index}) => {
     let count = 0;
     let orderList = [];
+    let selectedValue = "wash_iron";
     const selectIndex = selectedItems.findIndex(value => value.id === item.id);
        if(selectIndex !== -1) {
           count = selectedItems[selectIndex].count;
@@ -217,14 +219,20 @@ const Main = ({ navigation }) => {
                 <Text style={styles.itemTextPrice}>
                   {`₦${item.price}`}</Text>
                 <Picker 
-                  itemStyle={{ width: 120 }}
+                  itemStyle={{ width: 120, height: Platform.OS === 'ios'? 100 : 80 }}
                   style={styles.pickerStyle} 
-                  selectedValue={''} onValueChange={(value, itemIndex) => {
+                  selectedValue={Platform.OS === 'ios' ? item.type === "dry"? item.dry : 
+                  item.type === "iron"? item.iron : 
+                  item.type === "fold"? item.fold : 
+                  item.type === "wash"? item.wash :
+                  item.wash_iron : ''}
+                  onValueChange={(value, itemIndex) => {
                     itemList[index].price = value;
                     itemList[index].type = itemIndex === 4 ? "dry" : 
                       itemIndex === 3 ? "iron" : 
                       itemIndex === 2 ?  "fold" : itemIndex === 1 ? "wash" : "wash_iron";
                     setItemList([...itemList]);
+                    selectedValue = itemList[index].type;
                   }}>
                   <Picker.Item value={item.wash_iron} label={'Laundry'} />
                   <Picker.Item value={item.wash} label={'Wash'} />

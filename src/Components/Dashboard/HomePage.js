@@ -1,9 +1,6 @@
-import { Constants } from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import React, { useEffect, useState, useRef } from 'react';
-import { Animated, Easing, FlatList, TouchableOpacity } from 'react-native';
-import { StatusBar } from 'react-native';
-import { View, Text } from 'react-native';
+import { View, Text, Animated, Easing, FlatList, TouchableOpacity, StatusBar } from 'react-native';
 import { Avatar, Button, Icon, Image, Input } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, registerForPushNotificationsAsync } from '../../actions/auth';
@@ -108,7 +105,11 @@ export default function HomePage({ navigation }) {
         </View>
         
         {/* Services start here */}
-        <View style={userStyle.servicesHolder}>
+        <TouchableOpacity 
+          onPress={() => {
+            navigation.navigate('Order')
+          }}
+          style={userStyle.servicesHolder}>
           <Text style={userStyle.serviceTitle}>Services</Text>
           <View style={userStyle.serviceListHolder}>
             {/* service 1 */}
@@ -132,7 +133,7 @@ export default function HomePage({ navigation }) {
               <Text style={userStyle.serviceListItemText} >Dry</Text>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Banner here */}
         <View style={userStyle.bannerHolder}>

@@ -22,6 +22,7 @@ import { setDeliveryLocation, setPickuptLocation } from '../../actions/location'
 import { optBankPayment } from '../../actions/payment';
 import { getDiscount, placeOrder } from '../../actions/order';
 import moment from 'moment-timezone';
+import { Platform } from 'react-native';
 
 export default function ConfirmOrderPage({ navigation, route }) {
     const dispatch = useDispatch();
@@ -226,7 +227,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
                             checked={paymentMethod === "card" ? true : false}
                             size={20}
                             checkedColor={primaryColor}
-                            containerStyle={{ width: 25, height: 25, alignItems: 'center', justifyContent: 'center' }}
+                            containerStyle={{ width: 25, height: Platform.OS === 'android'? 25 : 40, alignItems: 'center', justifyContent: 'center' }}
                         />
                         <Text style={styles.schedulePaymentText}>
                             Card Payment
@@ -254,7 +255,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
                             checked={paymentMethod === "bank" ? true : false}
                             size={20}
                             checkedColor={primaryColor}
-                            containerStyle={{ width: 25, height: 25, alignItems: 'center', justifyContent: 'center' }}
+                            containerStyle={{ width: 25, height: Platform.OS === 'android'? 25 : 40, alignItems: 'center', justifyContent: 'center' }}
                         />
                         <Text style={styles.schedulePaymentText}>
                             BanK Transfer

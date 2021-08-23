@@ -10,6 +10,7 @@ import InvoicePage from '../Dashboard/InvoicePage';
 import SettingsPage from '../Dashboard/SettingsPage';
 import Svg, { Path } from "react-native-svg"
 import { TouchableOpacity } from 'react-native';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 const Tab = createBottomTabNavigator();
 
@@ -50,6 +51,17 @@ const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
     );
 };
 
+const CustomTabBar = (props) => {
+    if(isIphoneX === true){return(
+        <View>
+            <View style={{ position: 'absolute', bottom: 0, right: 0, left: 0, height: 30, backgroundColor: white, }} />
+            <BottomTabBar {...props.props} />
+        </View>
+    );}else{
+        return(<BottomTabBar {...props.props} />)
+    }
+};
+
 export default function BottomTabs() {
   return (
     <Tab.Navigator 
@@ -65,6 +77,9 @@ export default function BottomTabs() {
                 elevation: 0,
             }
          }}
+         tabBar={(props) => (
+             <CustomTabBar props={props} />
+         )}
     >
         <Tab.Screen 
             name="Home"

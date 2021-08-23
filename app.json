@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "Smart Laundry",
-    "slug": "Smart Laundry",
+    "slug": "SmartLaundry",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon.jpg",
     "splash": {
       "image": "./assets/firstLaundry.png",
       "resizeMode": "contain",
@@ -19,7 +19,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "ng.com.firstlink.smartlaundry",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "config": {
+        "googleMapsApiKey": "AIzaSyAomyFFXSqK1kZnNmVvNs_0S7Igj5C2f4E"
+      }
     },
     "android": {
       "googleServicesFile": "./google-services.json",

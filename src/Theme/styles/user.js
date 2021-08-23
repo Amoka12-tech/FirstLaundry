@@ -2,6 +2,7 @@ import { Dimensions, StyleSheet } from "react-native";
 import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers";
 import { black, grey, inputBg, lightSecondary, offWhite, primaryColor, red, secondaryColor, white } from "../color";
 import { bold, h2, h3, h4, h5, medium, p, regular } from "../fonts";
+import { isIphoneX } from 'react-native-iphone-x-helper';
 
 export default StyleSheet.create({
     mainContainer: {
@@ -13,6 +14,7 @@ export default StyleSheet.create({
         width: '100%',
         flexDirection: 'column',
         padding: 20,
+        marginTop: isIphoneX === true ? 35 : 0,
     },
 
     mainPersonHolder: {
@@ -342,6 +344,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        marginTop: isIphoneX === true ? 35 : 0,
     },
 
     topNavText: {
@@ -460,7 +463,7 @@ export default StyleSheet.create({
         flexDirection: 'column',
         padding: 10,
         position: 'absolute',
-        bottom: 0,
+        bottom: isIphoneX === true ? 30 : 0,
         width: ScreenWidth,
         backgroundColor: white,
         borderTopLeftRadius: 15,
