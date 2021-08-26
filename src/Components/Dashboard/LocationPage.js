@@ -42,6 +42,14 @@ export default function LocationPage({ navigation, route }) {
     const pickupAddress = locationData?.pickupAddressName;
     const deliveryAddress = locationData?.deliveryAddressName;
 
+    const [valuePAddress, setValuePAddress] = useState(pickupAddress);
+    const [valueDAddress, setValueDAddress] = useState(deliveryAddress);
+
+    useEffect(() => {
+        setValuePAddress(pickupAddress);
+        setValueDAddress(deliveryAddress);
+    }, [pickupAddress, deliveryAddress]);
+
     //UseEffect to get current location
     useEffect(() => {
         if(pickupAddress === null){(async () => {
@@ -158,13 +166,14 @@ export default function LocationPage({ navigation, route }) {
                             textInputContainer: { margin: 0, }
                         }}
                             placeholder={'Pickup from Where'}
-                            textInputProps={{ value: pickupAddress }}
+                            textInputProps={{ value: valuePAddress, onChangeText: (text) => setValuePAddress(text) }}
                             minLength={2}
                             autoFocus={true}
                             fetchDetails={true}
                             listViewDisplayed={false}
                             onPress={(data, details = null) => {
                                 dispatch(setPickuptLocation(data, details));
+                                margeLocation(false);
                             }}
                             query={{
                                 key: GOOGLE_MAP_API_KEY,
@@ -183,7 +192,7 @@ export default function LocationPage({ navigation, route }) {
                             textInputContainer: { margin: 0, padding: 0, }
                         }}
                             placeholder={'Delivery to Where'}
-                            textInputProps={{ value: deliveryAddress }}
+                            textInputProps={{ value: valueDAddress, onChangeText: (text) => setValueDAddress(text) }}
                             minLength={2}
                             autoFocus={true}
                             fetchDetails={true}

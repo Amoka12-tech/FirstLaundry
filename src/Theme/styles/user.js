@@ -3,6 +3,7 @@ import { ScreenHeight, ScreenWidth } from "react-native-elements/dist/helpers";
 import { black, grey, inputBg, lightSecondary, offWhite, primaryColor, red, secondaryColor, white } from "../color";
 import { bold, h2, h3, h4, h5, medium, p, regular } from "../fonts";
 import { isIphoneX } from 'react-native-iphone-x-helper';
+import { Platform } from "react-native";
 
 export default StyleSheet.create({
     mainContainer: {
@@ -14,7 +15,7 @@ export default StyleSheet.create({
         width: '100%',
         flexDirection: 'column',
         padding: 20,
-        marginTop: isIphoneX === true ? 35 : 0,
+        marginTop: isIphoneX === true ? 35 : Platform.OS === 'ios' && isIphoneX !== true ? 25 : 0,
     },
 
     mainPersonHolder: {
@@ -344,7 +345,8 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: isIphoneX === true ? 35 : 0,
+        marginTop: isIphoneX === true ? 35 : Platform.OS === 'ios' && isIphoneX !== true ? 30 : 0,
+        paddingLeft: 10,
     },
 
     topNavText: {
@@ -739,7 +741,7 @@ export default StyleSheet.create({
     locationTopNav: {
         display: 'flex',
         width: '100%',
-        marginTop: 10,
+        marginTop: isIphoneX === true ? 35 : Platform.OS === 'ios' && isIphoneX !== true ? 25 : 10,
         paddingLeft: 10,
         paddingRight: 10,
         flexDirection: 'row',
