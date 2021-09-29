@@ -136,9 +136,13 @@ export default function HomePage({ navigation }) {
         </TouchableOpacity>
 
         {/* Banner here */}
-        <View style={userStyle.bannerHolder}>
+        <TouchableOpacity 
+          onPress={() => {
+            navigation.navigate('Order')
+          }}
+          style={userStyle.bannerHolder}>
           <Image source={banner} style={userStyle.bannerImage} />
-        </View>
+        </TouchableOpacity>
 
         {/* Recent Orders here */}
         <View style={{ display: 'flex', width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

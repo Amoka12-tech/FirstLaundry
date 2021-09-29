@@ -57,6 +57,7 @@ export default function LocationPage({ navigation, route }) {
           let { status } = await Location.requestForegroundPermissionsAsync();
           if (status !== 'granted') {
             alert('Permission to access location was denied');
+            setIsLoading(false);
             return;
           }
     
