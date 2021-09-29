@@ -27,17 +27,14 @@ export default StyleSheet.create({
 
     brandHolderLanding: {
         display: 'flex',
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 40,
+        height: 100,
+        marginBottom: 100,
         marginTop: 80,
     },
 
     brandLogo: {
-        width: 80,
-        height: 80,
+        width: 100,
+        height: 100,
         resizeMode: 'contain',
         marginRight: 0,
     },

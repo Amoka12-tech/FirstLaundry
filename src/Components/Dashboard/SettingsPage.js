@@ -34,7 +34,6 @@ export default function SettingsPage() {
         />
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Image source={logo} resizeMode="contain" containerStyle={{ width: 120, height: 120 }} />
-        <Text style={styles.topNavText}>{appInfo?.appName}</Text>
         <Text>{appInfo?.office}</Text>
         <Text>{appInfo?.email}</Text>
         <TouchableOpacity 
