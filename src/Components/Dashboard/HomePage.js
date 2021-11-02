@@ -9,7 +9,7 @@ import { userStyle } from '../../Theme/styles';
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 
-import { wash, fold, iron, dry, banner, toFro, confirmIcon, dispatchIcon, inProgressIcon, deliveredIcon } from '../../Theme/icons';
+import { clean, wash, fold, iron, dry, banner, toFro, confirmIcon, dispatchIcon, inProgressIcon, deliveredIcon } from '../../Theme/icons';
 import noPics from '../../Theme/image/noPics.png';
 import { updateUser } from '../../actions/user';
 import { getAllOrder, getOrder } from '../../actions/order';
@@ -19,6 +19,9 @@ import 'intl/locale-data/jsonp/en'; // or any other locale you need
 import { APPCURRENCY } from '../../../config';
 import { getNotificationsList } from '../../actions/notifications';
 import { getAppInfo } from '../../actions/info';
+import { ScrollView } from 'react-native-gesture-handler';
+
+import { FloatingAction } from "react-native-floating-action";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -28,14 +31,14 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default function HomePage({ navigation }) {
+export default function HomePage({ navigation, route }) {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.auth.user);
 
   const isLoading = useSelector(state => state.auth.isLoading);
   const orders = useSelector(state => state.orders);
   const appInfo = useSelector(state => state.info);
-
+  
   useEffect(() => {
     dispatch(getAppInfo());
     dispatch(getAllOrder(userData?.id));
@@ -51,6 +54,8 @@ export default function HomePage({ navigation }) {
   const [personName, setPersonName] = useState(userData?.name);
   const [personNameErr, setPersonNameErr] = useState('');
   const [personPhoneNumber, setPersonPhoneNumber] = useState(userData?.phone);
+  const [personEmail, setPersonEmail] = useState(userData?.email);
+  const [personEmailErr, setPersonEmailErr] = useState('');
 
   const [imageBase64, setImageBase64] = useState("");
 
@@ -105,35 +110,38 @@ export default function HomePage({ navigation }) {
         </View>
         
         {/* Services start here */}
-        <TouchableOpacity 
-          onPress={() => {
-            navigation.navigate('Order')
-          }}
-          style={userStyle.servicesHolder}>
+        <View style={userStyle.servicesHolder}>
           <Text style={userStyle.serviceTitle}>Services</Text>
-          <View style={userStyle.serviceListHolder}>
+          <ScrollView 
+            horizontal={false}
+            contentContainerStyle={userStyle.serviceListHolder}>
+            {/* service 0 */}
+            <TouchableOpacity style={userStyle.serviceListItem}>
+              <Image source={clean} style={userStyle.serviceListItemImage} />
+              <Text style={userStyle.serviceListItemText} >Clean</Text>
+            </TouchableOpacity>
             {/* service 1 */}
-            <View style={userStyle.serviceListItem}>
+            <TouchableOpacity style={userStyle.serviceListItem}>
               <Image source={wash} style={userStyle.serviceListItemImage} />
               <Text style={userStyle.serviceListItemText} >Wash</Text>
-            </View>
+            </TouchableOpacity>
             {/* service 2 */}
-            <View style={userStyle.serviceListItem}>
+            <TouchableOpacity style={userStyle.serviceListItem}>
               <Image source={fold} style={userStyle.serviceListItemImage} />
               <Text style={userStyle.serviceListItemText} >Fold</Text>
-            </View>
+            </TouchableOpacity>
             {/* service 1 */}
-            <View style={userStyle.serviceListItem}>
+            <TouchableOpacity style={userStyle.serviceListItem}>
               <Image source={iron} style={userStyle.serviceListItemImage} />
               <Text style={userStyle.serviceListItemText} >Iron</Text>
-            </View>
+            </TouchableOpacity>
             {/* service 1 */}
-            <View style={userStyle.serviceListItem}>
+            <TouchableOpacity style={userStyle.serviceListItem}>
               <Image source={dry} style={userStyle.serviceListItemImage} />
               <Text style={userStyle.serviceListItemText} >Dry</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
 
         {/* Banner here */}
         <TouchableOpacity 
@@ -231,7 +239,11 @@ export default function HomePage({ navigation }) {
 
   //Update user Data
   const updateUserData = () => {
-      if(personName !== '' || personPicture !== ''){
+      if(personName === ''){
+        setPersonNameErr('*Your name is required');
+      }else if(personEmail === ''){
+        setPersonEmailErr('*Your email is required');
+      }else if(personName !== '' || personPicture !== '' || personEmail !== ''){
         if(personName !== '' && personName.length < 3){
           setPersonNameErr("Name can not be less than three(3) characters");
         }else{
@@ -239,12 +251,13 @@ export default function HomePage({ navigation }) {
             userId: userData.id,
             picture: personPicture,
             name: personName,
+            email: personEmail,
             base64: imageBase64,
           };
           dispatch(updateUser(body, toggleEditModal)); //Send to api
         }
       }else{
-        alert('Your name or picture is required');
+        alert('Your picture is required');
       }
   };
 
@@ -298,6 +311,23 @@ export default function HomePage({ navigation }) {
     };
   }, []);
 
+  const fabActions = [
+    {
+      text: "Laundry",
+      icon: wash,
+      name: "laundry",
+      position: 1,
+      color: '#38106A',
+    },
+    {
+      text: "House Cleaning",
+      icon: clean,
+      name: "clean",
+      position: 2,
+      color: '#38106A',
+    }
+  ];
+
   return (
     <View style={userStyle.mainContainer}>
       <StatusBar 
@@ -309,6 +339,18 @@ export default function HomePage({ navigation }) {
         renderItem={renderList}
         keyExtractor={(item, index) => index.toString()}
         ListHeaderComponent={Header}
+      />
+
+      <FloatingAction 
+        actions={fabActions}
+        color="#CE1567"
+        onPressItem={(name) => {
+          if(name === 'laundry'){
+            navigation.navigate('Order');
+          }else{
+            navigation.navigate('HomeOrder');
+          }
+        }}
       />
 
       {/* This is modal */}
@@ -357,6 +399,16 @@ export default function HomePage({ navigation }) {
               value={personPhoneNumber}
               placeholder={'Phone Number'}
               disabled
+              inputStyle={userStyle.standardInput}
+              inputContainerStyle={userStyle.noInputBorder}
+            />
+            
+            <Input 
+              value={personEmail}
+              placeholder={'Email address'}
+              onChangeText={(value) => setPersonEmail(value)}
+              errorMessage={personEmailErr}
+              onFocus={() => setPersonEmailErr('')}
               inputStyle={userStyle.standardInput}
               inputContainerStyle={userStyle.noInputBorder}
             />

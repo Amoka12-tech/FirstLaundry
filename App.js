@@ -40,6 +40,8 @@ import { getUser } from './src/actions/user';
 import { ImageBackground } from 'react-native';
 import BottomTabs from './src/Components/navigation/tabs';
 import OrderDetails from './src/Components/Dashboard/OrderDetails';
+import OrderPage from './src/Components/Dashboard/OrderPage';
+import HomeOrder from './src/Components/Dashboard/HomeOrder';
 
  const MainStack = createStackNavigator();
 
@@ -89,6 +91,8 @@ export default function App() {
 
   const privateScreen = {
     Home: BottomTabs,
+    Order: OrderPage,
+    HomeOrder: HomeOrder,
     Details: OrderDetails,
   };
 

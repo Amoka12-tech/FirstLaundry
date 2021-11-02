@@ -27,7 +27,7 @@ export const getUser = () => async dispatch => {
 }; 
 
 export const updateUser = (body, toggle) => async dispatch => {
-    const { userId, picture, name, base64 } = body;
+    const { userId, picture, name, email, base64 } = body;
     try {
         dispatch({type: START_PROCESS});
         if(picture !== ''){ //If user select picture let this function run
@@ -42,13 +42,15 @@ export const updateUser = (body, toggle) => async dispatch => {
             const newBody = {
                 userId: userId,
                 picture: data?.secure_url,
-                name: name
+                name: name,
+                email: email,
             };// newBody with secure_url to upload image.
             await userApi.updateUser(newBody, headers); //Send to api
             const userData = await AsyncStorage.getItem("@user"); //get initial local storage
             const perserData = JSON.parse(userData); //convert initial local storage to json perser
             perserData.name = newBody?.name;
-            perserData.picture = newBody?.picture; // append picture and name to initial local storage
+            perserData.picture = newBody?.picture;
+            perserData.email = newBody?.email; // append picture and name to initial local storage
             await AsyncStorage.setItem("@user", JSON.stringify(perserData)); //set update local storage
             dispatch({type: UPDATE_USER, payload: perserData});
             alert('You data is now updated');
@@ -58,12 +60,14 @@ export const updateUser = (body, toggle) => async dispatch => {
         }else{ //else this function run
             const newBody = {
                 userId: userId,
-                name: name
+                name: name,
+                email: email,
             }
             await userApi.updateUser(newBody, headers);
             const userData = await AsyncStorage.getItem("@user"); //get initial local storage
             const perserData = JSON.parse(userData); //convert initial local storage to json perser
-            perserData.name = newBody?.name; // append name to initial local storage
+            perserData.name = newBody?.name; 
+            perserData.email = newBody?.email; // append name to initial local storage
             await AsyncStorage.setItem("@user", JSON.stringify(perserData)); //set update local storage
             dispatch({type: UPDATE_USER, payload: perserData});
             alert('You data is now updated');

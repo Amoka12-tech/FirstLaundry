@@ -17,12 +17,16 @@ export default function RegisterPage({ navigation }) {
   const [passwordErr, setPasswordErr] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordErr, setConfirmPasswordErr] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailErr, setEmailErr] = useState("");
 
   const [isPassVisible, setIsPassVisible] = useState(true);
   const toggleIsVisible = () => setIsPassVisible(!isPassVisible);
 
   const onSubmit = () => {
-    if(phoneNumber === "" || phoneNumber.length < 11){
+    if(email === ""){
+      setEmailErr("*Email address is required");
+    }else if(phoneNumber === "" || phoneNumber.length < 11){
       setPhoneNumberErr("*Phone number is required");
     }else if(password === ""){
       setPasswordErr("*Password is required");
@@ -33,6 +37,7 @@ export default function RegisterPage({ navigation }) {
     }else{
       const body = {
         phone: phoneNumber,
+        email: email,
         passWord: password
       };
       dispatch(register(body, navigation));
@@ -79,6 +84,17 @@ export default function RegisterPage({ navigation }) {
 
         {/* Email Input */}
         <Input 
+          value={email}
+          onChangeText={(value) => setEmail(value)}
+          placeholder="Email address"
+          keyboardType="email-address"
+          inputStyle={authStyle.loginInput}
+          inputContainerStyle={authStyle.noBorder}
+          errorMessage={emailErr}
+          onFocus={() => setEmailErr("")}
+        />
+
+        <Input 
           value={phoneNumber}
           onChangeText={(value) => setPhoneNumber(value)}
           placeholder="Phone number"
@@ -112,7 +128,7 @@ export default function RegisterPage({ navigation }) {
         <Input 
           value={confirmPassword}
           onChangeText={(value) => setConfirmPassword(value)}
-          placeholder="Confirm New password"
+          placeholder="Confirm new password"
           secureTextEntry={isPassVisible}
           inputStyle={authStyle.loginInput}
           inputContainerStyle={authStyle.noBorder}

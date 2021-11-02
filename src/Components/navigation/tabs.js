@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { createBottomTabNavigator, BottomTabBar } from "@react-navigation/bottom-tabs";
 import HomePage from '../Dashboard/HomePage';
@@ -11,6 +11,9 @@ import SettingsPage from '../Dashboard/SettingsPage';
 import Svg, { Path } from "react-native-svg"
 import { TouchableOpacity } from 'react-native';
 import { isIphoneX } from 'react-native-iphone-x-helper';
+import { userStyle } from '../../Theme/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateTogglesOption } from '../../actions/togglesOpt';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +21,7 @@ const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
     const isSelected = accessibilityState.selected;
     return(
         <View style={{ flex: 1, alignItems: 'center' }}>
-            <View style={{ flexDirection: 'row', position: isSelected ? 'relative' : 'absolute', top: 0 }}>
+            <View style={{ flexDirection: 'row', position: isSelected ? 'relative' : 'absolute', bottom: 0 }}>
                 <View style={{ flex: 1, backgroundColor: white }} />
                 <Svg
                     width="75"
@@ -32,6 +35,7 @@ const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
                 </Svg>
                 <View style={{ flex: 1, backgroundColor: white }} />
             </View>
+            
 
             <TouchableOpacity 
             style={{
@@ -43,7 +47,7 @@ const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
                 borderRadius: 25,
                 backgroundColor: white,
             }}
-            onPress={onPress}
+            // onPress={onPress}
             >
                 {children}
             </TouchableOpacity>
@@ -111,7 +115,7 @@ export default function BottomTabs() {
             }}
         />
 
-        <Tab.Screen 
+        {/* <Tab.Screen 
             name="Order"
             component={OrderPage}
             options={{
@@ -122,16 +126,12 @@ export default function BottomTabs() {
                         size={40}
                         color={primaryColor}
                         iconStyle={{ zIndex: 10 }}
-                    />
-                ),
-                tabBarButton: (props) => (
-                    <TabBarCustomButton 
-                        {...props}
+                        
                     />
                 ),
                 tabBarVisible: false,
             }}
-        />
+        /> */}
 
         <Tab.Screen 
             name="Notification"

@@ -39,7 +39,7 @@ export default function VerifyPage({ navigation, route }) {
         id: userId,
         code: digitOne+digitTwo+digitThree+digitFour+digitFive+digitSix,
       };
-      console.log(userId);
+      // console.log(userId);
       dispatch(verify(body, page, navigation));
     }
   };
@@ -49,8 +49,9 @@ export default function VerifyPage({ navigation, route }) {
       const body = {
         id: userData?.id,
         phone: userData?.phone,
+        email: userData?.email,
       };
-      console.log(body);
+      // console.log(body);
       dispatch(resendOtp(body));
     }else{
       alert('You lost your current session, login again and try resend');
@@ -105,9 +106,10 @@ export default function VerifyPage({ navigation, route }) {
               value={digitOne}
               onChangeText={(value) => {
                 setDigitOne(value);
-                  d2Ref.current.focus();
+                  value !== "" && d2Ref.current.focus();
                 
               }}
+              keyboardType="number-pad"
               maxLength={1}
               onFocus={() => setErrorMessage("")}
               containerStyle={authStyle.singleInputCont}
@@ -120,10 +122,11 @@ export default function VerifyPage({ navigation, route }) {
               value={digitTwo}
               onChangeText={(value) => {
                 setDigitTwo(value);
-                  d3Ref.current.focus();
+                value !== "" && d3Ref.current.focus();
                 
               }}
               maxLength={1}
+              keyboardType="number-pad"
               onFocus={() => setErrorMessage("")}
               containerStyle={authStyle.singleInputCont}
               inputStyle={authStyle.singleInput}
@@ -135,10 +138,11 @@ export default function VerifyPage({ navigation, route }) {
               value={digitThree}
               onChangeText={(value) => {
                 setDigitThree(value);
-                  d4Ref.current.focus();
+                value !== "" && d4Ref.current.focus();
                 
               }}
               maxLength={1}
+              keyboardType="number-pad"
               onFocus={() => setErrorMessage("")}
               containerStyle={authStyle.singleInputCont}
               inputStyle={authStyle.singleInput}
@@ -150,10 +154,11 @@ export default function VerifyPage({ navigation, route }) {
               value={digitFour}
               onChangeText={(value) => {
                 setDigitFour(value);
-                  d5Ref.current.focus();
+                value !== "" && d5Ref.current.focus();
                 
               }}
               maxLength={1}
+              keyboardType="number-pad"
               onFocus={() => setErrorMessage("")}
               containerStyle={authStyle.singleInputCont}
               inputStyle={authStyle.singleInput}
@@ -165,10 +170,11 @@ export default function VerifyPage({ navigation, route }) {
               value={digitFive}
               onChangeText={(value) => {
                 setDigitFive(value);
-                  d6Ref.current.focus();
+                value !== "" && d6Ref.current.focus();
                 
               }}
               maxLength={1}
+              keyboardType="number-pad"
               onFocus={() => setErrorMessage("")}
               containerStyle={authStyle.singleInputCont}
               inputStyle={authStyle.singleInput}
@@ -182,6 +188,7 @@ export default function VerifyPage({ navigation, route }) {
                 setDigitSix(value);
               }}
               maxLength={1}
+              keyboardType="number-pad"
               onFocus={() => setErrorMessage("")}
               containerStyle={authStyle.singleInputCont}
               inputStyle={authStyle.singleInput}

@@ -6,6 +6,7 @@ import orders from './order';
 import notifications from './notifications';
 import info from './info';
 import itemList from './itemList';
+import togglesOpt from './togglesOpt';
 
 export default combineReducers({
     auth,
@@ -14,5 +15,6 @@ export default combineReducers({
     orders,
     notifications,
     info,
-    itemList
+    itemList,
+    togglesOpt
 });

@@ -238,7 +238,7 @@ export default StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         width: ScreenWidth/1.4,
-        height: 400,
+        height: 460,
         backgroundColor: white,
         borderRadius: 5,
         padding: 10,
@@ -318,6 +318,7 @@ export default StyleSheet.create({
         padding: 10,
         width: '100%',
         borderRadius: 8,
+        zIndex: 1,
     },
 
     standardCancelButton: {
@@ -457,6 +458,17 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+    },
+
+    //Popoup order option
+    fabPopoverHolder: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignSelf: 'center',
+        position: 'absolute',
+        bottom: 40,
+        backgroundColor: '#000',
+        zIndex: 1,
     },
 
     //Custom bottom sheet style
