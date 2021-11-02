@@ -1,4 +1,5 @@
 import * as Notifications from 'expo-notifications';
+import { copilot, walkthroughable, CopilotStep } from 'react-native-copilot';
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, Animated, Easing, FlatList, TouchableOpacity, StatusBar } from 'react-native';
 import { Avatar, Button, Icon, Image, Input } from 'react-native-elements';
@@ -31,13 +32,21 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default function HomePage({ navigation, route }) {
+const HomePage = (props) => {
+  const navigation = props.navigation;
+  const route = props.route;
   const dispatch = useDispatch();
   const userData = useSelector(state => state.auth.user);
 
   const isLoading = useSelector(state => state.auth.isLoading);
   const orders = useSelector(state => state.orders);
   const appInfo = useSelector(state => state.info);
+
+  useEffect(() => {
+    // props.copilotEvents.on('stepChange', (step) => console.log('Step: ',step.name));
+    if(orders.length === 0)
+    props.start();
+  }, []);
   
   useEffect(() => {
     dispatch(getAppInfo());
@@ -116,27 +125,42 @@ export default function HomePage({ navigation, route }) {
             horizontal={false}
             contentContainerStyle={userStyle.serviceListHolder}>
             {/* service 0 */}
-            <TouchableOpacity style={userStyle.serviceListItem}>
+            <TouchableOpacity 
+              style={userStyle.serviceListItem}
+              onPress={() => props.start()}
+              >
               <Image source={clean} style={userStyle.serviceListItemImage} />
               <Text style={userStyle.serviceListItemText} >Clean</Text>
             </TouchableOpacity>
             {/* service 1 */}
-            <TouchableOpacity style={userStyle.serviceListItem}>
+            <TouchableOpacity 
+              style={userStyle.serviceListItem}
+              onPress={() => navigation.navigate('Order')}
+              >
               <Image source={wash} style={userStyle.serviceListItemImage} />
               <Text style={userStyle.serviceListItemText} >Wash</Text>
             </TouchableOpacity>
             {/* service 2 */}
-            <TouchableOpacity style={userStyle.serviceListItem}>
+            <TouchableOpacity 
+              style={userStyle.serviceListItem}
+              onPress={() => navigation.navigate('Order')}
+              >
               <Image source={fold} style={userStyle.serviceListItemImage} />
               <Text style={userStyle.serviceListItemText} >Fold</Text>
             </TouchableOpacity>
-            {/* service 1 */}
-            <TouchableOpacity style={userStyle.serviceListItem}>
+            {/* service 3 */}
+            <TouchableOpacity 
+              style={userStyle.serviceListItem}
+              onPress={() => navigation.navigate('Order')}
+              >
               <Image source={iron} style={userStyle.serviceListItemImage} />
               <Text style={userStyle.serviceListItemText} >Iron</Text>
             </TouchableOpacity>
-            {/* service 1 */}
-            <TouchableOpacity style={userStyle.serviceListItem}>
+            {/* service 4 */}
+            <TouchableOpacity 
+              style={userStyle.serviceListItem}
+              onPress={() => navigation.navigate('Order')}
+              >
               <Image source={dry} style={userStyle.serviceListItemImage} />
               <Text style={userStyle.serviceListItemText} >Dry</Text>
             </TouchableOpacity>
@@ -328,6 +352,7 @@ export default function HomePage({ navigation, route }) {
     }
   ];
 
+  const WalkThroughableText = walkthroughable(View);
   return (
     <View style={userStyle.mainContainer}>
       <StatusBar 
@@ -341,7 +366,67 @@ export default function HomePage({ navigation, route }) {
         ListHeaderComponent={Header}
       />
 
-      <FloatingAction 
+      {/* User details update */}
+      <CopilotStep 
+        text="Click to update profile details"
+        order={1}
+        name='firstKey'
+      >
+        <WalkThroughableText style={{ position: 'absolute', top: 80, left: 25 }} />
+        
+      </CopilotStep>
+
+      {/* Order request */}
+      <CopilotStep 
+        text="Add a laundry/Cleaning service order here"
+        order={2}
+        name='secondKey'
+      >
+        <WalkThroughableText style={{ position: 'absolute', bottom: 50, right: 40 }} />
+        
+      </CopilotStep>
+
+      {/* Home */}
+      <CopilotStep 
+        text="Go to Home Screen"
+        order={3}
+        name='thirdKey'
+      >
+        <WalkThroughableText style={{ position: 'absolute', bottom: -40, left: 35 }} />
+        
+      </CopilotStep>
+
+      {/* Search */}
+      <CopilotStep 
+        text="Search for previous service orders"
+        order={4}
+        name='fourthKey'
+      >
+        <WalkThroughableText style={{ position: 'absolute', bottom: -40, left: 140 }} />
+        
+      </CopilotStep>
+
+      {/* Notifications */}
+      <CopilotStep 
+        text="View notifications"
+        order={5}
+        name='fifthKey'
+      >
+        <WalkThroughableText style={{ position: 'absolute', bottom: -40, left: 270 }} />
+        
+      </CopilotStep>
+
+      {/* Info */}
+      <CopilotStep 
+        text="App info"
+        order={6}
+        name='sixthKey'
+      >
+        <WalkThroughableText style={{ position: 'absolute', bottom: -40, left: 370 }} />
+        
+      </CopilotStep>
+
+      <FloatingAction
         actions={fabActions}
         color="#CE1567"
         onPressItem={(name) => {
@@ -434,3 +519,8 @@ export default function HomePage({ navigation, route }) {
      </View>
   );
 }
+
+export default copilot({
+  animated: true,
+  overlay: "svg"
+})(HomePage);

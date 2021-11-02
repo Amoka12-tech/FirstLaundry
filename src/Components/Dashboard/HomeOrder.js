@@ -33,8 +33,8 @@ export default function HomeOrder({ navigation }) {
         return(
             <View style={styles.itemMainContainer}>
                 <Header />
-                <View style={{ flex: 1 }}>
-                    <Text>Cleaning!</Text>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+                    <Text style={styles.itemTextHolder}>Cleaning service comming soon!</Text>
                 </View>
                 <View>
                     <TouchableOpacity style={styles.standardButton}>
