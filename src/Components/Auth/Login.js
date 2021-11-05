@@ -11,7 +11,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function LoginPage({ navigation }) {
     const dispatch = useDispatch();
-    const isLoading = useSelector(state => state.auth.isLoading);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [phoneNumber, setPhoneNumber] = useState("");
     const [phoneNumberErr, setPhoneNumberErr] = useState("");
@@ -31,7 +31,7 @@ export default function LoginPage({ navigation }) {
                 phone: phoneNumber,
                 passWord: password
             };
-            dispatch(login(body, navigation));
+            dispatch(login(body, navigation, setIsLoading));
         }
     };
   return (

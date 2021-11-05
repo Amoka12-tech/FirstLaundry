@@ -27,17 +27,29 @@ const Main = ({ navigation }) => {
   // console.log('Order: ',orderData);
   const eItemList = useSelector(state => state.itemList);
   
-  const [itemList, setItemList] = useState([]);
+  const [itemLister, setItemLister] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   let effectCount = 0;
 
+  const [serviceType, setServiceType] = useState('standard');
+
+  const [itemList, setItemList] = useState([]);
+
   useEffect(() => {
     if(itemList?.length === 0){
-      dispatch(getItems(setItemList));
+      dispatch(getItems(setItemLister));
     }
   }, []);
+
+  useEffect(() => {
+    if(serviceType === 'standard'){
+      setItemList(itemLister[0]);
+    }else{
+      setItemList(itemLister[1]);
+    }
+  },[serviceType, itemLister]);
 
   const payment = useSelector(state => state.payment);
 
@@ -174,22 +186,36 @@ const Main = ({ navigation }) => {
 
   //Top header
   const header = () => {
-    return(<View style={styles.topNavHolder}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon 
-            type="antdesign"
-            name="arrowleft"
-            color={black}
-            size={30}
-          />
-      </TouchableOpacity>
+    return(
+      <View style={styles.topNavDisplay}>
+        <View style={styles.topNavHolder}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Icon 
+                  type="antdesign"
+                  name="arrowleft"
+                  color={black}
+                  size={30}
+                />
+            </TouchableOpacity>
 
-      <Text style={styles.topNavText}>
-        Orders List
-      </Text>
+            <Text style={styles.topNavText}>
+              Orders List
+            </Text>
 
-      <View />
-    </View>);
+            <View />
+          </View>
+          <View style={{ width: '100%', marginTop: 10 }}>
+          <Picker selectedValue={serviceType} onValueChange={(service, index) => {
+            setSelectedItems([]);
+            setTotalCount(0)
+            setTotalPrice(0);
+            setServiceType(service)}}>
+            <Picker.Item value="standard" label="Standard Service" />
+            <Picker.Item value="premium" label="Premium Service" />
+          </Picker>
+        </View>
+      </View>
+    );
   };
 
   //List Holder
@@ -362,7 +388,6 @@ const Main = ({ navigation }) => {
 
       <Spinner 
             visible={isLoading}
-            textContent={'Loading...'}
             textStyle={styles.loadingText}
             color={primaryColor}
         />

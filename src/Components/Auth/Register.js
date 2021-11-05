@@ -9,7 +9,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function RegisterPage({ navigation }) {
   const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.auth.isLoading);
+  const [isLoading, setIsloading] = useState(false);
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [phoneNumberErr, setPhoneNumberErr] = useState("");
@@ -40,7 +40,7 @@ export default function RegisterPage({ navigation }) {
         email: email,
         passWord: password
       };
-      dispatch(register(body, navigation));
+      dispatch(register(body, navigation, setIsloading));
     }
   };
   return (

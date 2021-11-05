@@ -9,7 +9,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function RecoverPage({ navigation }) {
   const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.auth.isLoading);
+  const [isLoading, setIsloading] = useState(false);
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [phoneNumberErr, setPhoneNumberErr] = useState("");
@@ -21,7 +21,7 @@ export default function RecoverPage({ navigation }) {
       const body = {
         phone: phoneNumber
       };
-      dispatch(recover(body, navigation));
+      dispatch(recover(body, navigation, setIsloading));
     }
   };
   return (

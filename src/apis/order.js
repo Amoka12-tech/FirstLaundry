@@ -12,4 +12,4 @@ export const cancelOrder = (data, headers) => API.post('/home/cancel_order.php',
 
 export const getDiscount = (data, headers) => API.post('/home/get_discount.php', data, headers);
 
-export const getItemList = () => API.get('/items/Item.json');
+export const getItemList = () => API.get('/items/Items.json');

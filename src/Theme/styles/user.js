@@ -340,14 +340,19 @@ export default StyleSheet.create({
     },
 
     //Top nav style
+    topNavDisplay: {
+        display: 'flex',
+        width: '100%',
+        flexDirection: 'column',
+        marginTop: isIphoneX === true ? 35 : Platform.OS === 'ios' && isIphoneX !== true ? 30 : 0,
+        paddingLeft: 10,
+    },
     topNavHolder: {
         display: 'flex',
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: isIphoneX === true ? 35 : Platform.OS === 'ios' && isIphoneX !== true ? 30 : 0,
-        paddingLeft: 10,
     },
 
     topNavText: {

@@ -136,7 +136,7 @@ export default function LocationPage({ navigation, route }) {
   return (
     <View style={styles.locationModal}>
                 <Spinner 
-                    visible={isLoading}
+                    visible={false}
                     textContent={'Please wait...'}
                     textStyle={styles.loadingText}
                     color={primaryColor}

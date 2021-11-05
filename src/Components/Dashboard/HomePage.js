@@ -42,11 +42,12 @@ const HomePage = (props) => {
   const orders = useSelector(state => state.orders);
   const appInfo = useSelector(state => state.info);
 
-  useEffect(() => {
-    // props.copilotEvents.on('stepChange', (step) => console.log('Step: ',step.name));
-    if(orders.length === 0)
-    props.start();
-  }, []);
+  // useEffect(() => {
+  //   // props.copilotEvents.on('stepChange', (step) => console.log('Step: ',step.name));
+  //   if(orders.length === 0){
+  //     props.start();
+  //   }
+  // }, [orders]);
   
   useEffect(() => {
     dispatch(getAppInfo());

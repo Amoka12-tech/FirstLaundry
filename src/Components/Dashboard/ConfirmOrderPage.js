@@ -24,7 +24,9 @@ import { getDiscount, placeOrder } from '../../actions/order';
 import moment from 'moment-timezone';
 import { Platform } from 'react-native';
 
-export default function ConfirmOrderPage({ navigation, route }) {
+const ConfirmOrderPage = (props) => {
+    const navigation = props.navigation;
+    const route = props.route;
     const dispatch = useDispatch();
     const isLoading = useSelector(state => state.auth.isLoading);
     const userData = useSelector(state => state.auth.user);
@@ -68,6 +70,8 @@ export default function ConfirmOrderPage({ navigation, route }) {
 
     const price = discount > 0 ? totalPrice*(discount/100) : totalPrice;
 
+    const [ordering, setOdering] = useState(false);
+
     const onSubmit = () => {
         if(selectedItems.length > 0){
             if(pickupDateTime === null){
@@ -109,7 +113,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
     <View style={styles.confirmPageMain}>
         <StatusBar backgroundColor={'transparent'} barStyle="dark-content" />
         <Spinner 
-            visible={isLoading}
+            visible={ordering}
             textContent={'Placing orders...'}
             textStyle={styles.loadingText}
             color={primaryColor}
@@ -218,7 +222,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
                     Payment method
                 </Text>
 
-                <View style={styles.paymentScheduleHolder}>
+                <TouchableOpacity onPress={() => setPaymentMethod('card')} style={styles.paymentScheduleHolder}>
                     <View style={styles.schedulePaymentHolder}>
                         <CheckBox 
                             checkedIcon='check-circle-o'
@@ -236,10 +240,17 @@ export default function ConfirmOrderPage({ navigation, route }) {
 
                     <Image source={creditCard} style={{ resizeMode: 'contain', width: 20, height: 20 }} />
 
-                </View>
+                </TouchableOpacity>
 
                 {/* Bank transfer */}
-                <View style={styles.paymentScheduleHolder}>
+                <TouchableOpacity onPress={() => {
+                    if(payment?.paymentStatus !== true){
+                        setPaymentMethod('bank');
+                        dispatch(optBankPayment());
+                    }else{
+                        alert('Payment already processed for this order using card');
+                    }
+                }} style={styles.paymentScheduleHolder}>
                     <View style={styles.schedulePaymentHolder}>
                         <CheckBox 
                             checkedIcon='check-circle-o'
@@ -264,7 +275,7 @@ export default function ConfirmOrderPage({ navigation, route }) {
 
                     <Image source={bankIcon} style={{ resizeMode: 'contain', width: 20, height: 20 }} />
 
-                </View>
+                </TouchableOpacity>
             </View>
             {/* End of payment component  */}
 
@@ -327,4 +338,6 @@ export default function ConfirmOrderPage({ navigation, route }) {
             </View>}
      </View>
   );
-}
+};
+
+export default ConfirmOrderPage;

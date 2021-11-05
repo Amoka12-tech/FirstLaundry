@@ -9,7 +9,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function ChangePasswordPage({ navigation, route }) {
   const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.auth.isLoading);
+  const [isLoading, setIsloading] = useState(false);
   const { id } = route.params;
 
   const [password, setPassword] = useState("");
@@ -32,7 +32,7 @@ export default function ChangePasswordPage({ navigation, route }) {
         userId: id,
         password: password,
       };
-      dispatch(changePassword(body, navigation));
+      dispatch(changePassword(body, navigation, setIsloading));
     }
   };
   return (

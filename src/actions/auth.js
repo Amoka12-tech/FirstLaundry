@@ -15,9 +15,10 @@ let headers = {
     }
 
 }
-export const login = (body, navigation) => async dispatch => {
+export const login = (body, navigation, setIsloading) => async dispatch => {
     const bodyData = JSON.stringify(body);
     try {
+        setIsloading(true);
         dispatch({type: START_PROCESS});
         // await api.login(bodyData, headers);
         const { data } = await api.login(bodyData, headers);
@@ -28,9 +29,11 @@ export const login = (body, navigation) => async dispatch => {
             await AsyncStorage.setItem('@user', JSON.stringify(message));
             dispatch({type: SIGN_IN, payload: message});
             dispatch({type: END_PROCESS});
+            setIsloading(false);
         }else if(success === 2){
             dispatch({type: SIGN_UP, payload: message});
             dispatch({type: END_PROCESS});
+            setIsloading(false);
             navigation.navigate('Verify', {
                 userId: message?.id,
                 page: 'Login',
@@ -41,13 +44,15 @@ export const login = (body, navigation) => async dispatch => {
     } catch (error) {
         alert(error);
         dispatch({type: END_PROCESS});
+        setIsloading(false);
     }
 };
 
 //This function on success navigate to otp page
-export const register = (body, navigation) => async dispatch => {
+export const register = (body, navigation, setIsloading) => async dispatch => {
     const bodyData = JSON.stringify(body);
     try {
+        setIsloading(true);
         dispatch({type: START_PROCESS});
         // await api.login(bodyData, headers);
         const { data } = await api.register(bodyData, headers);
@@ -56,6 +61,7 @@ export const register = (body, navigation) => async dispatch => {
         const message = data?.message;
         if(success === 1){
             dispatch({type: SIGN_UP, payload: message});
+            setIsloading(false)
             dispatch({type: END_PROCESS});
             alert('Registration completed');
             navigation.navigate('Verify', {
@@ -67,14 +73,16 @@ export const register = (body, navigation) => async dispatch => {
         }
     } catch (error) {
         alert(error);
+        setIsloading(false);
         dispatch({type: END_PROCESS});
     }
 };
 
 //send code and id return user data if coming page is recover go newPass
-export const verify = (body, page, navigation) => async dispatch => {
+export const verify = (body, page, navigation, setIsVerifying) => async dispatch => {
     const bodyData = JSON.stringify(body);
     try {
+        setIsVerifying(true);
         dispatch({type: START_PROCESS});
         const { data } = await api.verify(bodyData, headers);
         const status = data?.status;
@@ -82,6 +90,7 @@ export const verify = (body, page, navigation) => async dispatch => {
         const message = data?.message;
         if(success === 1){
             if(page === "NewPass"){
+                setIsVerifying(false);
                 dispatch({type: END_PROCESS});
                 navigation.navigate('NewPassword', {
                     id: message.id
@@ -90,41 +99,47 @@ export const verify = (body, page, navigation) => async dispatch => {
                 await AsyncStorage.setItem('@user', JSON.stringify(message));
                 dispatch({type: SIGN_IN, payload: message});
                 dispatch({type: END_PROCESS});
+                setIsVerifying(false);
             }
         }else{
             throw(message);
         }
     } catch (error) {
         alert(error);
+        setIsVerifying(false);
         dispatch({type: END_PROCESS});
     }
 };
 
 //Send phone and Id to return 'success' 'status' 'message' show alert
-export const resendOtp = (body) => async dispatch => {
+export const resendOtp = (body, setIsResending) => async dispatch => {
     const bodyData = JSON.stringify(body);
     try {
+        setIsResending(true);
         dispatch({type: START_PROCESS});
         const { data } = await api.resendOtp(bodyData, headers);
         const status = data?.status;
         const success = data?.success;
         const message = data?.message;
         if(success === 1){
-            dispatch({type: END_PROCESS})
+            dispatch({type: END_PROCESS});
+            setIsResending(false);
             alert(message);
         }else{
             throw(message);
         };
     } catch (error) {
+        setIsResending(false);
         dispatch({type: END_PROCESS});
         alert(error);
     }
 };
 
 //Search if phone numebr exist 'success' 'status' 'message': userData navigate to Otp
-export const recover = (body, navigation) => async dispatch => {
+export const recover = (body, navigation, setIsloading) => async dispatch => {
     const bodyData = JSON.stringify(body);
     try {
+        setIsloading(true);
         dispatch({type: START_PROCESS});
         const { data } = await api.recover(bodyData, headers);
         const status = data?.status;
@@ -132,6 +147,7 @@ export const recover = (body, navigation) => async dispatch => {
         const message = data?.message;
         if(success === 1){
             dispatch({type: SIGN_UP, payload: message});
+            setIsloading(false);
             dispatch({type: END_PROCESS});
             navigation.navigate('Verify', {
                 userId: message.id,
@@ -141,15 +157,17 @@ export const recover = (body, navigation) => async dispatch => {
             throw(message);
         }
     } catch (error) {
+        setIsloading(false);
         dispatch({type: END_PROCESS});
         alert(error);
     }
 };
 
 //Change Password action to return 'success' 'status' 'message' the show alert
-export const changePassword = (body, navigation) => async dispatch => {
+export const changePassword = (body, navigation, setIsloading) => async dispatch => {
     const bodyData = JSON.stringify(body);
     try {
+        setIsloading(true);
         dispatch({type: START_PROCESS});
         const { data } = await api.changePassword(bodyData, headers);
         const status = data?.status;
@@ -157,12 +175,14 @@ export const changePassword = (body, navigation) => async dispatch => {
         const message = data?.message;
         if(success === 1){
             dispatch({type: END_PROCESS});
+            setIsloading(false);
             alert(message);
             navigation.navigate('Login');
         }else{
             throw(message);
         }
     } catch (error) {
+        setIsloading(false);
         dispatch({type: END_PROCESS});
         alert(error);
     }

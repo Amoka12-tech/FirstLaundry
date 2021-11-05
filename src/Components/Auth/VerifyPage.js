@@ -15,6 +15,9 @@ export default function VerifyPage({ navigation, route }) {
   const isLoading = useSelector(state => state.auth.isLoading);
   const userData = useSelector(state => state.auth.user);
 
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+
   const [digitOne, setDigitOne] = useState("");
   const [digitTwo, setDigitTwo] = useState("");
   const [digitThree, setDigitThree] = useState("");
@@ -40,7 +43,7 @@ export default function VerifyPage({ navigation, route }) {
         code: digitOne+digitTwo+digitThree+digitFour+digitFive+digitSix,
       };
       // console.log(userId);
-      dispatch(verify(body, page, navigation));
+      dispatch(verify(body, page, navigation, setIsVerifying));
     }
   };
 
@@ -52,7 +55,7 @@ export default function VerifyPage({ navigation, route }) {
         email: userData?.email,
       };
       // console.log(body);
-      dispatch(resendOtp(body));
+      dispatch(resendOtp(body, setIsResending));
     }else{
       alert('You lost your current session, login again and try resend');
       navigation.goBack();
@@ -64,12 +67,18 @@ export default function VerifyPage({ navigation, route }) {
       contentContainerStyle={authStyle.normalContainer} 
       showsVerticalScrollIndicator={false}
       >
-      <Spinner 
+      {isVerifying && <Spinner 
         visible={isLoading}
         textContent={'Verifing account...'}
         textStyle={authStyle.loadingText}
         color={primaryColor}
-      />
+      />}
+      {isResending && <Spinner 
+        visible={isLoading}
+        textContent={'Resending OTP...'}
+        textStyle={authStyle.loadingText}
+        color={primaryColor}
+      />}
       <View style={authStyle.topHeader}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon 
