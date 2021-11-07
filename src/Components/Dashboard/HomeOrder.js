@@ -35,9 +35,10 @@ export default function HomeOrder({ navigation }) {
                 <Header />
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
                     <Text style={styles.itemTextHolder}>Cleaning service comming soon!</Text>
+                    <Text>call to request house/office cleaning service.</Text>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.standardButton}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.standardButton}>
                         <Text style={styles.standardButtonText}>Next</Text>
                     </TouchableOpacity>
                 </View>

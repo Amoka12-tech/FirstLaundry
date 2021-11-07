@@ -113,11 +113,14 @@ export const getDiscount = async (userId) => {
     }
 };
 
-export const getItems = (setItemList) => async dispatch => {
+export const getItems = (setItemLister, itemList, setItemList) => async dispatch => {
     try {
         dispatch({type: START_PROCESS});
         const { data } = await api.getItemList();
-        setItemList(data);
+        setItemLister(data);
+        if(itemList.length === 0){
+            setItemList(data[0]);
+        }
         dispatch({type: GET_ITEM_LIST, payload: data});
         dispatch({type: END_PROCESS});
     } catch (error) {

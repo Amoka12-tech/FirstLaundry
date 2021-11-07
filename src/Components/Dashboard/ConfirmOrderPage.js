@@ -222,7 +222,7 @@ const ConfirmOrderPage = (props) => {
                     Payment method
                 </Text>
 
-                <TouchableOpacity onPress={() => setPaymentMethod('card')} style={styles.paymentScheduleHolder}>
+                {payment.paymentData == null ? <TouchableOpacity onPress={() => setPaymentMethod('card')} style={styles.paymentScheduleHolder}>
                     <View style={styles.schedulePaymentHolder}>
                         <CheckBox 
                             checkedIcon='check-circle-o'
@@ -240,10 +240,13 @@ const ConfirmOrderPage = (props) => {
 
                     <Image source={creditCard} style={{ resizeMode: 'contain', width: 20, height: 20 }} />
 
-                </TouchableOpacity>
+                </TouchableOpacity> : 
+                <Text style={styles.schedulePaymentText}>
+                   Payment successful! Click {payment.paymentData == null ? 'Make payment' : !!payment.paymentData && locationData.pickupAddressName === null ? 'Pick Locations' : 'Place Order'} 
+                </Text>}
 
                 {/* Bank transfer */}
-                <TouchableOpacity onPress={() => {
+                {payment.paymentData == null && <TouchableOpacity onPress={() => {
                     if(payment?.paymentStatus !== true){
                         setPaymentMethod('bank');
                         dispatch(optBankPayment());
@@ -275,7 +278,7 @@ const ConfirmOrderPage = (props) => {
 
                     <Image source={bankIcon} style={{ resizeMode: 'contain', width: 20, height: 20 }} />
 
-                </TouchableOpacity>
+                </TouchableOpacity>}
             </View>
             {/* End of payment component  */}
 

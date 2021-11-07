@@ -39,7 +39,7 @@ const Main = ({ navigation }) => {
 
   useEffect(() => {
     if(itemList?.length === 0){
-      dispatch(getItems(setItemLister));
+      dispatch(getItems(setItemLister, itemList, setItemList));
     }
   }, []);
 
@@ -49,7 +49,7 @@ const Main = ({ navigation }) => {
     }else{
       setItemList(itemLister[1]);
     }
-  },[serviceType, itemLister]);
+  },[serviceType]);
 
   const payment = useSelector(state => state.payment);
 

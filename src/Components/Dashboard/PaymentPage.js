@@ -6,7 +6,7 @@ import { Paystack } from 'react-native-paystack-webview';
 import { linkApi, PAY_STACK_KEY, PAY_STACK_SECRET } from '../../../config';
 import { Icon } from 'react-native-elements';
 import { black } from '../../Theme/color';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { successPayment } from '../../actions/payment';
 import { WebView } from 'react-native-webview';
 
@@ -14,6 +14,7 @@ export default function PaymentPage({ navigation, route }) {
     const { amount } = route.params;
     const dispatch = useDispatch();
     const webviewbridge = useRef();
+    const userData = useSelector(state => state.auth.user);
 
     // useEffect(() => {
     //   setTimeout(() => {
@@ -42,7 +43,7 @@ export default function PaymentPage({ navigation, route }) {
         
         <WebView 
           ref={webviewbridge}
-          source={{ uri: `${linkApi}/paymentHtml/index.html?amount=${amount}&email=mutalib.amoka@gmail.com` }}
+          source={{ uri: `${linkApi}/paymentHtml/index.html?amount=${amount}&email=${userData?.email}` }}
           onMessage={(event) => {
             const data = JSON.parse(event.nativeEvent.data);
             if(data.status === 'success'){

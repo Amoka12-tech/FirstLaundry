@@ -15,6 +15,7 @@ export const getUser = () => async dispatch => {
     try {
         dispatch({type: START_PROCESS});
         const saveData = await AsyncStorage.getItem("@user");
+        // console.log(saveData);
         const userData = saveData !== null ? JSON.parse(saveData) : null;
         if(!!userData){
             dispatch({type: SIGN_IN, payload: userData});
@@ -30,7 +31,7 @@ export const updateUser = (body, toggle) => async dispatch => {
     const { userId, picture, name, email, base64 } = body;
     try {
         dispatch({type: START_PROCESS});
-        if(picture !== ''){ //If user select picture let this function run
+        if(picture !== '' & base64 !== ''){ //If user select picture let this function run
             let imageData = {
                 "file": base64,
                 "upload_preset": "sndsgfdf",
@@ -45,6 +46,7 @@ export const updateUser = (body, toggle) => async dispatch => {
                 name: name,
                 email: email,
             };// newBody with secure_url to upload image.
+            
             await userApi.updateUser(newBody, headers); //Send to api
             const userData = await AsyncStorage.getItem("@user"); //get initial local storage
             const perserData = JSON.parse(userData); //convert initial local storage to json perser
@@ -63,6 +65,7 @@ export const updateUser = (body, toggle) => async dispatch => {
                 name: name,
                 email: email,
             }
+            // console.log("Email",newBody.email);
             await userApi.updateUser(newBody, headers);
             const userData = await AsyncStorage.getItem("@user"); //get initial local storage
             const perserData = JSON.parse(userData); //convert initial local storage to json perser
